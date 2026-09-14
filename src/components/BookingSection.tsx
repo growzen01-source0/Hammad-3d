@@ -1,0 +1,792 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { MagneticButton } from './MagneticButton';
+import { SERVICES_DATA, AGENCY_INFO } from '../data/agencyData';
+import { COUNTRY_CODES, CountryCode } from '../data/countryCodes';
+import { ConsultationFormData } from '../types';
+import confetti from 'canvas-confetti';
+import {
+  saveBookingToSupabase,
+  fetchRecentBookings,
+  checkSupabaseHealth,
+  SUPABASE_PROJECT_ID,
+  SUPABASE_SQL_SCHEMA,
+  SaveBookingResult,
+} from '../lib/supabase';
+import {
+  Sparkles,
+  Send,
+  CheckCircle2,
+  Phone,
+  Mail,
+  MessageSquare,
+  User,
+  ArrowUpRight,
+  RefreshCw,
+  ChevronDown,
+  Search,
+  Database,
+  Copy,
+  Check,
+  ExternalLink,
+  Code2,
+  ShieldCheck,
+} from 'lucide-react';
+
+interface BookingSectionProps {
+  preselectedService?: string;
+}
+
+export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedService }) => {
+  const [formData, setFormData] = useState<ConsultationFormData>({
+    name: '',
+    phone: '',
+    email: '',
+    service: preselectedService || 'Website Development',
+    packageTier: '',
+    message: '',
+  });
+
+  const [selectedCountry, setSelectedCountry] = useState<CountryCode>(COUNTRY_CODES[0]);
+  const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
+  const [countrySearch, setCountrySearch] = useState('');
+  const countryDropdownRef = useRef<HTMLDivElement>(null);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedWhatsAppLink, setSubmittedWhatsAppLink] = useState('');
+  const [dbResult, setDbResult] = useState<SaveBookingResult | null>(null);
+  const [showSqlGuide, setShowSqlGuide] = useState(false);
+  const [activeModalTab, setActiveModalTab] = useState<'sql' | 'live'>('sql');
+  const [liveBookings, setLiveBookings] = useState<any[]>([]);
+  const [isLoadingBookings, setIsLoadingBookings] = useState(false);
+  const [copiedSql, setCopiedSql] = useState(false);
+  const [healthStatus, setHealthStatus] = useState<{
+    checked: boolean;
+    connected: boolean;
+    tableExists: boolean;
+    message: string;
+  }>({ checked: false, connected: false, tableExists: false, message: 'Checking...' });
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [cardTilt, setCardTilt] = useState({ rx: 0, ry: 0 });
+
+  const refreshHealth = async () => {
+    const res = await checkSupabaseHealth();
+    setHealthStatus({ checked: true, ...res });
+  };
+
+  useEffect(() => {
+    refreshHealth();
+  }, []);
+
+  const loadBookings = async () => {
+    setIsLoadingBookings(true);
+    const data = await fetchRecentBookings();
+    setLiveBookings(data);
+    setIsLoadingBookings(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (countryDropdownRef.current && !countryDropdownRef.current.contains(e.target as Node)) {
+        setIsCountryDropdownOpen(false);
+      }
+    };
+    if (isCountryDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isCountryDropdownOpen]);
+
+  const filteredCountries = COUNTRY_CODES.filter((c) =>
+    c.name.toLowerCase().includes(countrySearch.toLowerCase()) ||
+    c.dialCode.includes(countrySearch) ||
+    c.code.toLowerCase().includes(countrySearch.toLowerCase())
+  );
+
+  useEffect(() => {
+    if (preselectedService) {
+      const match = SERVICES_DATA.find((s) => s.id === preselectedService);
+      if (match) {
+        setFormData((prev) => ({ ...prev, service: match.title }));
+      } else if (preselectedService === 'starter') {
+        setFormData((prev) => ({ ...prev, service: 'Starter Growth Package', packageTier: 'Basic Plan' }));
+      } else if (preselectedService === 'standard') {
+        setFormData((prev) => ({ ...prev, service: 'Scale Trajectory Package', packageTier: 'Standard Plan' }));
+      } else if (preselectedService === 'premium') {
+        setFormData((prev) => ({ ...prev, service: 'Enterprise Dominance Package', packageTier: 'Premium Plan' }));
+      }
+    }
+  }, [preselectedService]);
+
+  const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setCardTilt({ rx: -y * 6, ry: x * 6 });
+  };
+
+  const handleCardMouseLeave = () => {
+    setCardTilt({ rx: 0, ry: 0 });
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const formattedPhone = formData.phone.startsWith('+')
+      ? formData.phone
+      : `${selectedCountry.dialCode} ${formData.phone.trim()}`;
+
+    // 1. Build pre-filled WhatsApp message
+    const text = encodeURIComponent(
+      `Hi Growzen! I'd like to book a consultation.\n\n` +
+      `*Name:* ${formData.name}\n` +
+      `*Phone:* ${formattedPhone}\n` +
+      `*Email:* ${formData.email}\n` +
+      `*Service:* ${formData.service}\n` +
+      (formData.packageTier ? `*Package Tier Preference:* ${formData.packageTier}\n` : '') +
+      `*Message:* ${formData.message || 'Ready to discuss next steps.'}`
+    );
+    const waUrl = `https://wa.me/923317157073?text=${text}`;
+    setSubmittedWhatsAppLink(waUrl);
+
+    // 2. Direct Cloud Storage into Supabase Account
+    try {
+      const result = await saveBookingToSupabase({
+        name: formData.name,
+        phone: formattedPhone,
+        email: formData.email,
+        service: formData.service,
+        packageTier: formData.packageTier,
+        message: formData.message,
+        source: 'Growzen Web Booking Form',
+      });
+      setDbResult(result);
+    } catch (err: any) {
+      console.error('Supabase submission error:', err);
+      setDbResult({
+        success: false,
+        error: err?.message || 'Database error occurred',
+        savedOffline: true,
+      });
+    }
+
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+
+    // Trigger Confetti effect
+    try {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#10f48e', '#00e676', '#ffffff', '#34d399'],
+      });
+    } catch (err) {
+      // graceful fallback if canvas-confetti is not loaded
+    }
+  };
+
+  const handleReset = () => {
+    setIsSubmitted(false);
+    setDbResult(null);
+    setSelectedCountry(COUNTRY_CODES[0]);
+    setFormData({
+      name: '',
+      phone: '',
+      email: '',
+      service: 'Website Development',
+      packageTier: '',
+      message: '',
+    });
+  };
+
+  return (
+    <section
+      id="booking"
+      className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden perspective-1200 w-full"
+    >
+      {/* Background glow */}
+      <div className="absolute top-1/2 -right-32 w-96 h-96 rounded-full bg-[#10f48e]/8 blur-[180px] pointer-events-none" />
+
+      {/* Header */}
+      <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#10f48e]/10 hover:bg-[#10f48e]/20 border border-[#10f48e]/30 hover:border-[#10f48e]/60 text-[#10f48e] text-xs font-mono-tech uppercase tracking-widest mb-3 shadow-[0_0_20px_rgba(16,244,142,0.2)] hover:shadow-[0_0_28px_rgba(16,244,142,0.45)] transition-all duration-[350ms] ease-in-out transform hover:scale-105 hover:-translate-y-0.5 cursor-default group/pill">
+          <Sparkles className="w-3.5 h-3.5 transition-transform duration-[350ms] ease-in-out group-hover/pill:rotate-45 group-hover/pill:scale-110" />
+          <span>Start Your Growth Journey</span>
+        </div>
+        <h2 className="font-display font-black text-2xl min-[400px]:text-3xl sm:text-5xl md:text-6xl tracking-tight text-white">
+          Book a Free{' '}
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-[#10f48e] to-emerald-400">
+            Consultation
+          </span>
+        </h2>
+        <p className="mt-3 sm:mt-4 text-neutral-400 text-xs sm:text-sm md:text-base max-w-xl px-2">
+          Share your vision, current bottlenecks, and target goals. We respond within 24 hours with an actionable roadmap.
+        </p>
+      </div>
+
+      {/* Form Card with 3D Tilt Frame */}
+      <div
+        ref={cardRef}
+        onMouseMove={handleCardMouseMove}
+        onMouseLeave={handleCardMouseLeave}
+        style={{
+          transform: `rotateX(${cardTilt.rx}deg) rotateY(${cardTilt.ry}deg)`,
+          transformStyle: 'preserve-3d',
+          transition: 'transform 0.2s ease-out',
+        }}
+        className="max-w-3xl mx-auto glass-panel holo-border rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 border border-white/10 hover:border-[#10f48e]/50 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(16,244,142,0.15)] relative w-full"
+      >
+        {isSubmitted ? (
+          <div className="py-8 sm:py-12 flex flex-col items-center text-center animate-in fade-in zoom-in-95 duration-500">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#10f48e]/20 border border-[#10f48e] text-[#10f48e] flex items-center justify-center mb-5 sm:mb-6 shadow-[0_0_30px_#10f48e]">
+              <CheckCircle2 className="w-7 h-7 sm:w-8 sm:h-8" />
+            </div>
+
+            <h3 className="font-display font-bold text-xl sm:text-3xl text-white mb-2">
+              Consultation Request Received!
+            </h3>
+
+            <p className="text-xs sm:text-sm text-neutral-300 max-w-md mb-4 px-2">
+              Thank you, <strong className="text-white">{formData.name}</strong>. Partner Hammad and Partner Raza have been notified. We will review your request regarding <strong className="text-[#10f48e]">{formData.service}</strong> promptly.
+            </p>
+
+            {/* Supabase Storage Sync Status Card */}
+            <div className="w-full max-w-md my-3 p-4 rounded-2xl bg-white/[0.04] border border-[#10f48e]/25 text-left font-mono-tech shadow-[0_0_20px_rgba(16,244,142,0.1)]">
+              <div className="flex items-center justify-between mb-2.5">
+                <div className="flex items-center gap-2">
+                  <Database className="w-4 h-4 text-[#10f48e]" />
+                  <span className="text-xs text-white font-bold tracking-wider">SUPABASE CLOUD STORAGE</span>
+                </div>
+                <span
+                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                    dbResult?.success
+                      ? 'bg-[#10f48e]/20 text-[#10f48e] border border-[#10f48e]/40'
+                      : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                  }`}
+                >
+                  {dbResult?.success ? `✓ Saved to ${dbResult.tableNameUsed || 'bookings'}` : '✓ Saved to Local Backup'}
+                </span>
+              </div>
+
+              <div className="space-y-1.5 text-[11px] text-neutral-300">
+                <div className="flex items-center justify-between">
+                  <span className="text-neutral-400">Project ID:</span>
+                  <span className="text-white font-mono">{SUPABASE_PROJECT_ID}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-neutral-400">Client:</span>
+                  <span className="text-white">{formData.name}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-neutral-400">Phone:</span>
+                  <span className="text-white font-mono">{formData.phone}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-neutral-400">Service:</span>
+                  <span className="text-[#10f48e]">{formData.service}</span>
+                </div>
+              </div>
+
+
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full justify-center mt-2">
+              <a
+                href={submittedWhatsAppLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-linear-to-r from-[#10f48e] to-[#00d075] text-[#060709] font-bold text-xs uppercase font-mono-tech tracking-wider shadow-[0_0_20px_rgba(16,244,142,0.4)] hover:scale-105 transition-all flex items-center justify-center gap-2 min-h-[44px]"
+              >
+                <span>Instant Connect via WhatsApp</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </a>
+
+              <button
+                onClick={handleReset}
+                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 text-white text-xs font-mono-tech uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
+              >
+                <RefreshCw className="w-4 h-4" />
+                <span>Submit Another Request</span>
+              </button>
+            </div>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              {/* Name field */}
+              <div>
+                <label className="block text-xs font-mono-tech uppercase text-neutral-300 mb-1.5 sm:mb-2">
+                  Your Full Name *
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-500">
+                    <User className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="e.g. John Doe"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-500 focus:outline-none focus:border-[#10f48e] focus:ring-1 focus:ring-[#10f48e] focus:shadow-[0_0_15px_rgba(16,244,142,0.25)] transition-all min-h-[44px]"
+                  />
+                </div>
+              </div>
+
+              {/* Phone field with Country Code Selector */}
+              <div className="relative">
+                <label className="block text-xs font-mono-tech uppercase text-neutral-300 mb-1.5 sm:mb-2">
+                  Phone / WhatsApp *
+                </label>
+                <div className="relative flex rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 focus-within:border-[#10f48e] focus-within:ring-1 focus-within:ring-[#10f48e] focus-within:shadow-[0_0_15px_rgba(16,244,142,0.25)] transition-all">
+                  {/* Country Selector Button */}
+                  <div className="relative" ref={countryDropdownRef}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsCountryDropdownOpen(!isCountryDropdownOpen);
+                        setCountrySearch('');
+                      }}
+                      className="h-full px-3 py-3 flex items-center gap-1.5 bg-white/5 hover:bg-white/10 border-r border-white/10 rounded-l-xl sm:rounded-l-2xl text-white text-xs font-mono-tech transition-colors cursor-pointer shrink-0 min-h-[44px]"
+                      title={`${selectedCountry.name} (${selectedCountry.dialCode})`}
+                      aria-label="Select country code"
+                      aria-expanded={isCountryDropdownOpen}
+                    >
+                      <span className="text-base leading-none">{selectedCountry.flag}</span>
+                      <span className="font-semibold">{selectedCountry.dialCode}</span>
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 text-neutral-400 transition-transform duration-200 ${
+                          isCountryDropdownOpen ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {isCountryDropdownOpen && (
+                      <div className="absolute top-full left-0 mt-2 w-72 sm:w-80 max-h-72 bg-[#0c1219] border border-white/15 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(16,244,142,0.2)] z-50 overflow-hidden flex flex-col backdrop-blur-xl">
+                        {/* Search header */}
+                        <div className="p-2.5 border-b border-white/10 sticky top-0 bg-[#0c1219]/95 backdrop-blur-md">
+                          <div className="relative">
+                            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
+                            <input
+                              type="text"
+                              autoFocus
+                              value={countrySearch}
+                              onChange={(e) => setCountrySearch(e.target.value)}
+                              placeholder="Search country or code..."
+                              className="w-full pl-9 pr-3 py-1.5 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-[#10f48e]"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Country items */}
+                        <div className="overflow-y-auto flex-1 p-1 divide-y divide-white/5 max-h-56">
+                          {filteredCountries.length > 0 ? (
+                            filteredCountries.map((c) => (
+                              <button
+                                key={c.code}
+                                type="button"
+                                onClick={() => {
+                                  setSelectedCountry(c);
+                                  setIsCountryDropdownOpen(false);
+                                }}
+                                className={`w-full px-3 py-2 text-left flex items-center justify-between text-xs hover:bg-[#10f48e]/15 hover:text-[#10f48e] rounded-lg transition-colors cursor-pointer ${
+                                  selectedCountry.code === c.code ? 'bg-[#10f48e]/10 text-[#10f48e] font-bold' : 'text-neutral-300'
+                                }`}
+                              >
+                                <span className="flex items-center gap-2.5 truncate">
+                                  <span className="text-base shrink-0">{c.flag}</span>
+                                  <span className="truncate">{c.name}</span>
+                                </span>
+                                <span className="font-mono-tech text-neutral-400 shrink-0 ml-2">{c.dialCode}</span>
+                              </button>
+                            ))
+                          ) : (
+                            <div className="p-4 text-center text-xs text-neutral-500">
+                              No matching country found
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Phone input */}
+                  <input
+                    type="tel"
+                    name="phone"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="331 7157073"
+                    className="w-full px-3.5 py-3 bg-transparent text-white text-base sm:text-sm placeholder-neutral-500 focus:outline-none min-h-[44px]"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              {/* Email field */}
+              <div>
+                <label className="block text-xs font-mono-tech uppercase text-neutral-300 mb-1.5 sm:mb-2">
+                  Email Address *
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-500">
+                    <Mail className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="yourname@domain.com"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-500 focus:outline-none focus:border-[#10f48e] focus:ring-1 focus:ring-[#10f48e] focus:shadow-[0_0_15px_rgba(16,244,142,0.25)] transition-all min-h-[44px]"
+                  />
+                </div>
+              </div>
+
+              {/* Service Needed dropdown */}
+              <div>
+                <label className="block text-xs font-mono-tech uppercase text-neutral-300 mb-1.5 sm:mb-2">
+                  Service Needed *
+                </label>
+                <select
+                  name="service"
+                  value={formData.service}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 text-white text-base sm:text-sm focus:outline-none focus:border-[#10f48e] focus:ring-1 focus:ring-[#10f48e] focus:shadow-[0_0_15px_rgba(16,244,142,0.25)] transition-all cursor-pointer min-h-[44px]"
+                >
+                  {SERVICES_DATA.map((srv) => (
+                    <option key={srv.id} value={srv.title} className="bg-[#0b0e14] text-white">
+                      {srv.title}
+                    </option>
+                  ))}
+                  <option value="Starter Growth Package" className="bg-[#0b0e14] text-white">
+                    Starter Growth Package
+                  </option>
+                  <option value="Scale Trajectory Package" className="bg-[#0b0e14] text-white">
+                    Scale Trajectory Package
+                  </option>
+                  <option value="Enterprise Dominance Package" className="bg-[#0b0e14] text-white">
+                    Enterprise Dominance Package
+                  </option>
+                  <option value="Other / Custom Service (Tell us below)" className="bg-[#0b0e14] text-white">
+                    Other / Custom Service (Tell us below)
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            {/* Package Tier Preference */}
+            <div>
+              <label className="block text-xs font-mono-tech uppercase text-neutral-300 mb-2">
+                Package Tier Preference <span className="text-neutral-500 lowercase">(optional)</span>
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+                {[
+                  { id: 'Basic Plan', title: 'Basic Plan', desc: 'Starter sprints' },
+                  { id: 'Standard Plan', title: 'Standard Plan', desc: 'Scale trajectory', popular: true },
+                  { id: 'Premium Plan', title: 'Premium Plan', desc: 'Enterprise VIP' },
+                ].map((tier) => {
+                  const isSelected = formData.packageTier === tier.id;
+                  return (
+                    <button
+                      key={tier.id}
+                      type="button"
+                      onClick={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          packageTier: isSelected ? '' : tier.id,
+                        }))
+                      }
+                      className={`relative p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-center min-h-[58px] sm:min-h-[64px] ${
+                        isSelected
+                          ? 'bg-[#10f48e]/15 border-[#10f48e] shadow-[0_0_20px_rgba(16,244,142,0.25)] text-white ring-1 ring-[#10f48e]'
+                          : 'bg-[#080b10] border-white/10 hover:border-white/25 text-neutral-300 hover:text-white'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between w-full mb-1">
+                        <span className="font-display font-bold text-xs sm:text-sm text-white">
+                          {tier.title}
+                        </span>
+                        {tier.popular && !isSelected && (
+                          <span className="text-[10px] font-mono-tech text-[#10f48e] bg-[#10f48e]/10 border border-[#10f48e]/30 px-1.5 py-0.5 rounded">
+                            Popular
+                          </span>
+                        )}
+                        {isSelected && (
+                          <span className="w-4 h-4 rounded-full bg-[#10f48e] text-[#060709] flex items-center justify-center text-[10px] font-bold">
+                            ✓
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-[11px] text-neutral-400 font-mono-tech">
+                        {tier.desc}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Message field */}
+            <div>
+              <label className="block text-xs font-mono-tech uppercase text-neutral-300 mb-1.5 sm:mb-2">
+                Project Overview / Goals
+              </label>
+              <div className="relative">
+                <div className="absolute top-3.5 left-3.5 pointer-events-none text-neutral-500">
+                  <MessageSquare className="w-4 h-4" />
+                </div>
+                <textarea
+                  name="message"
+                  rows={4}
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Tell us about your brand, requirements, deadlines, or inspiration..."
+                  className="w-full pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-500 focus:outline-none focus:border-[#10f48e] focus:ring-1 focus:ring-[#10f48e] focus:shadow-[0_0_15px_rgba(16,244,142,0.25)] transition-all resize-none"
+                />
+              </div>
+            </div>
+
+            {/* Submit Button with 3D Magnetic Hover Effect */}
+            <div className="pt-2 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">
+              <span className="text-xs font-mono-tech text-neutral-400 text-center sm:text-left">
+                ⚡ 100% Confidential • Fast 24-Hour Response
+              </span>
+
+              <MagneticButton
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full sm:w-auto px-8 py-3.5 sm:py-4 rounded-full bg-linear-to-r from-[#10f48e] via-[#00e676] to-[#00c853] text-[#060709] font-bold text-xs uppercase font-mono-tech tracking-wider shadow-[0_0_30px_rgba(16,244,142,0.4)] flex items-center justify-center gap-2 cursor-pointer hover:scale-105 transition-all min-h-[44px]"
+              >
+                {isSubmitting ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <span>Saving to Supabase...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" />
+                    <span>Confirm Consultation</span>
+                  </>
+                )}
+              </MagneticButton>
+            </div>
+          </form>
+        )}
+      </div>
+
+      {/* Trust & Security Bar */}
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-mono-tech text-neutral-400 max-w-3xl mx-auto px-4">
+        <div className="flex flex-wrap items-center justify-center gap-y-2 gap-x-3 sm:gap-x-4 py-2.5 px-4 sm:px-6 rounded-full bg-white/[0.03] border border-white/[0.08] shadow-[0_4px_24px_rgba(0,0,0,0.35)] backdrop-blur-xs text-center">
+          <span className="flex items-center gap-1.5 text-neutral-300">
+            <span className="text-[#10f48e] text-xs">🔒</span>
+            <span className="font-semibold text-white/90">Secure Connection Active</span>
+          </span>
+
+          <span className="text-neutral-600 hidden sm:inline">•</span>
+
+          <span className="flex items-center gap-1.5 text-neutral-300">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#10f48e]" />
+            <span>Your Data is Encrypted</span>
+          </span>
+
+          <span className="text-neutral-600 hidden sm:inline">•</span>
+
+          <span className="flex items-center gap-1.5 text-neutral-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#10f48e] animate-pulse"></span>
+            <span>Avg. Response Time: <strong className="text-white font-medium">2 Hours</strong></span>
+          </span>
+        </div>
+      </div>
+
+      {/* Supabase SQL Setup Modal */}
+      {showSqlGuide && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="relative w-full max-w-2xl bg-[#090d12] border border-[#10f48e]/40 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(16,244,142,0.25)] text-left font-mono-tech max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-xl bg-[#10f48e]/15 text-[#10f48e]">
+                  <Database className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-display font-bold text-lg text-white">Supabase Cloud Database</h3>
+                  <p className="text-xs text-neutral-400">Project ID: <span className="text-white font-mono">{SUPABASE_PROJECT_ID}</span></p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowSqlGuide(false)}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-neutral-300 hover:text-white transition-colors cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Tabs */}
+            <div className="flex items-center gap-2 mb-4 p-1 bg-white/[0.04] rounded-xl border border-white/10 w-fit">
+              <button
+                type="button"
+                onClick={() => setActiveModalTab('sql')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${
+                  activeModalTab === 'sql'
+                    ? 'bg-[#10f48e] text-[#060709]'
+                    : 'text-neutral-400 hover:text-white'
+                }`}
+              >
+                SQL Schema Setup
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveModalTab('live');
+                  loadBookings();
+                }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors flex items-center gap-1.5 ${
+                  activeModalTab === 'live'
+                    ? 'bg-[#10f48e] text-[#060709]'
+                    : 'text-neutral-400 hover:text-white'
+                }`}
+              >
+                <span>Live Stored Bookings</span>
+                {liveBookings.length > 0 && (
+                  <span className="w-4 h-4 rounded-full bg-black/40 text-[10px] flex items-center justify-center">
+                    {liveBookings.length}
+                  </span>
+                )}
+              </button>
+            </div>
+
+            {activeModalTab === 'sql' ? (
+              <>
+                <p className="text-xs text-neutral-300 leading-relaxed mb-4 font-normal">
+                  Appointments and bookings submitted on this site are automatically piped to your Supabase project. If you have not created the <code className="text-[#10f48e] bg-white/10 px-1.5 py-0.5 rounded">bookings</code> table yet, copy and run this SQL in your Supabase SQL Editor:
+                </p>
+
+                <div className="relative rounded-2xl bg-[#030608] border border-white/10 p-4 mb-5 text-xs text-[#10f48e] overflow-x-auto">
+                  <pre className="text-[11px] leading-relaxed text-neutral-200 font-mono">
+                    {SUPABASE_SQL_SCHEMA}
+                  </pre>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText(SUPABASE_SQL_SCHEMA);
+                      setCopiedSql(true);
+                      setTimeout(() => setCopiedSql(false), 2000);
+                    }}
+                    className="absolute top-3 right-3 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs flex items-center gap-1.5 cursor-pointer transition-colors"
+                  >
+                    {copiedSql ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-[#10f48e]" />
+                        <span className="text-[#10f48e]">Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5" />
+                        <span>Copy SQL</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="mb-5 space-y-3">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-neutral-300">
+                    Latest consultation appointments saved in Supabase / Local database:
+                  </p>
+                  <button
+                    type="button"
+                    onClick={loadBookings}
+                    disabled={isLoadingBookings}
+                    className="text-xs text-[#10f48e] hover:underline flex items-center gap-1 cursor-pointer"
+                  >
+                    <RefreshCw className={`w-3 h-3 ${isLoadingBookings ? 'animate-spin' : ''}`} />
+                    <span>Refresh</span>
+                  </button>
+                </div>
+
+                {liveBookings.length === 0 ? (
+                  <div className="text-center py-8 border border-white/10 rounded-2xl bg-white/[0.02]">
+                    <p className="text-xs text-neutral-400">No bookings found yet.</p>
+                    <p className="text-[11px] text-neutral-500 mt-1">Submit the booking form above to test direct cloud storage!</p>
+                  </div>
+                ) : (
+                  <div className="space-y-2.5 max-h-60 overflow-y-auto pr-1">
+                    {liveBookings.map((b, idx) => (
+                      <div
+                        key={b.id || idx}
+                        className="p-3 rounded-xl bg-white/[0.03] border border-white/10 text-xs flex flex-col gap-1 hover:border-[#10f48e]/30 transition-all"
+                      >
+                        <div className="flex items-center justify-between">
+                          <strong className="text-white text-sm">{b.name}</strong>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#10f48e]/15 text-[#10f48e] border border-[#10f48e]/30 font-mono">
+                            {b.status || 'pending'}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[11px] text-neutral-400">
+                          <div>📞 {b.phone}</div>
+                          <div>✉️ {b.email || 'N/A'}</div>
+                          <div>🎯 Service: <span className="text-neutral-200">{b.service}</span></div>
+                          {b.package_tier && <div>📦 Tier: <span className="text-neutral-200">{b.package_tier}</span></div>}
+                        </div>
+                        {b.message && (
+                          <div className="text-[11px] text-neutral-400 bg-black/40 p-2 rounded-lg mt-1 italic">
+                            "{b.message}"
+                          </div>
+                        )}
+                        <div className="text-[9px] text-neutral-500 mt-0.5">
+                          {b.created_at ? new Date(b.created_at).toLocaleString() : 'Just now'}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+              <a
+                href={`https://supabase.com/dashboard/project/${SUPABASE_PROJECT_ID}/sql`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#10f48e] text-[#060709] font-bold text-xs uppercase flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-[0_0_20px_rgba(16,244,142,0.3)]"
+              >
+                <span>Open Supabase SQL Editor</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+
+              <button
+                type="button"
+                onClick={() => setShowSqlGuide(false)}
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs cursor-pointer transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+};

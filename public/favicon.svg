@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="16" fill="#060709"/>
+  <rect x="1" y="1" width="62" height="62" rx="15" stroke="url(#neonBorder)" stroke-width="1.5" stroke-opacity="0.5"/>
+  <defs>
+    <linearGradient id="neonBorder" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10f48e"/>
+      <stop offset="0.5" stop-color="#059669"/>
+      <stop offset="1" stop-color="#10f48e" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="16" y1="14" x2="48" y2="50" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10f48e"/>
+      <stop offset="0.7" stop-color="#34d399"/>
+      <stop offset="1" stop-color="#059669"/>
+    </linearGradient>
+    <filter id="glow" x="6" y="6" width="52" height="52" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <!-- Stylized Geometric 3D "G" -->
+  <g filter="url(#glow)">
+    <path d="M44 20H24C19.5817 20 16 23.5817 16 28V36C16 40.4183 19.5817 44 24 44H40C44.4183 44 48 40.4183 48 36V31H32" 
+      stroke="url(#glowGrad)" 
+      stroke-width="5" 
+      stroke-linecap="round" 
+      stroke-linejoin="round"/>
+    <circle cx="48" cy="31" r="3.5" fill="#10f48e"/>
+  </g>
+</svg>

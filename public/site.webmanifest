@@ -1,0 +1,17 @@
+{
+  "name": "Growzen — Creative & Digital Growth Studio",
+  "short_name": "Growzen",
+  "description": "Award-winning 3D immersive website for Creative & Digital Growth Studio Growzen, featuring interactive Three.js scenes, magnetic 3D cards, and kinetic storytelling.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#060709",
+  "theme_color": "#060709",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
