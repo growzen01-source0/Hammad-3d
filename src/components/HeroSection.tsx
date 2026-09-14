@@ -190,17 +190,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
         {/* Kinetic Hero Title with 3D Letter Rotation */}
         <div
           id="hero-brand-container"
-          className="w-full max-w-full overflow-visible px-4 sm:px-8 py-2 sm:py-3 flex justify-center items-center box-border transform-none sm:[transform:translateZ(40px)]"
+          className="w-full max-w-full overflow-visible px-2 sm:px-6 md:px-8 py-1.5 sm:py-3 flex justify-center items-center box-border transform-none sm:[transform:translateZ(40px)]"
         >
           <h1
             id="hero-brand-title"
-            className="font-black text-[clamp(2.2rem,10vw,107px)] sm:text-[clamp(4rem,8.5vw,107px)] lg:text-[107px] tracking-tight sm:tracking-normal text-white uppercase flex items-center justify-center select-none leading-none max-w-full text-center whitespace-nowrap overflow-visible"
+            className="font-black text-[clamp(1.95rem,9.2vw,3.4rem)] sm:text-[clamp(3.5rem,7.5vw,5rem)] md:text-[clamp(4.2rem,7.2vw,5.5rem)] lg:text-[clamp(5.2rem,6.8vw,5.8rem)] xl:text-[107px] tracking-tight text-white uppercase flex items-center justify-center select-none leading-none max-w-full text-center whitespace-nowrap overflow-visible"
             style={{ fontFamily: 'Georgia, serif' }}
           >
             {brandLetters.map((char, index) => (
               <span
                 key={index}
-                className="inline-block transform sm:hover:scale-115 sm:hover:text-[#10f48e] transition-all duration-300 sm:hover:rotate-3 cursor-default sm:hover:drop-shadow-[0_0_30px_rgba(16,244,142,0.8)] px-[0.015em]"
+                className="inline-block transform sm:hover:scale-115 sm:hover:text-[#10f48e] transition-all duration-300 sm:hover:rotate-3 cursor-default sm:hover:drop-shadow-[0_0_30px_rgba(16,244,142,0.8)] px-[0.012em] sm:px-[0.015em]"
                 style={{
                   fontFamily: 'Georgia, serif',
                   textShadow: '0 10px 30px rgba(0,0,0,0.85), 0 0 20px rgba(16,244,142,0.2)',

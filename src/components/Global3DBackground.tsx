@@ -37,6 +37,7 @@ export const Global3DBackground: React.FC = () => {
         antialias: !isMobile,
         powerPreference: 'high-performance',
         failIfMajorPerformanceCaveat: false,
+        precision: 'highp',
       });
 
       const domElement = renderer.domElement;
@@ -47,8 +48,10 @@ export const Global3DBackground: React.FC = () => {
       });
 
       const getOptimalPixelRatio = (width: number, height: number) => {
+        const is8K = width >= 5120 || height >= 2880;
         const is4K = width >= 2560 || height >= 1440;
-        const maxDpr = isMobile ? 1.0 : is4K ? 2.0 : 1.75;
+        // On 8K screens, 1.0 - 1.25 DPR renders at up to 9600x5400 which is pristine without GPU memory overflow
+        const maxDpr = isMobile ? 1.0 : is8K ? 1.25 : is4K ? 2.0 : 1.75;
         return Math.min(window.devicePixelRatio || 1, maxDpr);
       };
 
