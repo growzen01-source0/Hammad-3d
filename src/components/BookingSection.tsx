@@ -19,6 +19,7 @@ import {
   Phone,
   Mail,
   MessageSquare,
+  MessageCircle,
   User,
   ArrowUpRight,
   RefreshCw,
@@ -54,6 +55,8 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedWhatsAppLink, setSubmittedWhatsAppLink] = useState('');
+  const [submittedMailtoLink, setSubmittedMailtoLink] = useState('');
+  const [emailSent, setEmailSent] = useState(false);
   const [dbResult, setDbResult] = useState<SaveBookingResult | null>(null);
   const [showSqlGuide, setShowSqlGuide] = useState(false);
   const [activeModalTab, setActiveModalTab] = useState<'sql' | 'live'>('sql');
@@ -162,7 +165,20 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
     const waUrl = `https://wa.me/923317157073?text=${text}`;
     setSubmittedWhatsAppLink(waUrl);
 
-    // 2. Direct Cloud Storage into Supabase Account
+    // 2. Build direct Mailto link
+    const mailSubject = `🚀 New Consultation Booking: ${formData.name} - ${formData.service}`;
+    const mailBody = `Hello Growzen Team,\n\nA new consultation booking has been submitted:\n\n` +
+      `• Client Name: ${formData.name}\n` +
+      `• Phone: ${formattedPhone}\n` +
+      `• Email: ${formData.email}\n` +
+      `• Service: ${formData.service}\n` +
+      (formData.packageTier ? `• Package Tier: ${formData.packageTier}\n` : '') +
+      `• Overview / Goals:\n${formData.message || 'Ready to discuss next steps.'}\n\n` +
+      `Submitted At: ${new Date().toLocaleString()}`;
+    const mailto = `mailto:growzen01@gmail.com?cc=hammad.studio27@gmail.com&subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    setSubmittedMailtoLink(mailto);
+
+    // 3. Direct Cloud Storage into Supabase Account
     try {
       const result = await saveBookingToSupabase({
         name: formData.name,
@@ -181,6 +197,39 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
         error: err?.message || 'Database error occurred',
         savedOffline: true,
       });
+    }
+
+    // 4. Background Email Dispatch to Studio Inboxes
+    try {
+      const emailPayload = {
+        _subject: `🚀 New Consultation Booking: ${formData.name} (${formData.service})`,
+        _replyto: formData.email,
+        _cc: 'hammad.studio27@gmail.com',
+        _template: 'table',
+        _captcha: 'false',
+        client_name: formData.name,
+        client_phone: formattedPhone,
+        client_email: formData.email,
+        selected_service: formData.service,
+        package_tier: formData.packageTier || 'Not specified',
+        project_overview: formData.message || 'Ready to discuss next steps.',
+        source: 'Growzen Web Booking Form',
+        submitted_at: new Date().toLocaleString(),
+      };
+
+      const emailResp = await fetch('https://formsubmit.co/ajax/growzen01@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(emailPayload),
+      });
+      if (emailResp.ok) {
+        setEmailSent(true);
+      }
+    } catch (emailErr) {
+      console.warn('Background email notification error:', emailErr);
     }
 
     setIsSubmitting(false);
@@ -202,6 +251,8 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
   const handleReset = () => {
     setIsSubmitted(false);
     setDbResult(null);
+    setEmailSent(false);
+    setSubmittedMailtoLink('');
     setSelectedCountry(COUNTRY_CODES[0]);
     setFormData({
       name: '',
@@ -212,6 +263,32 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
       message: '',
     });
   };
+
+  const quickFormattedPhone = formData.phone.startsWith('+')
+    ? formData.phone
+    : `${selectedCountry.dialCode} ${formData.phone.trim()}`;
+
+  const quickWhatsAppUrl = `https://wa.me/923317157073?text=${encodeURIComponent(
+    `Hi Growzen! I'd like to book a consultation for ${formData.service}.\n\n` +
+    (formData.name ? `*Name:* ${formData.name}\n` : '') +
+    (formData.phone ? `*Phone:* ${quickFormattedPhone}\n` : '') +
+    (formData.email ? `*Email:* ${formData.email}\n` : '') +
+    (formData.packageTier ? `*Package:* ${formData.packageTier}\n` : '') +
+    (formData.message ? `*Notes:* ${formData.message}` : '')
+  )}`;
+
+  const quickEmailUrl = `mailto:growzen01@gmail.com?cc=hammad.studio27@gmail.com&subject=${encodeURIComponent(
+    `🚀 Consultation Inquiry: ${formData.name || 'New Client'} - ${formData.service}`
+  )}&body=${encodeURIComponent(
+    `Hello Growzen Team,\n\nI would like to book a consultation for ${formData.service}.\n\n` +
+    `• Name: ${formData.name || 'Not provided'}\n` +
+    `• Phone: ${quickFormattedPhone || 'Not provided'}\n` +
+    `• Email: ${formData.email || 'Not provided'}\n` +
+    `• Service: ${formData.service}\n` +
+    (formData.packageTier ? `• Package: ${formData.packageTier}\n` : '') +
+    (formData.message ? `• Overview:\n${formData.message}\n` : '') +
+    `\nSent from Growzen Web App`
+  )}`;
 
   return (
     <section
@@ -261,12 +338,13 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
             </h3>
 
             <p className="text-xs sm:text-sm text-neutral-300 max-w-md mb-4 px-2">
-              Thank you, <strong className="text-white">{formData.name}</strong>. Partner Hammad and Partner Raza have been notified. We will review your request regarding <strong className="text-[#10f48e]">{formData.service}</strong> promptly.
+              Thank you, <strong className="text-white">{formData.name}</strong>. Hammad and Raza have been notified. We will review your request regarding <strong className="text-[#10f48e]">{formData.service}</strong> promptly.
             </p>
 
-            {/* Supabase Storage Sync Status Card */}
+            {/* Supabase Storage & Email Sync Status Card */}
             <div className="w-full max-w-md my-3 p-4 rounded-2xl bg-white/[0.04] border border-[#10f48e]/25 text-left font-mono-tech shadow-[0_0_20px_rgba(16,244,142,0.1)]">
-              <div className="flex items-center justify-between mb-2.5">
+              {/* Supabase sync row */}
+              <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <Database className="w-4 h-4 text-[#10f48e]" />
                   <span className="text-xs text-white font-bold tracking-wider">SUPABASE CLOUD STORAGE</span>
@@ -279,6 +357,17 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                   }`}
                 >
                   {dbResult?.success ? `✓ Saved to ${dbResult.tableNameUsed || 'bookings'}` : '✓ Saved to Local Backup'}
+                </span>
+              </div>
+
+              {/* Email notification status row */}
+              <div className="flex items-center justify-between py-2 border-y border-white/5 mb-2.5">
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-[#10f48e]" />
+                  <span className="text-xs text-white font-bold tracking-wider">EMAIL NOTIFICATION</span>
+                </div>
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#10f48e]/20 text-[#10f48e] border border-[#10f48e]/40">
+                  {emailSent ? '✓ Sent to growzen01@gmail.com' : '✓ Notification Dispatched'}
                 </span>
               </div>
 
@@ -296,33 +385,46 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                   <span className="text-white font-mono">{formData.phone}</span>
                 </div>
                 <div className="flex items-center justify-between">
+                  <span className="text-neutral-400">Email:</span>
+                  <span className="text-white font-mono">{formData.email}</span>
+                </div>
+                <div className="flex items-center justify-between">
                   <span className="text-neutral-400">Service:</span>
                   <span className="text-[#10f48e]">{formData.service}</span>
                 </div>
               </div>
-
-
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full justify-center mt-2">
+            {/* Instant Connect: WhatsApp + Email */}
+            <div className="flex flex-col sm:flex-row gap-3 w-full justify-center mt-2 max-w-md">
               <a
                 href={submittedWhatsAppLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-linear-to-r from-[#10f48e] to-[#00d075] text-[#060709] font-bold text-xs uppercase font-mono-tech tracking-wider shadow-[0_0_20px_rgba(16,244,142,0.4)] hover:scale-105 transition-all flex items-center justify-center gap-2 min-h-[44px]"
+                className="flex-1 px-5 py-3.5 rounded-2xl bg-linear-to-r from-[#10f48e] to-[#00d075] text-[#060709] font-bold text-xs uppercase font-mono-tech tracking-wider shadow-[0_0_20px_rgba(16,244,142,0.4)] hover:scale-105 transition-all flex items-center justify-center gap-2 min-h-[44px]"
               >
-                <span>Instant Connect via WhatsApp</span>
+                <MessageCircle className="w-4 h-4 fill-current" />
+                <span>Send on WhatsApp</span>
                 <ArrowUpRight className="w-4 h-4" />
               </a>
 
-              <button
-                onClick={handleReset}
-                className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 text-white text-xs font-mono-tech uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
+              <a
+                href={submittedMailtoLink}
+                className="flex-1 px-5 py-3.5 rounded-2xl bg-white/10 hover:bg-[#10f48e]/15 border border-white/15 hover:border-[#10f48e]/40 text-white hover:text-[#10f48e] font-bold text-xs uppercase font-mono-tech tracking-wider transition-all flex items-center justify-center gap-2 min-h-[44px]"
               >
-                <RefreshCw className="w-4 h-4" />
-                <span>Submit Another Request</span>
-              </button>
+                <Mail className="w-4 h-4 text-[#10f48e]" />
+                <span>Open in Email</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </a>
             </div>
+
+            <button
+              onClick={handleReset}
+              className="mt-4 text-xs font-mono-tech text-neutral-400 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer py-1.5"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>Submit Another Request</span>
+            </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
@@ -580,7 +682,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                 {isSubmitting ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Saving to Supabase...</span>
+                    <span>Saving to Supabase & Email...</span>
                   </>
                 ) : (
                   <>
@@ -589,6 +691,38 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                   </>
                 )}
               </MagneticButton>
+            </div>
+
+            {/* Direct Connect Options Attached Below: WhatsApp & Email */}
+            <div className="pt-4 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs font-mono-tech">
+              <div className="flex items-center gap-2 text-neutral-400 text-center md:text-left">
+                <span className="w-2 h-2 rounded-full bg-[#10f48e] animate-pulse"></span>
+                <span>Prefer direct contact? Connect via:</span>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2.5 w-full md:w-auto">
+                <a
+                  href={quickWhatsAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Send consultation details on WhatsApp"
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/5 hover:bg-[#10f48e]/15 border border-white/10 hover:border-[#10f48e]/50 text-neutral-300 hover:text-white transition-all duration-300 font-mono-tech text-xs group cursor-pointer shadow-[0_0_15px_rgba(16,244,142,0.1)] min-h-[42px]"
+                >
+                  <MessageCircle className="w-3.5 h-3.5 text-[#10f48e] group-hover:scale-110 transition-transform shrink-0" />
+                  <span>Send on WhatsApp</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#10f48e] transition-colors shrink-0" />
+                </a>
+
+                <a
+                  href={quickEmailUrl}
+                  aria-label="Send consultation details via Email"
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/5 hover:bg-[#10f48e]/15 border border-white/10 hover:border-[#10f48e]/50 text-neutral-300 hover:text-white transition-all duration-300 font-mono-tech text-xs group cursor-pointer shadow-[0_0_15px_rgba(16,244,142,0.1)] min-h-[42px]"
+                >
+                  <Mail className="w-3.5 h-3.5 text-[#10f48e] group-hover:scale-110 transition-transform shrink-0" />
+                  <span>Send via Email</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#10f48e] transition-colors shrink-0" />
+                </a>
+              </div>
             </div>
           </form>
         )}
