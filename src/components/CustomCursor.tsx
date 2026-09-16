@@ -59,7 +59,7 @@ export const CustomCursor: React.FC = () => {
     <div className="pointer-events-none fixed inset-0 z-9999 overflow-hidden">
       {/* Center sharp dot */}
       <div
-        className="fixed w-2 h-2 rounded-full bg-[#10f48e] transition-transform duration-75 ease-out shadow-[0_0_10px_#10f48e]"
+        className="fixed w-2 h-2 rounded-full bg-[#8B5CF6] transition-transform duration-75 ease-out shadow-[0_0_10px_#8B5CF6]"
         style={{
           transform: `translate3d(${pos.x - 4}px, ${pos.y - 4}px, 0) scale(${isHovered ? 0 : 1})`,
         }}
@@ -68,8 +68,8 @@ export const CustomCursor: React.FC = () => {
       <div
         className={`fixed rounded-full border transition-all duration-300 ease-out flex items-center justify-center ${
           isHovered
-            ? 'w-12 h-12 border-[#10f48e] bg-[#10f48e]/15 backdrop-blur-[2px] shadow-[0_0_24px_rgba(16,244,142,0.4)] scale-110'
-            : 'w-8 h-8 border-[#10f48e]/50 bg-transparent scale-100'
+            ? 'w-12 h-12 border-[#8B5CF6] bg-[#8B5CF6]/15 backdrop-blur-[2px] shadow-[0_0_24px_rgba(139,92,246,0.4)] scale-110'
+            : 'w-8 h-8 border-[#8B5CF6]/50 bg-transparent scale-100'
         }`}
         style={{
           transform: `translate3d(${trailingPos.x - (isHovered ? 24 : 16)}px, ${
@@ -78,7 +78,7 @@ export const CustomCursor: React.FC = () => {
         }}
       >
         {isHovered && (
-          <div className="w-1.5 h-1.5 rounded-full bg-[#10f48e] animate-ping" />
+          <div className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-ping" />
         )}
       </div>
     </div>

@@ -36,7 +36,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect }) => {
         setRotate({ x: 0, y: 0 });
       }}
       onClick={() => onSelect(project)}
-      className="snap-start shrink-0 w-[82vw] min-[400px]:w-[78vw] max-w-[340px] sm:w-[380px] md:w-[420px] rounded-2xl sm:rounded-3xl glass-panel p-4 sm:p-5 border border-white/10 hover:border-[#10f48e]/60 transition-all duration-300 group cursor-pointer perspective-1000 relative overflow-hidden select-none"
+      className="snap-start shrink-0 w-[82vw] min-[400px]:w-[78vw] max-w-[340px] sm:w-[380px] md:w-[420px] rounded-2xl sm:rounded-3xl glass-panel p-4 sm:p-5 border border-white/10 hover:border-[#8B5CF6]/60 transition-all duration-300 group cursor-pointer perspective-1000 relative overflow-hidden select-none"
       style={{
         transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) translateZ(${
           isHovered ? 20 : 0
@@ -56,12 +56,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect }) => {
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out"
         />
-        <div className="absolute inset-0 bg-linear-to-t from-[#060709] via-transparent to-transparent opacity-80" />
+        <div className="absolute inset-0 bg-linear-to-t from-[#0D0D14] via-transparent to-transparent opacity-80" />
 
         {/* Floating Metric Badge */}
-        <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl bg-[#060709]/85 border border-[#10f48e]/40 backdrop-blur-md flex items-center gap-1.5 shadow-xl">
-          <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#10f48e]" />
-          <span className="font-display font-bold text-[11px] sm:text-xs text-[#10f48e]">
+        <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl bg-[#0D0D14]/85 border border-[#8B5CF6]/40 backdrop-blur-md flex items-center gap-1.5 shadow-xl">
+          <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#8B5CF6]" />
+          <span className="font-display font-bold text-[11px] sm:text-xs text-[#8B5CF6]">
             {project.impactMetric}
           </span>
         </div>
@@ -71,7 +71,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect }) => {
         </div>
 
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
-          <span className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#10f48e] text-[#060709] text-xs font-bold font-mono-tech flex items-center gap-1.5 shadow-[0_0_20px_#10f48e]">
+          <span className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#8B5CF6] text-white text-xs font-bold font-mono-tech flex items-center gap-1.5 shadow-[0_0_20px_#8B5CF6]">
             <Eye className="w-3.5 h-3.5" />
             Inspect Case Study
           </span>
@@ -85,7 +85,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect }) => {
           <span>{project.year}</span>
         </div>
 
-        <h3 className="font-display font-bold text-lg sm:text-xl text-white group-hover:text-[#10f48e] transition-colors mb-1.5 sm:mb-2">
+        <h3 className="font-display font-bold text-lg sm:text-xl text-white group-hover:text-[#8B5CF6] transition-colors mb-1.5 sm:mb-2">
           {project.title}
         </h3>
 
@@ -98,7 +98,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect }) => {
           {project.tags.map((tag, tagIdx) => (
             <span
               key={tagIdx}
-              className="px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-mono-tech bg-white/5 text-neutral-300 border border-white/10 group-hover:border-[#10f48e]/20"
+              className="px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-mono-tech bg-white/5 text-neutral-300 border border-white/10 group-hover:border-[#8B5CF6]/20"
             >
               {tag}
             </span>
@@ -155,13 +155,13 @@ export const PortfolioSection: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-4 sm:gap-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#10f48e]/10 border border-[#10f48e]/30 text-[#10f48e] text-xs font-mono-tech uppercase tracking-widest mb-3 shadow-[0_0_20px_rgba(16,244,142,0.2)]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 text-[#8B5CF6] text-xs font-mono-tech uppercase tracking-widest mb-3 shadow-[0_0_20px_rgba(139,92,246,0.2)]">
             <Sparkles className="w-3.5 h-3.5" />
             Curated Agency Showcase
           </div>
           <h2 className="font-display font-black text-2xl min-[400px]:text-3xl sm:text-5xl md:text-6xl tracking-tight text-white">
             Proof of Craft &{' '}
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-[#10f48e] to-emerald-400">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-[#8B5CF6] via-[#A78BFA] to-[#22D3EE]">
               Commercial Growth
             </span>
           </h2>
@@ -175,14 +175,14 @@ export const PortfolioSection: React.FC = () => {
           <button
             onClick={() => scrollByAmount('left')}
             aria-label="Previous portfolio project"
-            className="w-10 h-10 sm:w-12 sm:h-12 min-w-[40px] min-h-[40px] rounded-full glass-panel flex items-center justify-center text-white hover:text-[#10f48e] hover:border-[#10f48e]/50 transition-all cursor-pointer shadow-lg transform active:scale-95 hover:scale-105"
+            className="w-10 h-10 sm:w-12 sm:h-12 min-w-[40px] min-h-[40px] rounded-full glass-panel flex items-center justify-center text-white hover:text-[#8B5CF6] hover:border-[#8B5CF6]/50 transition-all cursor-pointer shadow-lg transform active:scale-95 hover:scale-105"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={() => scrollByAmount('right')}
             aria-label="Next portfolio project"
-            className="w-10 h-10 sm:w-12 sm:h-12 min-w-[40px] min-h-[40px] rounded-full glass-panel flex items-center justify-center text-white hover:text-[#10f48e] hover:border-[#10f48e]/50 transition-all cursor-pointer shadow-lg transform active:scale-95 hover:scale-105"
+            className="w-10 h-10 sm:w-12 sm:h-12 min-w-[40px] min-h-[40px] rounded-full glass-panel flex items-center justify-center text-white hover:text-[#8B5CF6] hover:border-[#8B5CF6]/50 transition-all cursor-pointer shadow-lg transform active:scale-95 hover:scale-105"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -218,7 +218,7 @@ export const PortfolioSection: React.FC = () => {
           onClick={() => setSelectedProject(null)}
         >
           <div
-            className="w-full max-w-2xl rounded-2xl sm:rounded-3xl glass-panel p-5 sm:p-8 border border-[#10f48e]/40 shadow-[0_0_60px_rgba(16,244,142,0.25)] relative max-h-[90vh] overflow-y-auto"
+            className="w-full max-w-2xl rounded-2xl sm:rounded-3xl glass-panel p-5 sm:p-8 border border-[#8B5CF6]/40 shadow-[0_0_60px_rgba(139,92,246,0.25)] relative max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -236,10 +236,10 @@ export const PortfolioSection: React.FC = () => {
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-linear-to-t from-[#060709] via-transparent to-transparent opacity-60" />
+              <div className="absolute inset-0 bg-linear-to-t from-[#0D0D14] via-transparent to-transparent opacity-60" />
             </div>
 
-            <div className="flex items-center gap-2 text-xs font-mono-tech text-[#10f48e] uppercase tracking-wider mb-2">
+            <div className="flex items-center gap-2 text-xs font-mono-tech text-[#8B5CF6] uppercase tracking-wider mb-2">
               <span>{selectedProject.category}</span>
               <span>•</span>
               <span>{selectedProject.year}</span>
@@ -249,8 +249,8 @@ export const PortfolioSection: React.FC = () => {
               {selectedProject.title}
             </h3>
 
-            <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-[#10f48e]/10 border border-[#10f48e]/25 mb-4 sm:mb-5 flex items-center gap-3">
-              <div className="font-display font-black text-xl sm:text-2xl text-[#10f48e]">
+            <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/25 mb-4 sm:mb-5 flex items-center gap-3">
+              <div className="font-display font-black text-xl sm:text-2xl text-[#8B5CF6]">
                 {selectedProject.impactMetric}
               </div>
               <div className="text-xs text-neutral-300">

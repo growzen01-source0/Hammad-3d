@@ -67,8 +67,8 @@ export const Global3DBackground: React.FC = () => {
       container.appendChild(domElement);
 
       const scene = new THREE.Scene();
-      // Subtle cyber fog to merge background seamlessly into `#060709`
-      scene.fog = new THREE.FogExp2(0x060709, 0.026);
+      // Subtle cyber fog to merge background seamlessly into `#0D0D14`
+      scene.fog = new THREE.FogExp2(0x0D0D14, 0.026);
 
       const camera = new THREE.PerspectiveCamera(
         52,
@@ -83,7 +83,7 @@ export const Global3DBackground: React.FC = () => {
       scene.add(ambientLight);
 
       // Main kinetic green light that follows camera scroll path
-      const mainLight = new THREE.PointLight(0x10f48e, 4.0, 45);
+      const mainLight = new THREE.PointLight(0x8B5CF6, 4.0, 45);
       mainLight.position.set(4, 5, 4);
       scene.add(mainLight);
 
@@ -93,7 +93,7 @@ export const Global3DBackground: React.FC = () => {
       scene.add(rimLight);
 
       // Tertiary teal accent light
-      const tealLight = new THREE.PointLight(0x34d399, 2.2, 35);
+      const tealLight = new THREE.PointLight(0x22D3EE, 2.2, 35);
       tealLight.position.set(3, -15, 2);
       scene.add(tealLight);
 
@@ -125,7 +125,7 @@ export const Global3DBackground: React.FC = () => {
       // Wireframe overlay shell
       const wireMat = registerDisposable(
         new THREE.MeshBasicMaterial({
-          color: 0x10f48e,
+          color: 0x8B5CF6,
           wireframe: true,
           transparent: true,
           opacity: 0.38,
@@ -141,8 +141,8 @@ export const Global3DBackground: React.FC = () => {
       );
       const torusMat1 = registerDisposable(
         new THREE.MeshStandardMaterial({
-          color: 0x10f48e,
-          emissive: 0x10f48e,
+          color: 0x8B5CF6,
+          emissive: 0x8B5CF6,
           emissiveIntensity: 0.6,
         })
       );
@@ -155,7 +155,7 @@ export const Global3DBackground: React.FC = () => {
       );
       const torusMat2 = registerDisposable(
         new THREE.MeshBasicMaterial({
-          color: 0x34d399,
+          color: 0x22D3EE,
           wireframe: true,
           transparent: true,
           opacity: 0.38,
@@ -189,7 +189,7 @@ export const Global3DBackground: React.FC = () => {
 
       const dodecaWireMat = registerDisposable(
         new THREE.MeshBasicMaterial({
-          color: 0x10f48e,
+          color: 0x8B5CF6,
           wireframe: true,
           transparent: true,
           opacity: 0.45,
@@ -223,7 +223,7 @@ export const Global3DBackground: React.FC = () => {
       const knotMat = registerDisposable(
         new THREE.MeshStandardMaterial({
           color: 0x052e16,
-          emissive: 0x10f48e,
+          emissive: 0x8B5CF6,
           emissiveIntensity: 0.35,
           wireframe: true,
           roughness: 0.3,
@@ -256,8 +256,8 @@ export const Global3DBackground: React.FC = () => {
       );
       const beaconRingMat = registerDisposable(
         new THREE.MeshStandardMaterial({
-          color: 0x10f48e,
-          emissive: 0x10f48e,
+          color: 0x8B5CF6,
+          emissive: 0x8B5CF6,
           emissiveIntensity: 0.55,
         })
       );
@@ -279,7 +279,7 @@ export const Global3DBackground: React.FC = () => {
       const sharedSatGeo = registerDisposable(new THREE.OctahedronGeometry(0.35, 0));
       const satMat1 = registerDisposable(
         new THREE.MeshStandardMaterial({
-          color: 0x10f48e,
+          color: 0x8B5CF6,
           emissive: 0x064e3b,
           roughness: 0.3,
           metalness: 0.8,
@@ -336,7 +336,7 @@ export const Global3DBackground: React.FC = () => {
       const particleMat = registerDisposable(
         new THREE.PointsMaterial({
           size: isMobile ? 0.045 : 0.055,
-          color: 0x10f48e,
+          color: 0x8B5CF6,
           transparent: true,
           opacity: 0.55,
           blending: THREE.AdditiveBlending,
@@ -576,7 +576,7 @@ export const Global3DBackground: React.FC = () => {
 
           if (dist < 110) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(16, 244, 142, ${(1 - dist / 110) * 0.15})`;
+            ctx.strokeStyle = `rgba(139, 92, 246, ${(1 - dist / 110) * 0.15})`;
             ctx.lineWidth = 0.8;
             ctx.moveTo(n1.x, n1.y);
             ctx.lineTo(n2.x, n2.y);
@@ -585,7 +585,7 @@ export const Global3DBackground: React.FC = () => {
         }
 
         ctx.beginPath();
-        ctx.fillStyle = `rgba(16, 244, 142, ${n1.alpha})`;
+        ctx.fillStyle = `rgba(139, 92, 246, ${n1.alpha})`;
         ctx.arc(n1.x, n1.y, n1.radius, 0, Math.PI * 2);
         ctx.fill();
       }
@@ -610,7 +610,7 @@ export const Global3DBackground: React.FC = () => {
       aria-hidden="true"
     >
       {/* Soft Vignette Overlay to guarantee 100% crisp typography readability across all sections */}
-      <div className="absolute inset-0 bg-radial from-transparent via-[#060709]/45 to-[#060709]/85 pointer-events-none z-1" />
+      <div className="absolute inset-0 bg-radial from-transparent via-[#0D0D14]/45 to-[#0D0D14]/85 pointer-events-none z-1" />
 
       {useFallback && (
         <canvas

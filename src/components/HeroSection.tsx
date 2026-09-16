@@ -55,7 +55,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
     >
       {/* Futuristic Mesh Gradient Lighting Layers */}
       <div
-        className="absolute top-1/4 -left-48 w-96 h-96 rounded-full bg-[#10f48e]/12 blur-[140px] pointer-events-none animate-pulse"
+        className="absolute top-1/4 -left-48 w-96 h-96 rounded-full bg-[#8B5CF6]/12 blur-[140px] pointer-events-none animate-pulse"
         style={{ animationDuration: '8s' }}
       />
       <div
@@ -64,26 +64,26 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
       <div className="absolute inset-0 bg-grid-pattern opacity-25 pointer-events-none" />
 
       {/* Enhanced 3D Next-Gen Design Graphic Card */}
-      <div className="absolute top-32 right-8 sm:right-20 2xl:right-28 3xl:right-48 4k:right-72 hidden lg:flex items-center gap-3.5 p-3.5 pr-5 rounded-2xl bg-[#090d12]/90 backdrop-blur-xl border border-[#10f48e]/40 shadow-[0_0_35px_rgba(16,244,142,0.25)] animate-float-3d pointer-events-none z-10 group overflow-hidden">
+      <div className="absolute top-32 right-8 sm:right-20 2xl:right-28 3xl:right-48 4k:right-72 hidden lg:flex items-center gap-3.5 p-3.5 pr-5 rounded-2xl bg-[#090d12]/90 backdrop-blur-xl border border-[#8B5CF6]/40 shadow-[0_0_35px_rgba(139,92,246,0.25)] animate-float-3d pointer-events-none z-10 group overflow-hidden">
         {/* Glow ambient background gradient */}
-        <div className="absolute -inset-1 bg-linear-to-l from-[#10f48e]/15 via-emerald-500/10 to-transparent blur-md pointer-events-none" />
+        <div className="absolute -inset-1 bg-linear-to-l from-[#8B5CF6]/15 via-emerald-500/10 to-transparent blur-md pointer-events-none" />
 
         {/* Icon with glowing pulse & aura */}
-        <div className="relative w-11 h-11 rounded-xl bg-linear-to-br from-[#10f48e] to-emerald-700 p-px flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(16,244,142,0.35)]">
+        <div className="relative w-11 h-11 rounded-xl bg-linear-to-br from-[#8B5CF6] to-emerald-700 p-px flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(139,92,246,0.35)]">
           <div className="w-full h-full bg-[#070b0e] rounded-[11px] flex items-center justify-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-radial from-[#10f48e]/25 to-transparent animate-pulse" />
-            <Gamepad2 className="w-5 h-5 text-[#10f48e] drop-shadow-[0_0_8px_rgba(16,244,142,0.9)]" />
+            <div className="absolute inset-0 bg-radial from-[#8B5CF6]/25 to-transparent animate-pulse" />
+            <Gamepad2 className="w-5 h-5 text-[#8B5CF6] drop-shadow-[0_0_8px_rgba(139,92,246,0.9)]" />
           </div>
         </div>
 
         {/* Text & 60 FPS Performance EQ Bars */}
         <div className="relative text-left flex flex-col gap-0.5">
           <div className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#10f48e] animate-ping" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-ping" />
             <span className="text-[10px] font-mono-tech uppercase tracking-wider text-neutral-300 font-semibold">
               Next-Gen Design
             </span>
-            <span className="ml-1 text-[9px] px-1.5 py-0.2 rounded-full bg-[#10f48e]/15 border border-[#10f48e]/30 text-[#10f48e] font-mono-tech font-bold">
+            <span className="ml-1 text-[9px] px-1.5 py-0.2 rounded-full bg-[#8B5CF6]/15 border border-[#8B5CF6]/30 text-[#8B5CF6] font-mono-tech font-bold">
               60 FPS
             </span>
           </div>
@@ -91,7 +91,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
           <div className="flex items-baseline gap-1.5 mt-0.5">
             <span className="text-sm sm:text-base font-bold font-display text-white tracking-tight">
               Built for{' '}
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-[#10f48e] to-emerald-300">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-[#8B5CF6] to-emerald-300">
                 Performance
               </span>
             </span>
@@ -100,11 +100,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
           {/* Performance Equalizer Bars & Micro Stat */}
           <div className="flex items-center gap-2 mt-0.5">
             <div className="flex items-end gap-1 h-3.5">
-              <span className="w-1 h-2 bg-[#10f48e]/60 rounded-full animate-pulse" />
-              <span className="w-1 h-3.5 bg-[#10f48e] rounded-full animate-pulse [animation-delay:150ms]" />
-              <span className="w-1 h-2.5 bg-[#10f48e]/80 rounded-full animate-pulse [animation-delay:300ms]" />
-              <span className="w-1 h-3.5 bg-[#10f48e] rounded-full animate-pulse [animation-delay:450ms]" />
-              <span className="w-1 h-1.5 bg-[#10f48e]/50 rounded-full animate-pulse [animation-delay:200ms]" />
+              <span className="w-1 h-2 bg-[#8B5CF6]/60 rounded-full animate-pulse" />
+              <span className="w-1 h-3.5 bg-[#8B5CF6] rounded-full animate-pulse [animation-delay:150ms]" />
+              <span className="w-1 h-2.5 bg-[#8B5CF6]/80 rounded-full animate-pulse [animation-delay:300ms]" />
+              <span className="w-1 h-3.5 bg-[#8B5CF6] rounded-full animate-pulse [animation-delay:450ms]" />
+              <span className="w-1 h-1.5 bg-[#8B5CF6]/50 rounded-full animate-pulse [animation-delay:200ms]" />
             </div>
             <span className="text-[9px] font-mono-tech text-neutral-400">
               WebGL · Ultra Low Latency
@@ -114,32 +114,32 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
       </div>
 
       {/* Enhanced 3D ROI Impact Graphic Card */}
-      <div className="absolute bottom-32 left-6 sm:left-16 2xl:left-24 3xl:left-40 4k:left-64 hidden lg:flex items-center gap-3.5 p-3.5 pr-5 rounded-2xl bg-[#090d12]/90 backdrop-blur-xl border border-[#10f48e]/40 shadow-[0_0_35px_rgba(16,244,142,0.25)] animate-float-slow pointer-events-none z-10 group overflow-hidden">
+      <div className="absolute bottom-32 left-6 sm:left-16 2xl:left-24 3xl:left-40 4k:left-64 hidden lg:flex items-center gap-3.5 p-3.5 pr-5 rounded-2xl bg-[#090d12]/90 backdrop-blur-xl border border-[#8B5CF6]/40 shadow-[0_0_35px_rgba(139,92,246,0.25)] animate-float-slow pointer-events-none z-10 group overflow-hidden">
         {/* Glow ambient background gradient */}
-        <div className="absolute -inset-1 bg-linear-to-r from-[#10f48e]/15 via-emerald-500/10 to-transparent blur-md pointer-events-none" />
+        <div className="absolute -inset-1 bg-linear-to-r from-[#8B5CF6]/15 via-emerald-500/10 to-transparent blur-md pointer-events-none" />
 
         {/* Icon with glowing pulse & aura */}
-        <div className="relative w-11 h-11 rounded-xl bg-linear-to-br from-[#10f48e] to-emerald-700 p-px flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(16,244,142,0.35)]">
+        <div className="relative w-11 h-11 rounded-xl bg-linear-to-br from-[#8B5CF6] to-emerald-700 p-px flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(139,92,246,0.35)]">
           <div className="w-full h-full bg-[#070b0e] rounded-[11px] flex items-center justify-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-radial from-[#10f48e]/25 to-transparent animate-pulse" />
-            <Zap className="w-5 h-5 text-[#10f48e] fill-[#10f48e]/30 drop-shadow-[0_0_8px_rgba(16,244,142,0.9)]" />
+            <div className="absolute inset-0 bg-radial from-[#8B5CF6]/25 to-transparent animate-pulse" />
+            <Zap className="w-5 h-5 text-[#8B5CF6] fill-[#8B5CF6]/30 drop-shadow-[0_0_8px_rgba(139,92,246,0.9)]" />
           </div>
         </div>
 
         {/* Text & Dynamic Graph Sparkline */}
         <div className="relative text-left flex flex-col gap-0.5">
           <div className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#10f48e] animate-ping" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-ping" />
             <span className="text-[10px] font-mono-tech uppercase tracking-wider text-neutral-300 font-semibold">
               ROI Impact
             </span>
-            <span className="ml-1 text-[9px] px-1.5 py-0.2 rounded-full bg-[#10f48e]/15 border border-[#10f48e]/30 text-[#10f48e] font-mono-tech font-bold">
+            <span className="ml-1 text-[9px] px-1.5 py-0.2 rounded-full bg-[#8B5CF6]/15 border border-[#8B5CF6]/30 text-[#8B5CF6] font-mono-tech font-bold">
               VERIFIED
             </span>
           </div>
 
           <div className="flex items-baseline gap-1.5 mt-0.5">
-            <span className="text-sm sm:text-base font-black font-display text-transparent bg-clip-text bg-linear-to-r from-white via-[#10f48e] to-emerald-300 tracking-tight">
+            <span className="text-sm sm:text-base font-black font-display text-transparent bg-clip-text bg-linear-to-r from-white via-[#8B5CF6] to-emerald-300 tracking-tight">
               +380%
             </span>
             <span className="text-xs font-semibold text-neutral-300">
@@ -149,17 +149,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
 
           {/* Mini SVG Growth Sparkline Curve */}
           <div className="flex items-center gap-2 mt-0.5">
-            <svg className="w-20 h-3.5 text-[#10f48e] overflow-visible" viewBox="0 0 80 14" fill="none">
+            <svg className="w-20 h-3.5 text-[#8B5CF6] overflow-visible" viewBox="0 0 80 14" fill="none">
               <path
                 d="M 2 12 Q 20 11, 32 8 T 56 6 T 74 2 L 78 2"
-                stroke="#10f48e"
+                stroke="#8B5CF6"
                 strokeWidth="2"
                 strokeLinecap="round"
               />
-              <circle cx="78" cy="2" r="2.5" fill="#10f48e" className="animate-ping origin-center" />
-              <circle cx="78" cy="2" r="2" fill="#10f48e" />
+              <circle cx="78" cy="2" r="2.5" fill="#8B5CF6" className="animate-ping origin-center" />
+              <circle cx="78" cy="2" r="2" fill="#8B5CF6" />
             </svg>
-            <span className="text-[9px] font-mono-tech text-[#10f48e] font-bold flex items-center">
+            <span className="text-[9px] font-mono-tech text-[#8B5CF6] font-bold flex items-center">
               <TrendingUp className="w-2.5 h-2.5 mr-0.5" /> +4.2x
             </span>
           </div>
@@ -179,9 +179,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
         {/* Award/Status Top Pill in 3D Space */}
         <div
           style={{ transform: 'translateZ(35px)' }}
-          className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-white/5 border border-[#10f48e]/30 backdrop-blur-xl mb-4 sm:mb-6 shadow-[0_0_20px_rgba(16,244,142,0.2)] max-w-[95%]"
+          className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-white/5 border border-[#8B5CF6]/30 backdrop-blur-xl mb-4 sm:mb-6 shadow-[0_0_20px_rgba(139,92,246,0.2)] max-w-[95%]"
         >
-          <span className="flex h-2 w-2 rounded-full bg-[#10f48e] animate-ping shrink-0" />
+          <span className="flex h-2 w-2 rounded-full bg-[#8B5CF6] animate-ping shrink-0" />
           <span className="text-[10px] sm:text-xs font-mono-tech tracking-wider uppercase text-neutral-300 truncate">
             Creative & Digital Growth Studio
           </span>
@@ -194,7 +194,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
         >
           {/* Animated Cyber Holographic Aura Glow Behind Brand */}
           <div
-            className="absolute inset-x-2 sm:inset-x-8 -inset-y-4 rounded-3xl bg-[radial-gradient(ellipse_at_center,rgba(16,244,142,0.28)_0%,rgba(56,189,248,0.18)_40%,transparent_75%)] blur-2xl pointer-events-none -z-10 animate-aura-pulse"
+            className="absolute inset-x-2 sm:inset-x-8 -inset-y-4 rounded-3xl bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.28)_0%,rgba(56,189,248,0.18)_40%,transparent_75%)] blur-2xl pointer-events-none -z-10 animate-aura-pulse"
           />
 
           <h1
@@ -208,13 +208,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
                 className="inline-block transform sm:hover:scale-120 sm:hover:-rotate-3 transition-all duration-300 cursor-default px-[0.015em] sm:px-[0.02em] select-none will-change-transform"
                 style={{
                   fontFamily: 'Georgia, serif',
-                  background: 'linear-gradient(135deg, #ffffff 0%, #10f48e 30%, #45ffb0 60%, #38bdf8 100%)',
+                  background: 'linear-gradient(135deg, #ffffff 0%, #8B5CF6 30%, #45ffb0 60%, #38bdf8 100%)',
                   backgroundSize: '240% 240%',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   animation: `letterWave 3.4s ease-in-out infinite, brandGradientFlow 5s ease infinite`,
                   animationDelay: `${index * 0.12}s`,
-                  filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.7)) drop-shadow(0 0 20px rgba(16,244,142,0.35))',
+                  filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.7)) drop-shadow(0 0 20px rgba(139,92,246,0.35))',
                 }}
               >
                 {char}
@@ -229,7 +229,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
           className="mt-3 sm:mt-4 flex flex-col items-center w-full"
         >
           <p className="text-xs min-[380px]:text-sm sm:text-lg md:text-xl font-mono-tech text-neutral-400 max-w-2xl px-2 sm:px-4 min-h-[38px] flex items-center justify-center gap-1.5 sm:gap-2 text-center">
-            <span className="text-[#10f48e] shrink-0">/&gt;</span>
+            <span className="text-[#8B5CF6] shrink-0">/&gt;</span>
             <span
               key={taglineIndex}
               className="inline-block transition-all duration-500 animate-in fade-in slide-in-from-bottom-2 text-neutral-200"
@@ -252,7 +252,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
           <MagneticButton
             id="hero-book-btn"
             onClick={onOpenBooking}
-            className="relative overflow-hidden w-full sm:w-auto min-h-[48px] px-8 py-3.5 sm:py-4 rounded-full bg-linear-to-r from-[#10f48e] via-[#3bf39d] to-[#00d075] text-[#060709] font-bold text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 hover:scale-105 active:scale-95 animate-cta-glow flex items-center justify-center gap-2 group cursor-pointer"
+            className="relative overflow-hidden w-full sm:w-auto min-h-[48px] px-8 py-3.5 sm:py-4 rounded-full bg-linear-to-r from-[#8B5CF6] via-[#3bf39d] to-[#22D3EE] text-[#0D0D14] font-bold text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 hover:scale-105 active:scale-95 animate-cta-glow flex items-center justify-center gap-2 group cursor-pointer"
           >
             {/* Sweeping Laser Light Shimmer Glare */}
             <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/65 to-transparent w-3/4 h-full pointer-events-none animate-cta-shimmer" />
@@ -286,14 +286,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
               }
             }}
             glow={false}
-            className="relative overflow-hidden w-full sm:w-auto min-h-[48px] px-7 py-3.5 sm:py-4 rounded-full bg-[#0d1017]/85 hover:bg-[#151b26] border text-white font-medium text-xs sm:text-sm tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 animate-glass-border backdrop-blur-lg flex items-center justify-center gap-2.5 group cursor-pointer"
+            className="relative overflow-hidden w-full sm:w-auto min-h-[48px] px-7 py-3.5 sm:py-4 rounded-full bg-[#151526]/85 hover:bg-[#151b26] border text-white font-medium text-xs sm:text-sm tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 animate-glass-border backdrop-blur-lg flex items-center justify-center gap-2.5 group cursor-pointer"
           >
             {/* Translucent Glass Reflection Sheen */}
             <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent w-3/4 h-full pointer-events-none animate-glass-sheen" />
 
             <span className="relative z-10 flex items-center gap-2 font-mono-tech">
-              <span className="group-hover:text-[#10f48e] transition-colors">Explore Services</span>
-              <span className="inline-block text-[#10f48e] font-bold text-sm animate-bounce-subtle group-hover:translate-y-1 transition-transform">
+              <span className="group-hover:text-[#8B5CF6] transition-colors">Explore Services</span>
+              <span className="inline-block text-[#8B5CF6] font-bold text-sm animate-bounce-subtle group-hover:translate-y-1 transition-transform">
                 ↓
               </span>
             </span>
@@ -308,11 +308,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
           {AGENCY_INFO.stats.map((stat, idx) => (
             <div
               key={idx}
-              className="p-3 sm:p-4 rounded-2xl bg-[#0b0e14]/70 border border-white/5 backdrop-blur-md flex flex-col items-center justify-center group hover:border-[#10f48e]/50 hover:shadow-[0_0_30px_rgba(16,244,142,0.2)] transition-all duration-300 transform hover:-translate-y-1.5 hover:rotate-1"
+              className="p-3 sm:p-4 rounded-2xl bg-[#0b0e14]/70 border border-white/5 backdrop-blur-md flex flex-col items-center justify-center group hover:border-[#8B5CF6]/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.2)] transition-all duration-300 transform hover:-translate-y-1.5 hover:rotate-1"
             >
-              <div className="font-display font-bold text-lg min-[380px]:text-xl sm:text-2xl text-transparent bg-clip-text bg-linear-to-r from-white to-[#10f48e] group-hover:scale-110 transition-transform">
+              <div className="font-display font-bold text-lg min-[380px]:text-xl sm:text-2xl text-transparent bg-clip-text bg-linear-to-r from-white to-[#8B5CF6] group-hover:scale-110 transition-transform">
                 {stat.value}
-                <span className="text-[#10f48e] text-xs sm:text-sm">{stat.suffix}</span>
+                <span className="text-[#8B5CF6] text-xs sm:text-sm">{stat.suffix}</span>
               </div>
               <span className="text-[10px] sm:text-xs text-neutral-400 font-mono-tech text-center mt-1 leading-tight">
                 {stat.label}
@@ -326,10 +326,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
       <a
         href="#about"
         aria-label="Scroll to About section"
-        className="mt-10 sm:mt-12 relative z-10 flex flex-col items-center gap-2 group cursor-pointer text-neutral-400 hover:text-[#10f48e] transition-colors"
+        className="mt-10 sm:mt-12 relative z-10 flex flex-col items-center gap-2 group cursor-pointer text-neutral-400 hover:text-[#8B5CF6] transition-colors"
       >
-        <div className="w-6 h-10 rounded-full border-2 border-white/20 group-hover:border-[#10f48e] p-1 flex justify-center transition-colors shadow-[0_0_15px_rgba(16,244,142,0.2)]">
-          <div className="w-1.5 h-2.5 rounded-full bg-[#10f48e] animate-bounce" />
+        <div className="w-6 h-10 rounded-full border-2 border-white/20 group-hover:border-[#8B5CF6] p-1 flex justify-center transition-colors shadow-[0_0_15px_rgba(139,92,246,0.2)]">
+          <div className="w-1.5 h-2.5 rounded-full bg-[#8B5CF6] animate-bounce" />
         </div>
         <span className="text-[10px] font-mono-tech uppercase tracking-widest opacity-60 group-hover:opacity-100">
           Scroll To Discover

@@ -35,10 +35,10 @@ interface ChannelBreakdown {
 }
 
 const CHANNELS: ChannelBreakdown[] = [
-  { name: 'Paid Social & Meta Ads', share: 42, color: '#10f48e', growth: '+340%', volume: '$357K' },
-  { name: 'Google High-Intent Search', share: 26, color: '#38bdf8', growth: '+280%', volume: '$221K' },
-  { name: 'Conversion Rate Opt (CRO)', share: 20, color: '#34d399', growth: '+410%', volume: '$170K' },
-  { name: 'Omnichannel Retargeting', share: 12, color: '#a78bfa', growth: '+190%', volume: '$102K' },
+  { name: 'Paid Social & Meta Ads', share: 42, color: '#8B5CF6', growth: '+340%', volume: '$357K' },
+  { name: 'Google High-Intent Search', share: 26, color: '#22D3EE', growth: '+280%', volume: '$221K' },
+  { name: 'Conversion Rate Opt (CRO)', share: 20, color: '#A78BFA', growth: '+410%', volume: '$170K' },
+  { name: 'Omnichannel Retargeting', share: 12, color: '#06B6D4', growth: '+190%', volume: '$102K' },
 ];
 
 const DATASETS = {
@@ -182,9 +182,9 @@ export const ThreeGrowthModel: React.FC = () => {
         height * 0.5,
         width * 0.75
       );
-      bgGrad.addColorStop(0, 'rgba(16, 244, 142, 0.07)');
-      bgGrad.addColorStop(0.55, 'rgba(6, 17, 12, 0.45)');
-      bgGrad.addColorStop(1, 'rgba(6, 7, 9, 0.98)');
+      bgGrad.addColorStop(0, 'rgba(139, 92, 246, 0.09)');
+      bgGrad.addColorStop(0.55, 'rgba(18, 16, 32, 0.45)');
+      bgGrad.addColorStop(1, 'rgba(13, 13, 20, 0.98)');
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
@@ -265,9 +265,9 @@ export const ThreeGrowthModel: React.FC = () => {
         // Area Fill
         if (points.length > 1) {
           const areaGrad = ctx.createLinearGradient(0, padTop, 0, padTop + plotH);
-          areaGrad.addColorStop(0, 'rgba(16, 244, 142, 0.35)');
-          areaGrad.addColorStop(0.65, 'rgba(56, 189, 248, 0.1)');
-          areaGrad.addColorStop(1, 'rgba(16, 244, 142, 0.0)');
+          areaGrad.addColorStop(0, 'rgba(139, 92, 246, 0.4)');
+          areaGrad.addColorStop(0.65, 'rgba(34, 211, 238, 0.15)');
+          areaGrad.addColorStop(1, 'rgba(139, 92, 246, 0.0)');
 
           ctx.beginPath();
           ctx.moveTo(points[0].x, padTop + plotH);
@@ -288,9 +288,9 @@ export const ThreeGrowthModel: React.FC = () => {
 
           // Main Neon Spline
           const strokeGrad = ctx.createLinearGradient(padLeft, 0, width - padRight, 0);
-          strokeGrad.addColorStop(0, '#10f48e');
-          strokeGrad.addColorStop(0.7, '#34d399');
-          strokeGrad.addColorStop(1, '#38bdf8');
+          strokeGrad.addColorStop(0, '#8B5CF6');
+          strokeGrad.addColorStop(0.5, '#A78BFA');
+          strokeGrad.addColorStop(1, '#22D3EE');
 
           ctx.beginPath();
           ctx.moveTo(points[0].x, points[0].y);
@@ -304,7 +304,7 @@ export const ThreeGrowthModel: React.FC = () => {
 
           ctx.strokeStyle = strokeGrad;
           ctx.lineWidth = 3.5;
-          ctx.shadowColor = '#10f48e';
+          ctx.shadowColor = '#8B5CF6';
           ctx.shadowBlur = 14;
           ctx.stroke();
           ctx.shadowBlur = 0;
@@ -336,13 +336,13 @@ export const ThreeGrowthModel: React.FC = () => {
             Math.pow(u, 3) * p1.y;
 
           ctx.fillStyle = '#ffffff';
-          ctx.shadowColor = '#10f48e';
+          ctx.shadowColor = '#8B5CF6';
           ctx.shadowBlur = 18;
           ctx.beginPath();
           ctx.arc(px, py, 4.5, 0, Math.PI * 2);
           ctx.fill();
 
-          ctx.strokeStyle = '#10f48e';
+          ctx.strokeStyle = '#8B5CF6';
           ctx.lineWidth = 2;
           ctx.beginPath();
           ctx.arc(px, py, 7.5, 0, Math.PI * 2);
@@ -355,13 +355,13 @@ export const ThreeGrowthModel: React.FC = () => {
           const isHovered = hoveredIndex === i;
           const isPeak = i === points.length - 1;
 
-          ctx.fillStyle = isHovered ? '#10f48e' : 'rgba(255, 255, 255, 0.5)';
+          ctx.fillStyle = isHovered ? '#8B5CF6' : 'rgba(255, 255, 255, 0.5)';
           ctx.font = isHovered ? 'bold 10px "Space Grotesk", monospace' : '10px "Space Grotesk", monospace';
           ctx.textAlign = 'center';
           ctx.fillText(pt.data.label, pt.x, height - 12);
 
           if (isHovered || isPeak) {
-            ctx.strokeStyle = isHovered ? 'rgba(16, 244, 142, 0.4)' : 'rgba(16, 244, 142, 0.2)';
+            ctx.strokeStyle = isHovered ? 'rgba(139, 92, 246, 0.4)' : 'rgba(34, 211, 238, 0.3)';
             ctx.setLineDash([2, 3]);
             ctx.beginPath();
             ctx.moveTo(pt.x, pt.y);
@@ -370,11 +370,11 @@ export const ThreeGrowthModel: React.FC = () => {
             ctx.setLineDash([]);
           }
 
-          ctx.fillStyle = isPeak ? '#10f48e' : (isHovered ? '#38bdf8' : '#071710');
-          ctx.strokeStyle = isPeak ? '#ffffff' : (isHovered ? '#10f48e' : '#10f48e');
+          ctx.fillStyle = isPeak ? '#22D3EE' : (isHovered ? '#8B5CF6' : '#141424');
+          ctx.strokeStyle = isPeak ? '#ffffff' : (isHovered ? '#22D3EE' : '#8B5CF6');
           ctx.lineWidth = isHovered || isPeak ? 2.5 : 1.5;
 
-          ctx.shadowColor = isPeak ? '#10f48e' : '#38bdf8';
+          ctx.shadowColor = isPeak ? '#22D3EE' : '#8B5CF6';
           ctx.shadowBlur = isHovered || isPeak ? 16 : 8;
 
           ctx.beginPath();
@@ -384,7 +384,7 @@ export const ThreeGrowthModel: React.FC = () => {
           ctx.shadowBlur = 0;
 
           if (isPeak && !isHovered) {
-            ctx.fillStyle = '#10f48e';
+            ctx.fillStyle = '#8B5CF6';
             ctx.font = 'bold 9px "Space Grotesk", monospace';
             ctx.textAlign = 'center';
             ctx.fillText(pt.data.roi, pt.x, pt.y - 12);
@@ -455,8 +455,8 @@ export const ThreeGrowthModel: React.FC = () => {
           const growY = padTop + plotH - growBarH;
 
           const barGrad = ctx.createLinearGradient(0, growY, 0, padTop + plotH);
-          barGrad.addColorStop(0, isHovered ? '#4ade80' : '#10f48e');
-          barGrad.addColorStop(1, 'rgba(16, 244, 142, 0.15)');
+          barGrad.addColorStop(0, isHovered ? '#22D3EE' : '#8B5CF6');
+          barGrad.addColorStop(1, 'rgba(139, 92, 246, 0.2)');
 
           ctx.fillStyle = barGrad;
           ctx.beginPath();
@@ -465,19 +465,19 @@ export const ThreeGrowthModel: React.FC = () => {
 
           // Glowing Cap on Growzen Bar
           ctx.fillStyle = '#ffffff';
-          ctx.shadowColor = '#10f48e';
+          ctx.shadowColor = '#8B5CF6';
           ctx.shadowBlur = 12;
           ctx.fillRect(growX, growY, barW, 2.5);
           ctx.shadowBlur = 0;
 
           // Value on top of Growzen Bar
-          ctx.fillStyle = isHovered ? '#10f48e' : 'rgba(255, 255, 255, 0.9)';
+          ctx.fillStyle = isHovered ? '#8B5CF6' : 'rgba(255, 255, 255, 0.9)';
           ctx.font = 'bold 9px "Space Grotesk", monospace';
           ctx.textAlign = 'center';
           ctx.fillText(item.formattedValue, growX + barW / 2, growY - 6);
 
           // X-Axis Label
-          ctx.fillStyle = isHovered ? '#10f48e' : 'rgba(255, 255, 255, 0.5)';
+          ctx.fillStyle = isHovered ? '#8B5CF6' : 'rgba(255, 255, 255, 0.5)';
           ctx.font = isHovered ? 'bold 10px "Space Grotesk", monospace' : '10px "Space Grotesk", monospace';
           ctx.fillText(item.quarter, centerX, height - 12);
         });
@@ -490,9 +490,9 @@ export const ThreeGrowthModel: React.FC = () => {
         ctx.textAlign = 'left';
         ctx.fillText('Industry', width - 138, 17);
 
-        ctx.fillStyle = '#10f48e';
+        ctx.fillStyle = '#8B5CF6';
         ctx.fillRect(width - 80, 10, 8, 8);
-        ctx.fillStyle = '#10f48e';
+        ctx.fillStyle = '#8B5CF6';
         ctx.fillText('Growzen', width - 68, 17);
       }
 
@@ -534,15 +534,15 @@ export const ThreeGrowthModel: React.FC = () => {
         });
 
         // Center Cyber Core
-        ctx.fillStyle = '#060a0f';
+        ctx.fillStyle = '#10101C';
         ctx.beginPath();
         ctx.arc(cx, cy, innerRadius - 4, 0, Math.PI * 2);
         ctx.fill();
-        ctx.strokeStyle = 'rgba(16, 244, 142, 0.4)';
+        ctx.strokeStyle = 'rgba(139, 92, 246, 0.4)';
         ctx.lineWidth = 1.5;
         ctx.stroke();
 
-        ctx.fillStyle = '#10f48e';
+        ctx.fillStyle = '#8B5CF6';
         ctx.font = 'bold 13px "Space Grotesk", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -674,13 +674,13 @@ export const ThreeGrowthModel: React.FC = () => {
       onMouseLeave={handlePointerLeave}
       onTouchMove={handlePointerMove}
       onTouchEnd={handlePointerLeave}
-      className="w-full h-88 sm:h-96 md:h-[420px] relative flex flex-col justify-between select-none overflow-hidden rounded-2xl bg-[#060709] border border-white/10 hover:border-[#10f48e]/50 transition-all duration-300 shadow-[0_0_40px_rgba(0,0,0,0.85)]"
+      className="w-full h-88 sm:h-96 md:h-[420px] relative flex flex-col justify-between select-none overflow-hidden rounded-2xl bg-[#0D0D14] border border-white/10 hover:border-[#8B5CF6]/50 transition-all duration-300 shadow-[0_0_40px_rgba(0,0,0,0.85)]"
       title="Growzen Growth Terminal: Interactive Performance Graph"
     >
       {/* 1. Top Cyber HUD Controls Bar */}
       <div className="w-full px-3.5 pt-3 flex items-center justify-between z-20 gap-2 flex-wrap border-b border-white/5 pb-2.5 bg-black/50 backdrop-blur-md">
         {/* Metric Selector Tabs */}
-        <div className="flex items-center gap-1 bg-[#0d1017] p-1 rounded-xl border border-white/10 shadow-inner">
+        <div className="flex items-center gap-1 bg-[#151524] p-1 rounded-xl border border-white/10 shadow-inner">
           <button
             type="button"
             onClick={() => {
@@ -689,7 +689,7 @@ export const ThreeGrowthModel: React.FC = () => {
             }}
             className={`px-2.5 py-1 rounded-lg text-[10px] font-mono-tech uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer ${
               activeMetric === 'arr'
-                ? 'bg-[#10f48e] text-black font-bold shadow-[0_0_12px_rgba(16,244,142,0.5)]'
+                ? 'bg-[#8B5CF6] text-white font-bold bg-linear-to-r from-[#8B5CF6] to-[#22D3EE] shadow-[0_0_15px_rgba(139,92,246,0.5)]'
                 : 'text-neutral-400 hover:text-white hover:bg-white/5'
             }`}
           >
@@ -705,7 +705,7 @@ export const ThreeGrowthModel: React.FC = () => {
             }}
             className={`px-2.5 py-1 rounded-lg text-[10px] font-mono-tech uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer ${
               activeMetric === 'roas'
-                ? 'bg-[#10f48e] text-black font-bold shadow-[0_0_12px_rgba(16,244,142,0.5)]'
+                ? 'bg-[#8B5CF6] text-white font-bold bg-linear-to-r from-[#8B5CF6] to-[#22D3EE] shadow-[0_0_15px_rgba(139,92,246,0.5)]'
                 : 'text-neutral-400 hover:text-white hover:bg-white/5'
             }`}
           >
@@ -721,7 +721,7 @@ export const ThreeGrowthModel: React.FC = () => {
             }}
             className={`px-2.5 py-1 rounded-lg text-[10px] font-mono-tech uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer ${
               activeMetric === 'conv'
-                ? 'bg-[#10f48e] text-black font-bold shadow-[0_0_12px_rgba(16,244,142,0.5)]'
+                ? 'bg-[#8B5CF6] text-white font-bold bg-linear-to-r from-[#8B5CF6] to-[#22D3EE] shadow-[0_0_15px_rgba(139,92,246,0.5)]'
                 : 'text-neutral-400 hover:text-white hover:bg-white/5'
             }`}
           >
@@ -741,7 +741,7 @@ export const ThreeGrowthModel: React.FC = () => {
             title="Area Spline Graph"
             className={`px-2 py-1 rounded-lg text-[10px] font-mono-tech flex items-center gap-1 transition-all cursor-pointer ${
               chartStyle === 'area'
-                ? 'bg-white/20 text-[#10f48e] font-bold border border-[#10f48e]/40 shadow-[0_0_10px_rgba(16,244,142,0.2)]'
+                ? 'bg-white/20 text-[#8B5CF6] font-bold border border-[#8B5CF6]/40 shadow-[0_0_10px_rgba(139,92,246,0.2)]'
                 : 'text-neutral-400 hover:text-white'
             }`}
           >
@@ -758,7 +758,7 @@ export const ThreeGrowthModel: React.FC = () => {
             title="Comparative Dual Bar Chart"
             className={`px-2 py-1 rounded-lg text-[10px] font-mono-tech flex items-center gap-1 transition-all cursor-pointer ${
               chartStyle === 'bar'
-                ? 'bg-white/20 text-[#10f48e] font-bold border border-[#10f48e]/40 shadow-[0_0_10px_rgba(16,244,142,0.2)]'
+                ? 'bg-white/20 text-[#8B5CF6] font-bold border border-[#8B5CF6]/40 shadow-[0_0_10px_rgba(139,92,246,0.2)]'
                 : 'text-neutral-400 hover:text-white'
             }`}
           >
@@ -775,7 +775,7 @@ export const ThreeGrowthModel: React.FC = () => {
             title="Channel Attribution Donut"
             className={`px-2 py-1 rounded-lg text-[10px] font-mono-tech flex items-center gap-1 transition-all cursor-pointer ${
               chartStyle === 'donut'
-                ? 'bg-white/20 text-[#10f48e] font-bold border border-[#10f48e]/40 shadow-[0_0_10px_rgba(16,244,142,0.2)]'
+                ? 'bg-white/20 text-[#8B5CF6] font-bold border border-[#8B5CF6]/40 shadow-[0_0_10px_rgba(139,92,246,0.2)]'
                 : 'text-neutral-400 hover:text-white'
             }`}
           >
@@ -795,18 +795,18 @@ export const ThreeGrowthModel: React.FC = () => {
         {/* Floating Cyber HUD Tooltip for Line / Bar */}
         {chartStyle !== 'donut' && hoveredIndex !== null && currentDataset.data[hoveredIndex] && mousePos && (
           <div
-            className="absolute z-30 pointer-events-none p-3 rounded-xl bg-[#070b10]/95 border border-[#10f48e] text-left font-mono-tech shadow-[0_0_25px_rgba(16,244,142,0.35)] backdrop-blur-md transform -translate-x-1/2 -translate-y-full mb-4 min-w-[190px]"
+            className="absolute z-30 pointer-events-none p-3 rounded-xl bg-[#121220]/95 border border-[#8B5CF6] text-left font-mono-tech shadow-[0_0_25px_rgba(139,92,246,0.35)] backdrop-blur-md transform -translate-x-1/2 -translate-y-full mb-4 min-w-[190px]"
             style={{
               left: `${Math.max(100, Math.min(mousePos.x, (containerRef.current?.clientWidth || 340) - 100))}px`,
               top: `${Math.max(80, mousePos.y - 10)}px`,
             }}
           >
             <div className="flex items-center justify-between gap-3 text-[11px] font-bold text-white border-b border-white/10 pb-1.5 mb-1.5">
-              <span className="text-[#10f48e] flex items-center gap-1">
+              <span className="text-[#8B5CF6] flex items-center gap-1">
                 <CheckCircle2 className="w-3 h-3" />
                 {currentDataset.data[hoveredIndex].label}
               </span>
-              <span className="px-1.5 py-0.5 rounded bg-[#10f48e]/20 text-[#10f48e] text-[10px] font-bold">
+              <span className="px-1.5 py-0.5 rounded bg-[#8B5CF6]/20 text-[#8B5CF6] text-[10px] font-bold">
                 {currentDataset.data[hoveredIndex].roi}
               </span>
             </div>
@@ -814,7 +814,7 @@ export const ThreeGrowthModel: React.FC = () => {
             <div className="space-y-1 mb-2">
               <div className="flex items-center justify-between text-[11px]">
                 <span className="text-neutral-400">Growzen:</span>
-                <span className="text-white font-bold text-[12px] text-[#10f48e]">
+                <span className="text-white font-bold text-[12px] text-[#8B5CF6]">
                   {currentDataset.data[hoveredIndex].formattedValue}
                 </span>
               </div>
@@ -835,7 +835,7 @@ export const ThreeGrowthModel: React.FC = () => {
         {/* Initial Hover Hint */}
         {hoveredIndex === null && (
           <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none text-[9px] font-mono-tech text-neutral-400 tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-black/50 border border-white/5 backdrop-blur-xs flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#10f48e] animate-ping" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-ping" />
             <span>
               {chartStyle === 'area'
                 ? 'Hover spline to inspect quarter nodes'
@@ -850,15 +850,15 @@ export const ThreeGrowthModel: React.FC = () => {
       {/* 3. Bottom Live Performance Ribbon */}
       <div className="w-full px-3.5 py-2.5 flex items-center justify-between z-20 border-t border-white/10 text-[10px] font-mono-tech text-neutral-400 bg-black/60 backdrop-blur-sm">
         <div className="flex items-center gap-2">
-          <Activity className="w-3.5 h-3.5 text-[#10f48e] animate-pulse" />
+          <Activity className="w-3.5 h-3.5 text-[#8B5CF6] animate-pulse" />
           <span className="text-white font-semibold">{currentDataset.name}</span>
           <span className="text-neutral-600">|</span>
-          <span className="text-[#10f48e] font-bold">{currentDataset.peak}</span>
+          <span className="text-[#8B5CF6] font-bold">{currentDataset.peak}</span>
         </div>
 
         <div className="flex items-center gap-2">
           <span className="text-neutral-400 hidden sm:inline-block">Live Feed</span>
-          <div className="flex items-center gap-1 text-[#10f48e] font-bold">
+          <div className="flex items-center gap-1 text-[#8B5CF6] font-bold">
             <span>+450% Delta</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </div>

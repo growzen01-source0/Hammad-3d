@@ -56,7 +56,7 @@ export const Global3DCanvas: React.FC = () => {
         vry: (Math.random() - 0.5) * 0.015,
         size: 20 + Math.random() * 35,
         type: isRing ? 'ring' : isOcta ? 'octa' : 'tetra',
-        color: i % 2 === 0 ? 'rgba(16, 244, 142, 0.45)' : 'rgba(52, 211, 153, 0.3)',
+        color: i % 2 === 0 ? 'rgba(139, 92, 246, 0.45)' : 'rgba(52, 211, 153, 0.3)',
       };
     });
 
@@ -95,7 +95,7 @@ export const Global3DCanvas: React.FC = () => {
 
         if (px >= 0 && px <= width && py >= 0 && py <= height) {
           ctx.globalAlpha = p.alpha * Math.min(scale * 1.2, 1);
-          ctx.fillStyle = '#10f48e';
+          ctx.fillStyle = '#8B5CF6';
           ctx.beginPath();
           ctx.arc(px, py, p.radius * scale, 0, Math.PI * 2);
           ctx.fill();

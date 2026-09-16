@@ -47,7 +47,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#060709] text-[#e5e7eb] relative selection:bg-[#10f48e]/25 selection:text-[#10f48e]">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#0D0D14] text-[#e5e7eb] relative selection:bg-[#8B5CF6]/30 selection:text-[#22D3EE]">
       {/* Continuous 3D Animated Background Across ALL Sections & Pages */}
       <Global3DBackground />
 

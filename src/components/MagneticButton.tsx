@@ -59,7 +59,7 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
         transition: position.x === 0 ? 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)' : 'transform 0.1s ease-out',
       }}
       className={`relative inline-flex items-center justify-center font-medium select-none cursor-pointer group ${
-        glow ? 'hover:shadow-[0_0_28px_rgba(16,244,142,0.45)]' : ''
+        glow ? 'hover:shadow-[0_0_28px_rgba(139,92,246,0.45)]' : ''
       } ${className}`}
       {...props}
     >

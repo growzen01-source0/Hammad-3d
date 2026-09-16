@@ -55,7 +55,7 @@ const ContactCard: React.FC<ContactCardProps> = ({
         setIsHovered(false);
         setRotate({ x: 0, y: 0 });
       }}
-      className="glass-panel p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-white/10 hover:border-[#10f48e]/60 transition-all duration-300 group flex flex-col justify-between relative overflow-hidden shadow-xl perspective-1000 select-none w-full"
+      className="glass-panel p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-white/10 hover:border-[#8B5CF6]/60 transition-all duration-300 group flex flex-col justify-between relative overflow-hidden shadow-xl perspective-1000 select-none w-full"
       style={{
         transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) translateZ(${
           isHovered ? 20 : 0
@@ -69,13 +69,13 @@ const ContactCard: React.FC<ContactCardProps> = ({
         className="flex items-start justify-between mb-5 sm:mb-6"
       >
         <div
-          className={`w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-[#10f48e]/10 text-[#10f48e] flex items-center justify-center transition-transform duration-300 shadow-[0_0_15px_rgba(16,244,142,0.2)] ${
+          className={`w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-[#8B5CF6]/10 text-[#8B5CF6] flex items-center justify-center transition-transform duration-300 shadow-[0_0_15px_rgba(139,92,246,0.2)] ${
             iconRotateDir === 'right' ? 'group-hover:rotate-12' : 'group-hover:-rotate-12'
           } group-hover:scale-110`}
         >
           <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
         </div>
-        <span className="px-3 py-1 rounded-full text-[10px] font-mono-tech uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+        <span className="px-3 py-1 rounded-full text-[10px] font-mono-tech uppercase bg-[#8B5CF6]/10 text-[#22D3EE] border border-emerald-500/30">
           {badge}
         </span>
       </div>
@@ -84,7 +84,7 @@ const ContactCard: React.FC<ContactCardProps> = ({
         <span className="text-[11px] font-mono-tech uppercase text-neutral-400">
           {category}
         </span>
-        <h3 className="font-display font-bold text-lg sm:text-xl text-white mt-1 mb-2 group-hover:text-[#10f48e] transition-colors truncate">
+        <h3 className="font-display font-bold text-lg sm:text-xl text-white mt-1 mb-2 group-hover:text-[#8B5CF6] transition-colors truncate">
           {value}
         </h3>
         <p className="text-xs text-neutral-400 leading-relaxed mb-5 sm:mb-6">
@@ -103,7 +103,7 @@ const ContactCard: React.FC<ContactCardProps> = ({
           className="p-2.5 min-w-[44px] min-h-[44px] rounded-xl bg-white/5 hover:bg-white/15 text-neutral-300 hover:text-white transition-all cursor-pointer shadow-sm flex items-center justify-center"
         >
           {copiedField === copyField ? (
-            <Check className="w-4 h-4 text-[#10f48e]" />
+            <Check className="w-4 h-4 text-[#8B5CF6]" />
           ) : (
             <Copy className="w-4 h-4" />
           )}
@@ -128,17 +128,17 @@ export const ContactSection: React.FC = () => {
       className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden perspective-1200 w-full"
     >
       {/* Ambient glow */}
-      <div className="absolute bottom-10 left-1/4 w-80 h-80 rounded-full bg-[#10f48e]/8 blur-[160px] pointer-events-none" />
+      <div className="absolute bottom-10 left-1/4 w-80 h-80 rounded-full bg-[#8B5CF6]/8 blur-[160px] pointer-events-none" />
 
       {/* Header */}
       <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#10f48e]/10 border border-[#10f48e]/30 text-[#10f48e] text-xs font-mono-tech uppercase tracking-widest mb-3 shadow-[0_0_20px_rgba(16,244,142,0.2)]">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 text-[#8B5CF6] text-xs font-mono-tech uppercase tracking-widest mb-3 shadow-[0_0_20px_rgba(139,92,246,0.2)]">
           <Sparkles className="w-3.5 h-3.5" />
           Direct Dispatch
         </div>
         <h2 className="font-display font-black text-2xl min-[400px]:text-3xl sm:text-5xl md:text-6xl tracking-tight text-white">
           Let's Start the{' '}
-          <span className="text-transparent bg-clip-text bg-linear-to-r from-[#10f48e] to-emerald-400">
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-[#8B5CF6] via-[#A78BFA] to-[#22D3EE]">
             Conversation
           </span>
         </h2>
@@ -166,7 +166,7 @@ export const ContactSection: React.FC = () => {
               href={AGENCY_INFO.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 py-2.5 rounded-xl bg-[#10f48e]/15 hover:bg-[#10f48e] text-[#10f48e] hover:text-[#060709] text-xs font-bold font-mono-tech uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm group-hover:shadow-[0_0_15px_rgba(16,244,142,0.3)]"
+              className="flex-1 py-2.5 rounded-xl bg-[#8B5CF6]/15 hover:bg-[#8B5CF6] text-[#8B5CF6] hover:text-[#0D0D14] text-xs font-bold font-mono-tech uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm group-hover:shadow-[0_0_15px_rgba(139,92,246,0.3)]"
             >
               <MessageCircle className="w-4 h-4" />
               <span>WhatsApp</span>
@@ -189,7 +189,7 @@ export const ContactSection: React.FC = () => {
           actionButton={
             <a
               href={`mailto:${AGENCY_INFO.email}`}
-              className="flex-1 py-2.5 rounded-xl bg-[#10f48e]/15 hover:bg-[#10f48e] text-[#10f48e] hover:text-[#060709] text-xs font-bold font-mono-tech uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm group-hover:shadow-[0_0_15px_rgba(16,244,142,0.3)]"
+              className="flex-1 py-2.5 rounded-xl bg-[#8B5CF6]/15 hover:bg-[#8B5CF6] text-[#8B5CF6] hover:text-[#0D0D14] text-xs font-bold font-mono-tech uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm group-hover:shadow-[0_0_15px_rgba(139,92,246,0.3)]"
             >
               <Mail className="w-4 h-4" />
               <span>Send Mail</span>

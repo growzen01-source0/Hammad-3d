@@ -45,7 +45,7 @@ export const ThreeHeroCanvas: React.FC = () => {
       container.appendChild(domElement);
 
       const scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0x060709, 0.035);
+      scene.fog = new THREE.FogExp2(0x0D0D14, 0.035);
 
       const camera = new THREE.PerspectiveCamera(
         55,
@@ -59,7 +59,7 @@ export const ThreeHeroCanvas: React.FC = () => {
       const ambientLight = new THREE.AmbientLight(0x0a140f, 2.5);
       scene.add(ambientLight);
 
-      const mainLight = new THREE.PointLight(0x10f48e, 4.5, 25);
+      const mainLight = new THREE.PointLight(0x8B5CF6, 4.5, 25);
       mainLight.position.set(4, 5, 4);
       scene.add(mainLight);
 
@@ -85,7 +85,7 @@ export const ThreeHeroCanvas: React.FC = () => {
 
       // Wireframe overlay
       const wireMat = new THREE.MeshBasicMaterial({
-        color: 0x10f48e,
+        color: 0x8B5CF6,
         wireframe: true,
         transparent: true,
         opacity: 0.35,
@@ -97,8 +97,8 @@ export const ThreeHeroCanvas: React.FC = () => {
       // Torus Rings
       const torusGeo = new THREE.TorusGeometry(isMobile ? 2.4 : 3.2, 0.06, 12, isMobile ? 36 : 60);
       const torusMat = new THREE.MeshStandardMaterial({
-        color: 0x10f48e,
-        emissive: 0x10f48e,
+        color: 0x8B5CF6,
+        emissive: 0x8B5CF6,
         emissiveIntensity: 0.6,
       });
       const torusMesh = new THREE.Mesh(torusGeo, torusMat);
@@ -107,7 +107,7 @@ export const ThreeHeroCanvas: React.FC = () => {
 
       const torusGeo2 = new THREE.TorusGeometry(isMobile ? 3.0 : 4.0, 0.03, 8, isMobile ? 24 : 48);
       const torusMat2 = new THREE.MeshBasicMaterial({
-        color: 0x34d399,
+        color: 0x22D3EE,
         wireframe: true,
         transparent: true,
         opacity: 0.4,
@@ -124,7 +124,7 @@ export const ThreeHeroCanvas: React.FC = () => {
         const radius = 0.25 + Math.random() * 0.3;
         const geom = new THREE.OctahedronGeometry(radius, 0);
         const mat = new THREE.MeshStandardMaterial({
-          color: i % 2 === 0 ? 0x10f48e : 0x059669,
+          color: i % 2 === 0 ? 0x8B5CF6 : 0x059669,
           emissive: 0x064e3b,
           roughness: 0.3,
           metalness: 0.8,
@@ -161,7 +161,7 @@ export const ThreeHeroCanvas: React.FC = () => {
       particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
       const particleMat = new THREE.PointsMaterial({
         size: 0.045,
-        color: 0x10f48e,
+        color: 0x8B5CF6,
         transparent: true,
         opacity: 0.6,
       });
@@ -318,7 +318,7 @@ export const ThreeHeroCanvas: React.FC = () => {
       angle += 0.01;
 
       // Draw floating glowing particles with network lines
-      ctx.fillStyle = '#10f48e';
+      ctx.fillStyle = '#8B5CF6';
       particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
@@ -361,21 +361,21 @@ export const ThreeHeroCanvas: React.FC = () => {
 
       // Draw outer glowing rings
       ctx.globalAlpha = 0.35;
-      ctx.strokeStyle = '#10f48e';
+      ctx.strokeStyle = '#8B5CF6';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.ellipse(cx, cy, 180, 70, angle * 0.5, 0, Math.PI * 2);
       ctx.stroke();
 
       ctx.globalAlpha = 0.2;
-      ctx.strokeStyle = '#34d399';
+      ctx.strokeStyle = '#22D3EE';
       ctx.beginPath();
       ctx.ellipse(cx, cy, 240, 90, -angle * 0.3, 0, Math.PI * 2);
       ctx.stroke();
 
       // Draw Edges
       ctx.globalAlpha = 0.55;
-      ctx.strokeStyle = '#10f48e';
+      ctx.strokeStyle = '#8B5CF6';
       ctx.lineWidth = 1.2;
       edges.forEach(([i, j]) => {
         ctx.beginPath();
@@ -387,7 +387,7 @@ export const ThreeHeroCanvas: React.FC = () => {
       // Draw Vertex nodes
       projected.forEach((pt) => {
         ctx.globalAlpha = 0.9;
-        ctx.fillStyle = '#10f48e';
+        ctx.fillStyle = '#8B5CF6';
         ctx.beginPath();
         ctx.arc(pt.x, pt.y, 3 * pt.scale, 0, Math.PI * 2);
         ctx.fill();

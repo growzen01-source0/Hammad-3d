@@ -74,7 +74,7 @@ export const Footer: React.FC = () => {
       name: 'WhatsApp',
       href: AGENCY_INFO.socials.whatsapp,
       icon: MessageCircle,
-      color: 'hover:text-[#10f48e] hover:border-[#10f48e]/50 hover:shadow-[0_0_20px_rgba(16,244,142,0.4)]',
+      color: 'hover:text-[#8B5CF6] hover:border-[#8B5CF6]/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.4)]',
     },
     {
       name: 'Instagram',
@@ -109,13 +109,13 @@ export const Footer: React.FC = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.08 }}
       transition={{ duration: 0.35, ease: 'easeInOut' }}
-      className="relative z-10 bg-linear-to-b from-[#06080d]/95 via-[#040508]/98 to-[#020304] backdrop-blur-xl border-t border-white/10 hover:border-white/20 pt-12 sm:pt-16 pb-8 sm:pb-10 px-4 sm:px-6 lg:px-8 overflow-hidden w-full transition-all duration-[350ms] ease-in-out md:hover:scale-[1.002] origin-bottom hover:shadow-[0_-16px_50px_rgba(16,244,142,0.12)] group/footer"
+      className="relative z-10 bg-linear-to-b from-[#06080d]/95 via-[#040508]/98 to-[#020304] backdrop-blur-xl border-t border-white/10 hover:border-white/20 pt-12 sm:pt-16 pb-8 sm:pb-10 px-4 sm:px-6 lg:px-8 overflow-hidden w-full transition-all duration-[350ms] ease-in-out md:hover:scale-[1.002] origin-bottom hover:shadow-[0_-16px_50px_rgba(139,92,246,0.12)] group/footer"
     >
       {/* Background ambient radial glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[560px] h-32 bg-radial from-[#10f48e]/12 to-transparent blur-3xl pointer-events-none group-hover/footer:from-[#10f48e]/22 transition-all duration-[350ms] ease-in-out" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[560px] h-32 bg-radial from-[#8B5CF6]/12 to-transparent blur-3xl pointer-events-none group-hover/footer:from-[#8B5CF6]/22 transition-all duration-[350ms] ease-in-out" />
 
       {/* Top neon accent line with hover bloom */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 max-w-4xl h-px bg-linear-to-r from-transparent via-[#10f48e]/60 to-transparent group-hover/footer:via-[#10f48e] group-hover/footer:shadow-[0_0_15px_#10f48e] transition-all duration-[350ms] ease-in-out" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 max-w-4xl h-px bg-linear-to-r from-transparent via-[#8B5CF6]/60 to-transparent group-hover/footer:via-[#8B5CF6] group-hover/footer:shadow-[0_0_15px_#8B5CF6] transition-all duration-[350ms] ease-in-out" />
 
       {/* Subtle tech grid background pattern */}
       <div className="absolute inset-0 bg-grid-pattern opacity-15 pointer-events-none" />
@@ -125,15 +125,15 @@ export const Footer: React.FC = () => {
           {/* Brand Col */}
           <div className="sm:col-span-2 md:col-span-6 flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-[34px] h-[34px] rounded-xl bg-linear-to-br from-[#10f48e] to-[#059669] p-px flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(16,244,142,0.3)]">
+              <div className="w-[34px] h-[34px] rounded-xl bg-linear-to-br from-[#8B5CF6] to-[#059669] p-px flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
                 <div className="w-full h-full bg-[#07090e] rounded-[11px] flex items-center justify-center">
-                  <span className="font-display font-black text-xl text-[#10f48e]">G</span>
+                  <span className="font-display font-black text-xl text-[#8B5CF6]">G</span>
                 </div>
               </div>
               <span className="font-['Arial',sans-serif] font-black text-[30px] tracking-tight text-white leading-none">
                 {AGENCY_INFO.name}
               </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#10f48e] shadow-[0_0_8px_#10f48e]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] shadow-[0_0_8px_#8B5CF6]" />
             </div>
 
             <p className="text-[17px] text-neutral-400 max-w-md leading-relaxed">
@@ -141,8 +141,8 @@ export const Footer: React.FC = () => {
             </p>
 
             {/* Founded By Callout */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-[#10f48e]/10 border border-white/10 hover:border-[#10f48e]/50 text-[11px] sm:text-xs font-mono-tech text-neutral-300 hover:text-white w-fit transition-all duration-[350ms] ease-in-out transform hover:scale-105 hover:-translate-y-0.5 hover:shadow-[0_0_22px_rgba(16,244,142,0.3)] cursor-default group/callout">
-              <Sparkles className="w-3.5 h-3.5 text-[#10f48e] transition-transform duration-[350ms] ease-in-out group-hover/callout:rotate-12 group-hover/callout:scale-110" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-[#8B5CF6]/10 border border-white/10 hover:border-[#8B5CF6]/50 text-[11px] sm:text-xs font-mono-tech text-neutral-300 hover:text-white w-fit transition-all duration-[350ms] ease-in-out transform hover:scale-105 hover:-translate-y-0.5 hover:shadow-[0_0_22px_rgba(139,92,246,0.3)] cursor-default group/callout">
+              <Sparkles className="w-3.5 h-3.5 text-[#8B5CF6] transition-transform duration-[350ms] ease-in-out group-hover/callout:rotate-12 group-hover/callout:scale-110" />
               <span>Founded by Hammad & Raza</span>
             </div>
 
@@ -156,12 +156,12 @@ export const Footer: React.FC = () => {
             <h4 className="text-xs font-mono-tech uppercase text-white tracking-wider font-semibold mb-1">
               Navigation
             </h4>
-            <a href="#services" className="text-xs text-neutral-400 hover:text-[#10f48e] transition-colors duration-[350ms] ease-in-out w-fit py-0.5">Services</a>
-            <a href="#about" className="text-xs text-neutral-400 hover:text-[#10f48e] transition-colors duration-[350ms] ease-in-out w-fit py-0.5">About Growzen</a>
-            <a href="#portfolio" className="text-xs text-neutral-400 hover:text-[#10f48e] transition-colors duration-[350ms] ease-in-out w-fit py-0.5">Portfolio & Work</a>
-            <a href="#reviews" className="text-xs text-neutral-400 hover:text-[#10f48e] transition-colors duration-[350ms] ease-in-out w-fit py-0.5">Client Reviews</a>
-            <a href="#pricing" className="text-xs text-neutral-400 hover:text-[#10f48e] transition-colors duration-[350ms] ease-in-out w-fit py-0.5">Pricing Architecture</a>
-            <a href="#booking" className="text-xs text-neutral-400 hover:text-[#10f48e] transition-colors duration-[350ms] ease-in-out w-fit py-0.5">Book Consultation</a>
+            <a href="#services" className="text-xs text-neutral-400 hover:text-[#8B5CF6] transition-colors duration-[350ms] ease-in-out w-fit py-0.5">Services</a>
+            <a href="#about" className="text-xs text-neutral-400 hover:text-[#8B5CF6] transition-colors duration-[350ms] ease-in-out w-fit py-0.5">About Growzen</a>
+            <a href="#portfolio" className="text-xs text-neutral-400 hover:text-[#8B5CF6] transition-colors duration-[350ms] ease-in-out w-fit py-0.5">Portfolio & Work</a>
+            <a href="#reviews" className="text-xs text-neutral-400 hover:text-[#8B5CF6] transition-colors duration-[350ms] ease-in-out w-fit py-0.5">Client Reviews</a>
+            <a href="#pricing" className="text-xs text-neutral-400 hover:text-[#8B5CF6] transition-colors duration-[350ms] ease-in-out w-fit py-0.5">Pricing Architecture</a>
+            <a href="#booking" className="text-xs text-neutral-400 hover:text-[#8B5CF6] transition-colors duration-[350ms] ease-in-out w-fit py-0.5">Book Consultation</a>
           </div>
 
           {/* Socials & 3D Rotate Icons */}
@@ -193,7 +193,7 @@ export const Footer: React.FC = () => {
             </div>
 
             <div className="text-xs font-mono-tech text-neutral-400 mt-2">
-              WhatsApp Direct: <a href={AGENCY_INFO.whatsappUrl} className="text-[#10f48e] underline underline-offset-2 break-all">{AGENCY_INFO.phone}</a>
+              WhatsApp Direct: <a href={AGENCY_INFO.whatsappUrl} className="text-[#8B5CF6] underline underline-offset-2 break-all">{AGENCY_INFO.phone}</a>
             </div>
           </div>
         </div>
@@ -213,7 +213,7 @@ export const Footer: React.FC = () => {
               type="button"
               id="footer-link-privacy"
               onClick={() => setActivePolicy('privacy')}
-              className="text-neutral-400 hover:text-[#10f48e] transition-colors cursor-pointer py-1 px-1 min-h-[36px] flex items-center focus:outline-none focus:text-[#10f48e]"
+              className="text-neutral-400 hover:text-[#8B5CF6] transition-colors cursor-pointer py-1 px-1 min-h-[36px] flex items-center focus:outline-none focus:text-[#8B5CF6]"
             >
               Privacy Policy
             </button>
@@ -224,7 +224,7 @@ export const Footer: React.FC = () => {
               type="button"
               id="footer-link-refund"
               onClick={() => setActivePolicy('refund')}
-              className="text-neutral-400 hover:text-[#10f48e] transition-colors cursor-pointer py-1 px-1 min-h-[36px] flex items-center focus:outline-none focus:text-[#10f48e]"
+              className="text-neutral-400 hover:text-[#8B5CF6] transition-colors cursor-pointer py-1 px-1 min-h-[36px] flex items-center focus:outline-none focus:text-[#8B5CF6]"
             >
               Payment & Refund Policy
             </button>
@@ -235,7 +235,7 @@ export const Footer: React.FC = () => {
               type="button"
               id="footer-link-terms"
               onClick={() => setActivePolicy('terms')}
-              className="text-neutral-400 hover:text-[#10f48e] transition-colors cursor-pointer py-1 px-1 min-h-[36px] flex items-center focus:outline-none focus:text-[#10f48e]"
+              className="text-neutral-400 hover:text-[#8B5CF6] transition-colors cursor-pointer py-1 px-1 min-h-[36px] flex items-center focus:outline-none focus:text-[#8B5CF6]"
             >
               Terms of Service
             </button>
@@ -259,25 +259,25 @@ export const Footer: React.FC = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="relative w-full max-w-xl bg-[#080c12] border border-[#10f48e]/35 rounded-3xl p-6 sm:p-8 shadow-[0_0_60px_rgba(16,244,142,0.2)] text-left font-sans max-h-[90vh] overflow-y-auto"
+              className="relative w-full max-w-xl bg-[#080c12] border border-[#8B5CF6]/35 rounded-3xl p-6 sm:p-8 shadow-[0_0_60px_rgba(139,92,246,0.2)] text-left font-sans max-h-[90vh] overflow-y-auto"
               role="dialog"
               aria-modal="true"
               aria-labelledby="policy-modal-title"
             >
               {/* Glow Accent */}
-              <div className="absolute top-0 right-0 w-48 h-48 bg-radial from-[#10f48e]/10 to-transparent blur-2xl pointer-events-none rounded-tr-3xl" />
+              <div className="absolute top-0 right-0 w-48 h-48 bg-radial from-[#8B5CF6]/10 to-transparent blur-2xl pointer-events-none rounded-tr-3xl" />
 
               {/* Modal Header */}
               <div className="flex items-start justify-between gap-4 mb-5 pb-4 border-b border-white/10">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-2xl bg-[#10f48e]/15 border border-[#10f48e]/30 text-[#10f48e] flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(16,244,142,0.25)]">
+                  <div className="w-11 h-11 rounded-2xl bg-[#8B5CF6]/15 border border-[#8B5CF6]/30 text-[#8B5CF6] flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(139,92,246,0.25)]">
                     {React.createElement(POLICIES[activePolicy].icon, { className: 'w-5 h-5' })}
                   </div>
                   <div>
                     <h3 id="policy-modal-title" className="font-display font-bold text-xl sm:text-2xl text-white">
                       {POLICIES[activePolicy].title}
                     </h3>
-                    <p className="text-xs font-mono-tech text-[#10f48e] mt-0.5">
+                    <p className="text-xs font-mono-tech text-[#8B5CF6] mt-0.5">
                       {POLICIES[activePolicy].badge}
                     </p>
                   </div>
@@ -302,7 +302,7 @@ export const Footer: React.FC = () => {
                     onClick={() => setActivePolicy(type)}
                     className={`text-xs font-mono-tech py-1.5 px-3 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
                       activePolicy === type
-                        ? 'bg-[#10f48e] text-[#05070a] font-bold shadow-[0_0_12px_rgba(16,244,142,0.4)]'
+                        ? 'bg-[#8B5CF6] text-[#05070a] font-bold shadow-[0_0_12px_rgba(139,92,246,0.4)]'
                         : 'text-neutral-400 hover:text-white hover:bg-white/5'
                     }`}
                   >
@@ -328,7 +328,7 @@ export const Footer: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setActivePolicy(null)}
-                  className="px-5 py-2.5 rounded-full bg-[#10f48e] hover:bg-[#00e676] text-[#05070a] font-bold text-xs font-mono-tech tracking-wider uppercase shadow-[0_0_20px_rgba(16,244,142,0.3)] transition-all cursor-pointer min-h-[40px] flex items-center justify-center hover:scale-105"
+                  className="px-5 py-2.5 rounded-full bg-[#8B5CF6] hover:bg-[#00e676] text-[#05070a] font-bold text-xs font-mono-tech tracking-wider uppercase shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all cursor-pointer min-h-[40px] flex items-center justify-center hover:scale-105"
                 >
                   Close
                 </button>

@@ -70,16 +70,16 @@ export const TestimonialsSection: React.FC = () => {
       className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden w-full"
     >
       {/* Glow */}
-      <div className="absolute top-1/2 right-1/4 w-96 h-96 rounded-full bg-[#10f48e]/8 blur-[160px] pointer-events-none" />
+      <div className="absolute top-1/2 right-1/4 w-96 h-96 rounded-full bg-[#8B5CF6]/8 blur-[160px] pointer-events-none" />
 
       {/* Header */}
       <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#10f48e]/10 border border-[#10f48e]/20 text-[#10f48e] text-xs font-mono-tech uppercase tracking-widest mb-3">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 text-[#8B5CF6] text-xs font-mono-tech uppercase tracking-widest mb-3">
           ✦ TRUSTED BY REAL BRANDS
         </div>
         <h2 className="font-display font-black text-2xl min-[400px]:text-3xl sm:text-5xl md:text-6xl tracking-tight text-white">
           Client Feedback &{' '}
-          <span className="text-transparent bg-clip-text bg-linear-to-r from-[#10f48e] to-emerald-400">
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-[#8B5CF6] via-[#A78BFA] to-[#22D3EE]">
             Trust
           </span>
         </h2>
@@ -153,16 +153,16 @@ export const TestimonialsSection: React.FC = () => {
               }}
               className={`absolute w-[92vw] min-[400px]:w-[88vw] max-w-[350px] sm:w-[460px] md:w-[540px] rounded-2xl sm:rounded-3xl p-5 sm:p-8 glass-panel border transition-all duration-500 cursor-pointer ${
                 isActive
-                  ? 'border-[#10f48e]/60 shadow-[0_0_40px_rgba(16,244,142,0.25)]'
+                  ? 'border-[#8B5CF6]/60 shadow-[0_0_40px_rgba(139,92,246,0.25)]'
                   : 'border-white/10 hover:border-white/25'
               }`}
             >
               {/* Quote Mark & Growth Metric */}
               <div className="flex items-center justify-between mb-4 sm:mb-5">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-[#10f48e]/15 text-[#10f48e] flex items-center justify-center">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-[#8B5CF6]/15 text-[#8B5CF6] flex items-center justify-center">
                   <Quote className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0d1612] border border-[#10f48e]/30 text-[11px] sm:text-xs font-mono-tech text-[#10f48e]">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0d1612] border border-[#8B5CF6]/30 text-[11px] sm:text-xs font-mono-tech text-[#8B5CF6]">
                   <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                   <span>{item.growthMetric}</span>
                 </div>
@@ -175,7 +175,7 @@ export const TestimonialsSection: React.FC = () => {
                     key={starIdx}
                     className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all duration-500 ${
                       starsAnimated && starIdx < item.rating
-                        ? 'fill-[#10f48e] text-[#10f48e] scale-100'
+                        ? 'fill-[#8B5CF6] text-[#8B5CF6] scale-100'
                         : 'text-neutral-600 scale-75'
                     }`}
                     style={{ transitionDelay: `${starIdx * 100}ms` }}
@@ -197,7 +197,7 @@ export const TestimonialsSection: React.FC = () => {
                   src={item.avatar}
                   alt={item.name}
                   referrerPolicy="no-referrer"
-                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover border border-[#10f48e]/40 shrink-0"
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover border border-[#8B5CF6]/40 shrink-0"
                 />
                 <div className="flex flex-col min-w-0">
                   <h4 className="font-display font-bold text-xs sm:text-sm text-white truncate">
@@ -218,7 +218,7 @@ export const TestimonialsSection: React.FC = () => {
         <button
           onClick={handlePrev}
           aria-label="Previous testimonial"
-          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full glass-panel flex items-center justify-center text-white hover:text-[#10f48e] hover:border-[#10f48e]/40 transition-all cursor-pointer shadow-md active:scale-95"
+          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full glass-panel flex items-center justify-center text-white hover:text-[#8B5CF6] hover:border-[#8B5CF6]/40 transition-all cursor-pointer shadow-md active:scale-95"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
@@ -232,7 +232,7 @@ export const TestimonialsSection: React.FC = () => {
               aria-label={`Go to slide ${dotIdx + 1}`}
               className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
                 activeIndex === dotIdx
-                  ? 'w-6 sm:w-8 bg-[#10f48e] shadow-[0_0_10px_#10f48e]'
+                  ? 'w-6 sm:w-8 bg-[#8B5CF6] shadow-[0_0_10px_#8B5CF6]'
                   : 'w-2 bg-white/20 hover:bg-white/40'
               }`}
             />
@@ -242,7 +242,7 @@ export const TestimonialsSection: React.FC = () => {
         <button
           onClick={handleNext}
           aria-label="Next testimonial"
-          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full glass-panel flex items-center justify-center text-white hover:text-[#10f48e] hover:border-[#10f48e]/40 transition-all cursor-pointer shadow-md active:scale-95"
+          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full glass-panel flex items-center justify-center text-white hover:text-[#8B5CF6] hover:border-[#8B5CF6]/40 transition-all cursor-pointer shadow-md active:scale-95"
         >
           <ChevronRight className="w-5 h-5" />
         </button>

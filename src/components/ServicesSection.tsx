@@ -41,13 +41,13 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
       className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden"
     >
       {/* Background glow */}
-      <div className="absolute top-1/3 -right-32 w-96 h-96 rounded-full bg-[#10f48e]/8 blur-[160px] pointer-events-none" />
+      <div className="absolute top-1/3 -right-32 w-96 h-96 rounded-full bg-[#8B5CF6]/8 blur-[160px] pointer-events-none" />
 
       {/* Section Header */}
       <div className="flex flex-col items-center text-center mb-10 sm:mb-12">
         <div
           id="services-capabilities-badge"
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#10f48e]/10 border border-[#10f48e]/20 text-[#10f48e] text-xs font-mono-tech uppercase tracking-widest mb-3"
+          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 text-[#8B5CF6] text-xs font-mono-tech uppercase tracking-widest mb-3"
         >
           <Layers className="w-3.5 h-3.5" />
           Growth-Focused Capabilities
@@ -58,7 +58,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
           className="font-display font-black text-2xl min-[400px]:text-3xl sm:text-5xl md:text-6xl tracking-tight text-white"
         >
           Comprehensive Services.{' '}
-          <span className="text-transparent bg-clip-text bg-linear-to-r from-[#10f48e] to-emerald-400">
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-[#8B5CF6] via-[#A78BFA] to-[#22D3EE]">
             Transparent Value.
           </span>
         </h2>
@@ -78,7 +78,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
               onClick={() => setSelectedCategory(cat)}
               className={`px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-mono-tech transition-all duration-200 cursor-pointer min-h-[36px] flex items-center justify-center ${
                 selectedCategory === cat
-                  ? 'bg-[#10f48e] text-[#060709] font-bold shadow-[0_0_15px_rgba(16,244,142,0.4)]'
+                  ? 'bg-[#8B5CF6] text-white font-bold shadow-[0_0_15px_rgba(139,92,246,0.4)]'
                   : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
               }`}
             >
@@ -110,9 +110,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
       </div>
 
       {/* Bottom Promo Note */}
-      <div className="mt-14 p-6 rounded-3xl glass-panel border border-[#10f48e]/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="mt-14 p-6 rounded-3xl glass-panel border border-[#8B5CF6]/20 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3 text-left">
-          <div className="w-10 h-10 rounded-2xl bg-[#10f48e]/20 text-[#10f48e] flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-2xl bg-[#8B5CF6]/20 text-[#8B5CF6] flex items-center justify-center shrink-0">
             <Zap className="w-5 h-5" />
           </div>
           <div>
@@ -124,7 +124,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectServic
         </div>
         <button
           onClick={() => onSelectService('bundle')}
-          className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-[#10f48e] hover:text-[#060709] text-white text-xs font-bold font-mono-tech uppercase tracking-wider transition-all shrink-0 cursor-pointer"
+          className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-[#8B5CF6] hover:text-white text-white text-xs font-bold font-mono-tech uppercase tracking-wider transition-all shrink-0 cursor-pointer"
         >
           Request Custom Bundle →
         </button>

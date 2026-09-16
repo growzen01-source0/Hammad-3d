@@ -43,9 +43,9 @@ export const PromoModal: React.FC<PromoModalProps> = ({ onClaimTrial }) => {
       aria-modal="true"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in zoom-in-95 duration-300"
     >
-      <div className="w-full max-w-md rounded-3xl glass-panel p-6 sm:p-8 border border-[#10f48e]/40 shadow-[0_0_50px_rgba(16,244,142,0.3)] relative overflow-hidden">
+      <div className="w-full max-w-md rounded-3xl glass-panel p-6 sm:p-8 border border-[#8B5CF6]/40 shadow-[0_0_50px_rgba(139,92,246,0.3)] relative overflow-hidden">
         {/* Ambient Top Glow */}
-        <div className="absolute top-0 right-0 w-40 h-40 bg-[#10f48e]/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-40 h-40 bg-[#8B5CF6]/20 rounded-full blur-3xl pointer-events-none" />
 
         {/* Close Button */}
         <button
@@ -58,11 +58,11 @@ export const PromoModal: React.FC<PromoModalProps> = ({ onClaimTrial }) => {
 
         {/* Icon & Ribbon */}
         <div className="flex items-center gap-3.5 mb-4 text-[28px]">
-          <div className="w-14 h-14 rounded-2xl bg-[#10f48e]/20 text-[#10f48e] flex items-center justify-center border border-[#10f48e]/40 shadow-[0_0_20px_rgba(16,244,142,0.3)] shrink-0">
+          <div className="w-14 h-14 rounded-2xl bg-[#8B5CF6]/20 text-[#8B5CF6] flex items-center justify-center border border-[#8B5CF6]/40 shadow-[0_0_20px_rgba(139,92,246,0.3)] shrink-0">
             <Gift className="w-7 h-7" />
           </div>
           <div>
-            <span className="px-3 py-1 rounded-full text-xs font-mono-tech uppercase tracking-wider font-bold bg-[#10f48e]/20 text-[#10f48e] border border-[#10f48e]/30">
+            <span className="px-3 py-1 rounded-full text-xs font-mono-tech uppercase tracking-wider font-bold bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]/30">
               Limited Opportunity
             </span>
             <div className="text-sm text-neutral-300 mt-1 font-mono-tech font-medium">
@@ -73,7 +73,7 @@ export const PromoModal: React.FC<PromoModalProps> = ({ onClaimTrial }) => {
 
         {/* Content */}
         <h3 className="font-display font-black text-2xl text-white mb-2 leading-tight">
-          🎉 Get a <span className="text-[#10f48e]">FREE 3-Day Trial</span>
+          🎉 Get a <span className="text-[#8B5CF6]">FREE 3-Day Trial</span>
         </h3>
         <p className="text-sm font-semibold text-neutral-200 mb-3">
           Social Media Handling & Content Growth
@@ -82,15 +82,15 @@ export const PromoModal: React.FC<PromoModalProps> = ({ onClaimTrial }) => {
         {/* Value Points */}
         <div className="space-y-2.5 mb-6 bg-white/[0.04] border border-white/10 rounded-2xl p-3.5 sm:p-4 text-xs font-mono-tech">
           <div className="flex items-start gap-2.5 text-neutral-200">
-            <CheckCircle2 className="w-4 h-4 text-[#10f48e] shrink-0 mt-0.5" />
+            <CheckCircle2 className="w-4 h-4 text-[#8B5CF6] shrink-0 mt-0.5" />
             <span>Custom post designs & conversion-focused copy</span>
           </div>
           <div className="flex items-start gap-2.5 text-neutral-200">
-            <CheckCircle2 className="w-4 h-4 text-[#10f48e] shrink-0 mt-0.5" />
+            <CheckCircle2 className="w-4 h-4 text-[#8B5CF6] shrink-0 mt-0.5" />
             <span>Targeted daily audience engagement & hashtag research</span>
           </div>
-          <div className="flex items-start gap-2.5 text-[#10f48e] font-semibold">
-            <CheckCircle2 className="w-4 h-4 text-[#10f48e] shrink-0 mt-0.5" />
+          <div className="flex items-start gap-2.5 text-[#8B5CF6] font-semibold">
+            <CheckCircle2 className="w-4 h-4 text-[#8B5CF6] shrink-0 mt-0.5" />
             <span>100% Free • No credit card or upfront deposit require</span>
           </div>
         </div>
@@ -99,7 +99,7 @@ export const PromoModal: React.FC<PromoModalProps> = ({ onClaimTrial }) => {
         <div className="flex flex-col gap-3">
           <button
             onClick={handleBookingClaim}
-            className="w-full py-3.5 rounded-2xl bg-linear-to-r from-[#10f48e] to-[#00d075] text-[#060709] text-xs font-bold font-mono-tech uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(16,244,142,0.4)] hover:scale-[1.02] transition-transform cursor-pointer"
+            className="w-full py-3.5 rounded-2xl bg-linear-to-r from-[#8B5CF6] to-[#22D3EE] text-[#0D0D14] text-xs font-bold font-mono-tech uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:scale-[1.02] transition-transform cursor-pointer"
           >
             <Sparkles className="w-4 h-4" />
             <span>Claim Free 3-Day Trial</span>
@@ -110,7 +110,7 @@ export const PromoModal: React.FC<PromoModalProps> = ({ onClaimTrial }) => {
             onClick={handleWhatsAppClaim}
             className="w-full py-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-mono-tech uppercase tracking-wider flex items-center justify-center gap-2 transition-colors cursor-pointer"
           >
-            <MessageCircle className="w-4 h-4 text-[#10f48e]" />
+            <MessageCircle className="w-4 h-4 text-[#8B5CF6]" />
             <span>Claim Instantly via WhatsApp</span>
           </button>
         </div>

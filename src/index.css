@@ -56,7 +56,7 @@
 
   body {
     font-family: var(--font-sans);
-    background-color: #060709;
+    background-color: #0D0D14;
     color: #e5e7eb;
     width: 100%;
     max-width: 100%;
@@ -113,10 +113,10 @@
     max-width: 74rem;
   }
   .glow-accent {
-    box-shadow: 0 0 55px -5px rgba(16, 244, 142, 0.3);
+    box-shadow: 0 0 55px -5px rgba(139, 92, 246, 0.3);
   }
   .glow-accent-strong {
-    box-shadow: 0 0 75px 0px rgba(16, 244, 142, 0.5);
+    box-shadow: 0 0 75px 0px rgba(139, 92, 246, 0.5);
   }
 }
 
@@ -131,10 +131,10 @@
     max-width: 84rem;
   }
   .glow-accent {
-    box-shadow: 0 0 80px -5px rgba(16, 244, 142, 0.35);
+    box-shadow: 0 0 80px -5px rgba(139, 92, 246, 0.35);
   }
   .glow-accent-strong {
-    box-shadow: 0 0 100px 0px rgba(16, 244, 142, 0.55);
+    box-shadow: 0 0 100px 0px rgba(139, 92, 246, 0.55);
   }
 }
 
@@ -150,10 +150,10 @@
     max-width: 105rem;
   }
   .glow-accent {
-    box-shadow: 0 0 110px -5px rgba(16, 244, 142, 0.4);
+    box-shadow: 0 0 110px -5px rgba(139, 92, 246, 0.4);
   }
   .glow-accent-strong {
-    box-shadow: 0 0 140px 0px rgba(16, 244, 142, 0.6);
+    box-shadow: 0 0 140px 0px rgba(139, 92, 246, 0.6);
   }
 }
 
@@ -169,10 +169,10 @@
     max-width: 140rem;
   }
   .glow-accent {
-    box-shadow: 0 0 160px -5px rgba(16, 244, 142, 0.45);
+    box-shadow: 0 0 160px -5px rgba(139, 92, 246, 0.45);
   }
   .glow-accent-strong {
-    box-shadow: 0 0 200px 0px rgba(16, 244, 142, 0.65);
+    box-shadow: 0 0 200px 0px rgba(139, 92, 246, 0.65);
   }
 }
 
@@ -283,10 +283,10 @@
 
 @keyframes ctaGlowPulse {
   0%, 100% {
-    box-shadow: 0 0 16px rgba(16, 244, 142, 0.4), 0 0 32px rgba(16, 244, 142, 0.18);
+    box-shadow: 0 0 16px rgba(139, 92, 246, 0.4), 0 0 32px rgba(139, 92, 246, 0.18);
   }
   50% {
-    box-shadow: 0 0 30px rgba(16, 244, 142, 0.75), 0 0 55px rgba(16, 244, 142, 0.35);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.75), 0 0 55px rgba(139, 92, 246, 0.35);
   }
 }
 
@@ -366,8 +366,8 @@
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
   }
   50% {
-    border-color: rgba(16, 244, 142, 0.5);
-    box-shadow: 0 0 24px rgba(16, 244, 142, 0.25);
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 24px rgba(139, 92, 246, 0.25);
   }
 }
 
@@ -394,28 +394,28 @@
 
 /* Custom glowing effects */
 .glow-accent {
-  box-shadow: 0 0 35px -5px rgba(16, 244, 142, 0.25);
+  box-shadow: 0 0 35px -5px rgba(139, 92, 246, 0.25);
 }
 
 .glow-accent-strong {
-  box-shadow: 0 0 50px 0px rgba(16, 244, 142, 0.45);
+  box-shadow: 0 0 50px 0px rgba(139, 92, 246, 0.45);
 }
 
 .glow-text {
-  text-shadow: 0 0 20px rgba(16, 244, 142, 0.6);
+  text-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
 }
 
 /* Glassmorphism */
 .glass-panel {
-  background: rgba(14, 17, 23, 0.72);
+  background: rgba(18, 18, 30, 0.75);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-panel-hover:hover {
-  background: rgba(18, 24, 32, 0.85);
-  border-color: rgba(16, 244, 142, 0.35);
+  background: rgba(22, 22, 36, 0.85);
+  border-color: rgba(139, 92, 246, 0.35);
 }
 
 /* 3D Holographic Card Shine */
@@ -428,7 +428,7 @@
   inset: -1px;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(16, 244, 142, 0.6), transparent 50%, rgba(52, 211, 153, 0.4));
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.6), transparent 50%, rgba(34, 211, 238, 0.4));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;

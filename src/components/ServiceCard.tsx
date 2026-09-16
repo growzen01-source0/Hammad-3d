@@ -82,7 +82,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, index, onBook
       <div
         className={`w-full rounded-2xl sm:rounded-3xl p-5 sm:p-7 transition-all duration-300 glass-panel relative flex flex-col justify-between min-h-[360px] sm:min-h-[400px] border overflow-hidden ${
           isHovered
-            ? 'border-[#10f48e]/70 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_40px_rgba(16,244,142,0.35)] bg-[#0d131a]/95'
+            ? 'border-[#8B5CF6]/70 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_40px_rgba(139,92,246,0.35)] bg-[#0d131a]/95'
             : 'border-white/10 hover:border-white/20'
         }`}
         style={{
@@ -97,7 +97,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, index, onBook
           className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-10"
           style={{
             opacity: isHovered ? 0.25 : 0,
-            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, rgba(16, 244, 142, 0.8), transparent 60%)`,
+            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, rgba(139, 92, 246, 0.8), transparent 60%)`,
           }}
         />
 
@@ -114,15 +114,15 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, index, onBook
             <div
               className={`w-11 h-11 sm:w-13 sm:h-13 rounded-2xl flex items-center justify-center border transition-all duration-300 ${
                 isHovered
-                  ? 'bg-[#10f48e] text-[#060709] border-[#10f48e] shadow-[0_0_25px_#10f48e] rotate-6 scale-110'
-                  : 'bg-white/5 text-[#10f48e] border-white/10'
+                  ? 'bg-[#8B5CF6] text-white border-[#8B5CF6] shadow-[0_0_25px_#8B5CF6] rotate-6 scale-110'
+                  : 'bg-white/5 text-[#8B5CF6] border-white/10'
               }`}
             >
               <IconComponent className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
 
             {service.badge && (
-              <span className="px-2.5 sm:px-3 py-1 rounded-full text-[10px] font-mono-tech uppercase tracking-wider font-bold bg-[#10f48e]/20 text-[#10f48e] border border-[#10f48e]/40 shadow-[0_0_15px_rgba(16,244,142,0.3)]">
+              <span className="px-2.5 sm:px-3 py-1 rounded-full text-[10px] font-mono-tech uppercase tracking-wider font-bold bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]/40 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
                 {service.badge}
               </span>
             )}
@@ -137,7 +137,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, index, onBook
             </div>
           ) : null}
 
-          <h3 className="font-display font-bold text-lg sm:text-2xl text-white group-hover:text-[#10f48e] transition-colors mb-1.5 sm:mb-2">
+          <h3 className="font-display font-bold text-lg sm:text-2xl text-white group-hover:text-[#8B5CF6] transition-colors mb-1.5 sm:mb-2">
             {service.title}
           </h3>
 
@@ -159,7 +159,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, index, onBook
                 id={`service-feature-${service.id}-${idx}`}
                 className="flex items-start gap-2 text-xs text-neutral-300 group-hover:text-white transition-colors"
               >
-                <div className="w-4 h-4 rounded-full bg-[#10f48e]/20 text-[#10f48e] flex items-center justify-center shrink-0 mt-0.5 shadow-[0_0_8px_rgba(16,244,142,0.3)]">
+                <div className="w-4 h-4 rounded-full bg-[#8B5CF6]/20 text-[#8B5CF6] flex items-center justify-center shrink-0 mt-0.5 shadow-[0_0_8px_rgba(139,92,246,0.3)]">
                   <Check className="w-2.5 h-2.5" />
                 </div>
                 <span className="leading-snug">{feat}</span>
@@ -179,7 +179,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, index, onBook
             </span>
             <span
               id={`service-price-${service.id}`}
-              className="font-display font-bold text-base sm:text-xl text-[#10f48e] drop-shadow-[0_0_10px_rgba(16,244,142,0.5)]"
+              className="font-display font-bold text-base sm:text-xl text-[#8B5CF6] drop-shadow-[0_0_10px_rgba(139,92,246,0.5)]"
             >
               {service.startingPrice.replace(/^Starting at\s*/i, '').trim()}
             </span>
@@ -188,7 +188,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, index, onBook
           <button
             type="button"
             onClick={() => onBook(service.id)}
-            className="min-h-[40px] px-3.5 sm:px-4 py-2 rounded-xl bg-white/10 hover:bg-[#10f48e] hover:text-[#060709] text-white text-xs font-bold transition-all duration-300 flex items-center gap-1.5 shadow-sm group-hover:shadow-[0_0_20px_rgba(16,244,142,0.5)] cursor-pointer transform hover:scale-105"
+            className="min-h-[40px] px-3.5 sm:px-4 py-2 rounded-xl bg-white/10 hover:bg-[#8B5CF6] hover:text-white text-white text-xs font-bold transition-all duration-300 flex items-center gap-1.5 shadow-sm group-hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] cursor-pointer transform hover:scale-105"
           >
             <span>Book Now</span>
             <ArrowRight className="w-3.5 h-3.5" />

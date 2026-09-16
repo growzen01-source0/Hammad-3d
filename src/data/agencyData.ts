@@ -41,7 +41,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     ],
     icon: 'Palette',
     badge: 'Popular',
-    gradient: 'from-emerald-500/20 via-teal-500/10 to-transparent',
+    gradient: 'from-[#8B5CF6]/25 via-[#22D3EE]/10 to-transparent',
   },
   {
     id: 'ui-ux-design',
@@ -58,7 +58,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     ],
     icon: 'Layout',
     badge: 'Award-Grade',
-    gradient: 'from-lime-400/20 via-emerald-500/10 to-transparent',
+    gradient: 'from-[#22D3EE]/25 via-[#8B5CF6]/15 to-transparent',
   },
   {
     id: 'seo',
@@ -75,7 +75,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     ],
     icon: 'Search',
     badge: 'High ROI',
-    gradient: 'from-teal-400/20 via-green-500/10 to-transparent',
+    gradient: 'from-[#8B5CF6]/25 via-violet-500/10 to-transparent',
   },
   {
     id: 'meta-ads',
@@ -92,7 +92,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     ],
     icon: 'Zap',
     badge: 'Proven ROAS',
-    gradient: 'from-emerald-400/20 via-cyan-500/10 to-transparent',
+    gradient: 'from-[#8B5CF6]/20 via-[#22D3EE]/20 to-transparent',
   },
   {
     id: 'web-development',
@@ -109,7 +109,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     ],
     icon: 'Code',
     badge: 'Flagship',
-    gradient: 'from-green-500/20 via-emerald-600/10 to-transparent',
+    gradient: 'from-[#22D3EE]/20 via-[#8B5CF6]/15 to-transparent',
   },
   {
     id: 'shopify-stores',
@@ -126,7 +126,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     ],
     icon: 'ShoppingBag',
     badge: 'E-com Growth',
-    gradient: 'from-emerald-400/20 via-lime-500/10 to-transparent',
+    gradient: 'from-[#8B5CF6]/25 via-fuchsia-500/10 to-transparent',
   },
   {
     id: 'menu-design',
@@ -143,7 +143,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     ],
     icon: 'Utensils',
     badge: 'Hospitality',
-    gradient: 'from-teal-500/20 via-emerald-400/10 to-transparent',
+    gradient: 'from-[#22D3EE]/20 via-[#8B5CF6]/10 to-transparent',
   },
   {
     id: 'social-media-management',
@@ -160,7 +160,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     ],
     icon: 'Share2',
     badge: 'Free Trial Available',
-    gradient: 'from-lime-500/20 via-green-400/10 to-transparent',
+    gradient: 'from-[#8B5CF6]/20 via-[#22D3EE]/15 to-transparent',
   },
 ];
 

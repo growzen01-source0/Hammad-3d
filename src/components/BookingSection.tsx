@@ -241,7 +241,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#10f48e', '#00e676', '#ffffff', '#34d399'],
+        colors: ['#8B5CF6', '#00e676', '#ffffff', '#22D3EE'],
       });
     } catch (err) {
       // graceful fallback if canvas-confetti is not loaded
@@ -296,17 +296,17 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
       className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden perspective-1200 w-full"
     >
       {/* Background glow */}
-      <div className="absolute top-1/2 -right-32 w-96 h-96 rounded-full bg-[#10f48e]/8 blur-[180px] pointer-events-none" />
+      <div className="absolute top-1/2 -right-32 w-96 h-96 rounded-full bg-[#8B5CF6]/8 blur-[180px] pointer-events-none" />
 
       {/* Header */}
       <div className="flex flex-col items-center text-center mb-10 sm:mb-16">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#10f48e]/10 hover:bg-[#10f48e]/20 border border-[#10f48e]/30 hover:border-[#10f48e]/60 text-[#10f48e] text-xs font-mono-tech uppercase tracking-widest mb-3 shadow-[0_0_20px_rgba(16,244,142,0.2)] hover:shadow-[0_0_28px_rgba(16,244,142,0.45)] transition-all duration-[350ms] ease-in-out transform hover:scale-105 hover:-translate-y-0.5 cursor-default group/pill">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#8B5CF6]/10 hover:bg-[#8B5CF6]/20 border border-[#8B5CF6]/30 hover:border-[#8B5CF6]/60 text-[#8B5CF6] text-xs font-mono-tech uppercase tracking-widest mb-3 shadow-[0_0_20px_rgba(139,92,246,0.2)] hover:shadow-[0_0_28px_rgba(139,92,246,0.45)] transition-all duration-[350ms] ease-in-out transform hover:scale-105 hover:-translate-y-0.5 cursor-default group/pill">
           <Sparkles className="w-3.5 h-3.5 transition-transform duration-[350ms] ease-in-out group-hover/pill:rotate-45 group-hover/pill:scale-110" />
           <span>Start Your Growth Journey</span>
         </div>
         <h2 className="font-display font-black text-2xl min-[400px]:text-3xl sm:text-5xl md:text-6xl tracking-tight text-white">
           Book a Free{' '}
-          <span className="text-transparent bg-clip-text bg-linear-to-r from-[#10f48e] to-emerald-400">
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-[#8B5CF6] via-[#A78BFA] to-[#22D3EE]">
             Consultation
           </span>
         </h2>
@@ -325,11 +325,11 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
           transformStyle: 'preserve-3d',
           transition: 'transform 0.2s ease-out',
         }}
-        className="max-w-3xl mx-auto glass-panel holo-border rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 border border-white/10 hover:border-[#10f48e]/50 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(16,244,142,0.15)] relative w-full"
+        className="max-w-3xl mx-auto glass-panel holo-border rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 border border-white/10 hover:border-[#8B5CF6]/50 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(139,92,246,0.15)] relative w-full"
       >
         {isSubmitted ? (
           <div className="py-8 sm:py-12 flex flex-col items-center text-center animate-in fade-in zoom-in-95 duration-500">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#10f48e]/20 border border-[#10f48e] text-[#10f48e] flex items-center justify-center mb-5 sm:mb-6 shadow-[0_0_30px_#10f48e]">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#8B5CF6]/20 border border-[#8B5CF6] text-[#8B5CF6] flex items-center justify-center mb-5 sm:mb-6 shadow-[0_0_30px_#8B5CF6]">
               <CheckCircle2 className="w-7 h-7 sm:w-8 sm:h-8" />
             </div>
 
@@ -338,22 +338,22 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
             </h3>
 
             <p className="text-xs sm:text-sm text-neutral-300 max-w-md mb-4 px-2">
-              Thank you, <strong className="text-white">{formData.name}</strong>. Hammad and Raza have been notified. We will review your request regarding <strong className="text-[#10f48e]">{formData.service}</strong> promptly.
+              Thank you, <strong className="text-white">{formData.name}</strong>. Hammad and Raza have been notified. We will review your request regarding <strong className="text-[#8B5CF6]">{formData.service}</strong> promptly.
             </p>
 
             {/* Supabase Storage & Email Sync Status Card */}
-            <div className="w-full max-w-md my-3 p-4 rounded-2xl bg-white/[0.04] border border-[#10f48e]/25 text-left font-mono-tech shadow-[0_0_20px_rgba(16,244,142,0.1)]">
+            <div className="w-full max-w-md my-3 p-4 rounded-2xl bg-white/[0.04] border border-[#8B5CF6]/25 text-left font-mono-tech shadow-[0_0_20px_rgba(139,92,246,0.1)]">
               {/* Supabase sync row */}
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <Database className="w-4 h-4 text-[#10f48e]" />
+                  <Database className="w-4 h-4 text-[#8B5CF6]" />
                   <span className="text-xs text-white font-bold tracking-wider">SUPABASE CLOUD STORAGE</span>
                 </div>
                 <span
                   className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
                     dbResult?.success
-                      ? 'bg-[#10f48e]/20 text-[#10f48e] border border-[#10f48e]/40'
-                      : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                      ? 'bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]/40'
+                      : 'bg-[#8B5CF6]/20 text-emerald-300 border border-emerald-500/30'
                   }`}
                 >
                   {dbResult?.success ? `✓ Saved to ${dbResult.tableNameUsed || 'bookings'}` : '✓ Saved to Local Backup'}
@@ -363,10 +363,10 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
               {/* Email notification status row */}
               <div className="flex items-center justify-between py-2 border-y border-white/5 mb-2.5">
                 <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-[#10f48e]" />
+                  <Mail className="w-4 h-4 text-[#8B5CF6]" />
                   <span className="text-xs text-white font-bold tracking-wider">EMAIL NOTIFICATION</span>
                 </div>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#10f48e]/20 text-[#10f48e] border border-[#10f48e]/40">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]/40">
                   {emailSent ? '✓ Sent to growzen01@gmail.com' : '✓ Notification Dispatched'}
                 </span>
               </div>
@@ -390,7 +390,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-neutral-400">Service:</span>
-                  <span className="text-[#10f48e]">{formData.service}</span>
+                  <span className="text-[#8B5CF6]">{formData.service}</span>
                 </div>
               </div>
             </div>
@@ -401,7 +401,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                 href={submittedWhatsAppLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 px-5 py-3.5 rounded-2xl bg-linear-to-r from-[#10f48e] to-[#00d075] text-[#060709] font-bold text-xs uppercase font-mono-tech tracking-wider shadow-[0_0_20px_rgba(16,244,142,0.4)] hover:scale-105 transition-all flex items-center justify-center gap-2 min-h-[44px]"
+                className="flex-1 px-5 py-3.5 rounded-2xl bg-linear-to-r from-[#8B5CF6] to-[#22D3EE] text-[#0D0D14] font-bold text-xs uppercase font-mono-tech tracking-wider shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:scale-105 transition-all flex items-center justify-center gap-2 min-h-[44px]"
               >
                 <MessageCircle className="w-4 h-4 fill-current" />
                 <span>Send on WhatsApp</span>
@@ -410,9 +410,9 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
 
               <a
                 href={submittedMailtoLink}
-                className="flex-1 px-5 py-3.5 rounded-2xl bg-white/10 hover:bg-[#10f48e]/15 border border-white/15 hover:border-[#10f48e]/40 text-white hover:text-[#10f48e] font-bold text-xs uppercase font-mono-tech tracking-wider transition-all flex items-center justify-center gap-2 min-h-[44px]"
+                className="flex-1 px-5 py-3.5 rounded-2xl bg-white/10 hover:bg-[#8B5CF6]/15 border border-white/15 hover:border-[#8B5CF6]/40 text-white hover:text-[#8B5CF6] font-bold text-xs uppercase font-mono-tech tracking-wider transition-all flex items-center justify-center gap-2 min-h-[44px]"
               >
-                <Mail className="w-4 h-4 text-[#10f48e]" />
+                <Mail className="w-4 h-4 text-[#8B5CF6]" />
                 <span>Open in Email</span>
                 <ArrowUpRight className="w-4 h-4" />
               </a>
@@ -445,7 +445,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="e.g. John Doe"
-                    className="w-full pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-500 focus:outline-none focus:border-[#10f48e] focus:ring-1 focus:ring-[#10f48e] focus:shadow-[0_0_15px_rgba(16,244,142,0.25)] transition-all min-h-[44px]"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-500 focus:outline-none focus:border-[#8B5CF6] focus:ring-1 focus:ring-[#8B5CF6] focus:shadow-[0_0_15px_rgba(139,92,246,0.25)] transition-all min-h-[44px]"
                   />
                 </div>
               </div>
@@ -455,7 +455,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                 <label className="block text-xs font-mono-tech uppercase text-neutral-300 mb-1.5 sm:mb-2">
                   Phone / WhatsApp *
                 </label>
-                <div className="relative flex rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 focus-within:border-[#10f48e] focus-within:ring-1 focus-within:ring-[#10f48e] focus-within:shadow-[0_0_15px_rgba(16,244,142,0.25)] transition-all">
+                <div className="relative flex rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 focus-within:border-[#8B5CF6] focus-within:ring-1 focus-within:ring-[#8B5CF6] focus-within:shadow-[0_0_15px_rgba(139,92,246,0.25)] transition-all">
                   {/* Country Selector Button */}
                   <div className="relative" ref={countryDropdownRef}>
                     <button
@@ -480,9 +480,9 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
 
                     {/* Dropdown Menu */}
                     {isCountryDropdownOpen && (
-                      <div className="absolute top-full left-0 mt-2 w-72 sm:w-80 max-h-72 bg-[#0c1219] border border-white/15 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(16,244,142,0.2)] z-50 overflow-hidden flex flex-col backdrop-blur-xl">
+                      <div className="absolute top-full left-0 mt-2 w-72 sm:w-80 max-h-72 bg-[#121220] border border-white/15 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(139,92,246,0.2)] z-50 overflow-hidden flex flex-col backdrop-blur-xl">
                         {/* Search header */}
-                        <div className="p-2.5 border-b border-white/10 sticky top-0 bg-[#0c1219]/95 backdrop-blur-md">
+                        <div className="p-2.5 border-b border-white/10 sticky top-0 bg-[#121220]/95 backdrop-blur-md">
                           <div className="relative">
                             <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
                             <input
@@ -491,7 +491,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                               value={countrySearch}
                               onChange={(e) => setCountrySearch(e.target.value)}
                               placeholder="Search country or code..."
-                              className="w-full pl-9 pr-3 py-1.5 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-[#10f48e]"
+                              className="w-full pl-9 pr-3 py-1.5 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-[#8B5CF6]"
                             />
                           </div>
                         </div>
@@ -507,8 +507,8 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                                   setSelectedCountry(c);
                                   setIsCountryDropdownOpen(false);
                                 }}
-                                className={`w-full px-3 py-2 text-left flex items-center justify-between text-xs hover:bg-[#10f48e]/15 hover:text-[#10f48e] rounded-lg transition-colors cursor-pointer ${
-                                  selectedCountry.code === c.code ? 'bg-[#10f48e]/10 text-[#10f48e] font-bold' : 'text-neutral-300'
+                                className={`w-full px-3 py-2 text-left flex items-center justify-between text-xs hover:bg-[#8B5CF6]/15 hover:text-[#8B5CF6] rounded-lg transition-colors cursor-pointer ${
+                                  selectedCountry.code === c.code ? 'bg-[#8B5CF6]/10 text-[#8B5CF6] font-bold' : 'text-neutral-300'
                                 }`}
                               >
                                 <span className="flex items-center gap-2.5 truncate">
@@ -559,7 +559,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="yourname@domain.com"
-                    className="w-full pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-500 focus:outline-none focus:border-[#10f48e] focus:ring-1 focus:ring-[#10f48e] focus:shadow-[0_0_15px_rgba(16,244,142,0.25)] transition-all min-h-[44px]"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-500 focus:outline-none focus:border-[#8B5CF6] focus:ring-1 focus:ring-[#8B5CF6] focus:shadow-[0_0_15px_rgba(139,92,246,0.25)] transition-all min-h-[44px]"
                   />
                 </div>
               </div>
@@ -573,7 +573,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                   name="service"
                   value={formData.service}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 text-white text-base sm:text-sm focus:outline-none focus:border-[#10f48e] focus:ring-1 focus:ring-[#10f48e] focus:shadow-[0_0_15px_rgba(16,244,142,0.25)] transition-all cursor-pointer min-h-[44px]"
+                  className="w-full px-4 py-3 rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 text-white text-base sm:text-sm focus:outline-none focus:border-[#8B5CF6] focus:ring-1 focus:ring-[#8B5CF6] focus:shadow-[0_0_15px_rgba(139,92,246,0.25)] transition-all cursor-pointer min-h-[44px]"
                 >
                   {SERVICES_DATA.map((srv) => (
                     <option key={srv.id} value={srv.title} className="bg-[#0b0e14] text-white">
@@ -620,7 +620,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                       }
                       className={`relative p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-center min-h-[58px] sm:min-h-[64px] ${
                         isSelected
-                          ? 'bg-[#10f48e]/15 border-[#10f48e] shadow-[0_0_20px_rgba(16,244,142,0.25)] text-white ring-1 ring-[#10f48e]'
+                          ? 'bg-[#8B5CF6]/15 border-[#8B5CF6] shadow-[0_0_20px_rgba(139,92,246,0.25)] text-white ring-1 ring-[#8B5CF6]'
                           : 'bg-[#080b10] border-white/10 hover:border-white/25 text-neutral-300 hover:text-white'
                       }`}
                     >
@@ -629,12 +629,12 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                           {tier.title}
                         </span>
                         {tier.popular && !isSelected && (
-                          <span className="text-[10px] font-mono-tech text-[#10f48e] bg-[#10f48e]/10 border border-[#10f48e]/30 px-1.5 py-0.5 rounded">
+                          <span className="text-[10px] font-mono-tech text-[#8B5CF6] bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 px-1.5 py-0.5 rounded">
                             Popular
                           </span>
                         )}
                         {isSelected && (
-                          <span className="w-4 h-4 rounded-full bg-[#10f48e] text-[#060709] flex items-center justify-center text-[10px] font-bold">
+                          <span className="w-4 h-4 rounded-full bg-[#8B5CF6] text-white flex items-center justify-center text-[10px] font-bold">
                             ✓
                           </span>
                         )}
@@ -663,7 +663,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Tell us about your brand, requirements, deadlines, or inspiration..."
-                  className="w-full pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-500 focus:outline-none focus:border-[#10f48e] focus:ring-1 focus:ring-[#10f48e] focus:shadow-[0_0_15px_rgba(16,244,142,0.25)] transition-all resize-none"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl sm:rounded-2xl bg-[#080b10] border border-white/10 text-white text-base sm:text-sm placeholder-neutral-500 focus:outline-none focus:border-[#8B5CF6] focus:ring-1 focus:ring-[#8B5CF6] focus:shadow-[0_0_15px_rgba(139,92,246,0.25)] transition-all resize-none"
                 />
               </div>
             </div>
@@ -677,7 +677,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
               <MagneticButton
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full sm:w-auto px-8 py-3.5 sm:py-4 rounded-full bg-linear-to-r from-[#10f48e] via-[#00e676] to-[#00c853] text-[#060709] font-bold text-xs uppercase font-mono-tech tracking-wider shadow-[0_0_30px_rgba(16,244,142,0.4)] flex items-center justify-center gap-2 cursor-pointer hover:scale-105 transition-all min-h-[44px]"
+                className="w-full sm:w-auto px-8 py-3.5 sm:py-4 rounded-full bg-linear-to-r from-[#8B5CF6] via-[#00e676] to-[#00c853] text-[#0D0D14] font-bold text-xs uppercase font-mono-tech tracking-wider shadow-[0_0_30px_rgba(139,92,246,0.4)] flex items-center justify-center gap-2 cursor-pointer hover:scale-105 transition-all min-h-[44px]"
               >
                 {isSubmitting ? (
                   <>
@@ -696,7 +696,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
             {/* Direct Connect Options Attached Below: WhatsApp & Email */}
             <div className="pt-4 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs font-mono-tech">
               <div className="flex items-center gap-2 text-neutral-400 text-center md:text-left">
-                <span className="w-2 h-2 rounded-full bg-[#10f48e] animate-pulse"></span>
+                <span className="w-2 h-2 rounded-full bg-[#8B5CF6] animate-pulse"></span>
                 <span>Prefer direct contact? Connect via:</span>
               </div>
 
@@ -706,21 +706,21 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Send consultation details on WhatsApp"
-                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/5 hover:bg-[#10f48e]/15 border border-white/10 hover:border-[#10f48e]/50 text-neutral-300 hover:text-white transition-all duration-300 font-mono-tech text-xs group cursor-pointer shadow-[0_0_15px_rgba(16,244,142,0.1)] min-h-[42px]"
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/5 hover:bg-[#8B5CF6]/15 border border-white/10 hover:border-[#8B5CF6]/50 text-neutral-300 hover:text-white transition-all duration-300 font-mono-tech text-xs group cursor-pointer shadow-[0_0_15px_rgba(139,92,246,0.1)] min-h-[42px]"
                 >
-                  <MessageCircle className="w-3.5 h-3.5 text-[#10f48e] group-hover:scale-110 transition-transform shrink-0" />
+                  <MessageCircle className="w-3.5 h-3.5 text-[#8B5CF6] group-hover:scale-110 transition-transform shrink-0" />
                   <span>Send on WhatsApp</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#10f48e] transition-colors shrink-0" />
+                  <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#8B5CF6] transition-colors shrink-0" />
                 </a>
 
                 <a
                   href={quickEmailUrl}
                   aria-label="Send consultation details via Email"
-                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/5 hover:bg-[#10f48e]/15 border border-white/10 hover:border-[#10f48e]/50 text-neutral-300 hover:text-white transition-all duration-300 font-mono-tech text-xs group cursor-pointer shadow-[0_0_15px_rgba(16,244,142,0.1)] min-h-[42px]"
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/5 hover:bg-[#8B5CF6]/15 border border-white/10 hover:border-[#8B5CF6]/50 text-neutral-300 hover:text-white transition-all duration-300 font-mono-tech text-xs group cursor-pointer shadow-[0_0_15px_rgba(139,92,246,0.1)] min-h-[42px]"
                 >
-                  <Mail className="w-3.5 h-3.5 text-[#10f48e] group-hover:scale-110 transition-transform shrink-0" />
+                  <Mail className="w-3.5 h-3.5 text-[#8B5CF6] group-hover:scale-110 transition-transform shrink-0" />
                   <span>Send via Email</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#10f48e] transition-colors shrink-0" />
+                  <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#8B5CF6] transition-colors shrink-0" />
                 </a>
               </div>
             </div>
@@ -732,21 +732,21 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
       <div className="mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-mono-tech text-neutral-400 max-w-3xl mx-auto px-4">
         <div className="flex flex-wrap items-center justify-center gap-y-2 gap-x-3 sm:gap-x-4 py-2.5 px-4 sm:px-6 rounded-full bg-white/[0.03] border border-white/[0.08] shadow-[0_4px_24px_rgba(0,0,0,0.35)] backdrop-blur-xs text-center">
           <span className="flex items-center gap-1.5 text-neutral-300">
-            <span className="text-[#10f48e] text-xs">🔒</span>
+            <span className="text-[#8B5CF6] text-xs">🔒</span>
             <span className="font-semibold text-white/90">Secure Connection Active</span>
           </span>
 
           <span className="text-neutral-600 hidden sm:inline">•</span>
 
           <span className="flex items-center gap-1.5 text-neutral-300">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#10f48e]" />
+            <ShieldCheck className="w-3.5 h-3.5 text-[#8B5CF6]" />
             <span>Your Data is Encrypted</span>
           </span>
 
           <span className="text-neutral-600 hidden sm:inline">•</span>
 
           <span className="flex items-center gap-1.5 text-neutral-300">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#10f48e] animate-pulse"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-pulse"></span>
             <span>Avg. Response Time: <strong className="text-white font-medium">2 Hours</strong></span>
           </span>
         </div>
@@ -755,10 +755,10 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
       {/* Supabase SQL Setup Modal */}
       {showSqlGuide && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative w-full max-w-2xl bg-[#090d12] border border-[#10f48e]/40 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(16,244,142,0.25)] text-left font-mono-tech max-h-[90vh] overflow-y-auto">
+          <div className="relative w-full max-w-2xl bg-[#090d12] border border-[#8B5CF6]/40 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(139,92,246,0.25)] text-left font-mono-tech max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded-xl bg-[#10f48e]/15 text-[#10f48e]">
+                <div className="p-2 rounded-xl bg-[#8B5CF6]/15 text-[#8B5CF6]">
                   <Database className="w-5 h-5" />
                 </div>
                 <div>
@@ -782,7 +782,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                 onClick={() => setActiveModalTab('sql')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${
                   activeModalTab === 'sql'
-                    ? 'bg-[#10f48e] text-[#060709]'
+                    ? 'bg-[#8B5CF6] text-white'
                     : 'text-neutral-400 hover:text-white'
                 }`}
               >
@@ -796,7 +796,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                 }}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors flex items-center gap-1.5 ${
                   activeModalTab === 'live'
-                    ? 'bg-[#10f48e] text-[#060709]'
+                    ? 'bg-[#8B5CF6] text-white'
                     : 'text-neutral-400 hover:text-white'
                 }`}
               >
@@ -812,10 +812,10 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
             {activeModalTab === 'sql' ? (
               <>
                 <p className="text-xs text-neutral-300 leading-relaxed mb-4 font-normal">
-                  Appointments and bookings submitted on this site are automatically piped to your Supabase project. If you have not created the <code className="text-[#10f48e] bg-white/10 px-1.5 py-0.5 rounded">bookings</code> table yet, copy and run this SQL in your Supabase SQL Editor:
+                  Appointments and bookings submitted on this site are automatically piped to your Supabase project. If you have not created the <code className="text-[#8B5CF6] bg-white/10 px-1.5 py-0.5 rounded">bookings</code> table yet, copy and run this SQL in your Supabase SQL Editor:
                 </p>
 
-                <div className="relative rounded-2xl bg-[#030608] border border-white/10 p-4 mb-5 text-xs text-[#10f48e] overflow-x-auto">
+                <div className="relative rounded-2xl bg-[#030608] border border-white/10 p-4 mb-5 text-xs text-[#8B5CF6] overflow-x-auto">
                   <pre className="text-[11px] leading-relaxed text-neutral-200 font-mono">
                     {SUPABASE_SQL_SCHEMA}
                   </pre>
@@ -831,8 +831,8 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                   >
                     {copiedSql ? (
                       <>
-                        <Check className="w-3.5 h-3.5 text-[#10f48e]" />
-                        <span className="text-[#10f48e]">Copied!</span>
+                        <Check className="w-3.5 h-3.5 text-[#8B5CF6]" />
+                        <span className="text-[#8B5CF6]">Copied!</span>
                       </>
                     ) : (
                       <>
@@ -853,7 +853,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                     type="button"
                     onClick={loadBookings}
                     disabled={isLoadingBookings}
-                    className="text-xs text-[#10f48e] hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-xs text-[#8B5CF6] hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <RefreshCw className={`w-3 h-3 ${isLoadingBookings ? 'animate-spin' : ''}`} />
                     <span>Refresh</span>
@@ -870,11 +870,11 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                     {liveBookings.map((b, idx) => (
                       <div
                         key={b.id || idx}
-                        className="p-3 rounded-xl bg-white/[0.03] border border-white/10 text-xs flex flex-col gap-1 hover:border-[#10f48e]/30 transition-all"
+                        className="p-3 rounded-xl bg-white/[0.03] border border-white/10 text-xs flex flex-col gap-1 hover:border-[#8B5CF6]/30 transition-all"
                       >
                         <div className="flex items-center justify-between">
                           <strong className="text-white text-sm">{b.name}</strong>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#10f48e]/15 text-[#10f48e] border border-[#10f48e]/30 font-mono">
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#8B5CF6]/15 text-[#8B5CF6] border border-[#8B5CF6]/30 font-mono">
                             {b.status || 'pending'}
                           </span>
                         </div>
@@ -904,7 +904,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                 href={`https://supabase.com/dashboard/project/${SUPABASE_PROJECT_ID}/sql`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#10f48e] text-[#060709] font-bold text-xs uppercase flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-[0_0_20px_rgba(16,244,142,0.3)]"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#8B5CF6] text-white font-bold text-xs uppercase flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-[0_0_20px_rgba(139,92,246,0.3)]"
               >
                 <span>Open Supabase SQL Editor</span>
                 <ExternalLink className="w-3.5 h-3.5" />
