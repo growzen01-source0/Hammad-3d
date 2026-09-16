@@ -73,8 +73,9 @@ export const AboutSection: React.FC = () => {
               : 'opacity-0 translate-y-16 rotate-2 scale-95'
           }`}
         >
-          <div className="w-full glass-panel holo-border rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 relative border border-white/10 hover:border-[#10f48e]/60 transition-all duration-500 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_30px_rgba(16,244,142,0.15)] group transform hover:-translate-y-2">
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
+          <div className="w-full glass-panel holo-border rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 relative border border-white/10 hover:border-[#10f48e]/60 transition-all duration-500 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_30px_rgba(16,244,142,0.15)] group transform hover:-translate-y-2">
+            {/* Card Header with Live Status & Metric Pill */}
+            <div className="flex items-center justify-between mb-3 pb-3 border-b border-white/10">
               <div className="flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#10f48e] animate-ping" />
                 <span
@@ -89,23 +90,39 @@ export const AboutSection: React.FC = () => {
                 className="text-[10px] font-mono-tech text-[#10f48e] bg-[#10f48e]/15 px-2.5 py-1 rounded-full border border-[#10f48e]/40 font-bold flex items-center gap-1.5 shrink-0"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-[#10f48e] animate-pulse" />
-                Powered by Growth
+                Live Performance
               </span>
             </div>
 
-            {/* 3D Canvas */}
+            {/* Quick Summary Telemetry Bar */}
+            <div className="grid grid-cols-3 gap-2 mb-3.5 p-2 rounded-xl bg-black/40 border border-white/5 font-mono-tech text-center">
+              <div className="border-r border-white/10 pr-1">
+                <div className="text-[10px] text-neutral-400">Peak ARR</div>
+                <div className="text-xs sm:text-sm font-bold text-white">$850K+</div>
+              </div>
+              <div className="border-r border-white/10 px-1">
+                <div className="text-[10px] text-neutral-400">Peak ROAS</div>
+                <div className="text-xs sm:text-sm font-bold text-[#10f48e]">14.8x</div>
+              </div>
+              <div className="pl-1">
+                <div className="text-[10px] text-neutral-400">Net Surge</div>
+                <div className="text-xs sm:text-sm font-bold text-[#38bdf8]">+450%</div>
+              </div>
+            </div>
+
+            {/* 3D Canvas / Multi-View Growth Terminal */}
             <ThreeGrowthModel />
 
             {/* Micro Caption */}
-            <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between gap-2 text-xs font-mono-tech text-neutral-400">
+            <div className="mt-3.5 pt-3 border-t border-white/5 flex items-center justify-between gap-2 text-xs font-mono-tech text-neutral-400">
               <span
                 id="about-model-caption"
                 className="flex items-center gap-1.5 text-neutral-300"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-[#10f48e] shrink-0 animate-pulse" />
-                Live Performance Snapshot — Drag to Explore
+                Interactive Terminal — Toggle Spline, Bars & Mix
               </span>
-              <span className="text-emerald-400 font-medium hidden sm:inline-block">Real-time</span>
+              <span className="text-emerald-400 font-medium hidden sm:inline-block">60 FPS Live</span>
             </div>
           </div>
         </div>

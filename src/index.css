@@ -271,6 +271,142 @@
   animation: holoShine 4s linear infinite;
 }
 
+/* Animated CTA button shimmer, glow beacon & icon twinkle */
+@keyframes ctaShimmer {
+  0% {
+    transform: translateX(-160%) skewX(-20deg);
+  }
+  45%, 100% {
+    transform: translateX(260%) skewX(-20deg);
+  }
+}
+
+@keyframes ctaGlowPulse {
+  0%, 100% {
+    box-shadow: 0 0 16px rgba(16, 244, 142, 0.4), 0 0 32px rgba(16, 244, 142, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(16, 244, 142, 0.75), 0 0 55px rgba(16, 244, 142, 0.35);
+  }
+}
+
+@keyframes iconTwinkle {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(18deg) scale(1.2);
+  }
+  75% {
+    transform: rotate(-18deg) scale(1.1);
+  }
+}
+
+.animate-cta-shimmer {
+  animation: ctaShimmer 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-cta-glow {
+  animation: ctaGlowPulse 2.4s ease-in-out infinite;
+}
+
+.animate-icon-twinkle {
+  animation: iconTwinkle 2.4s ease-in-out infinite;
+}
+
+/* Kinetic Hero Brand Animations */
+@keyframes letterWave {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-9px) rotate(-1.5deg);
+  }
+}
+
+@keyframes brandGradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes auraPulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.06);
+  }
+}
+
+.animate-aura-pulse {
+  animation: auraPulse 4s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes bounceSubtle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@keyframes glassBorderPulse {
+  0%, 100% {
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    border-color: rgba(16, 244, 142, 0.5);
+    box-shadow: 0 0 24px rgba(16, 244, 142, 0.25);
+  }
+}
+
+@keyframes glassSheen {
+  0% {
+    transform: translateX(-180%) skewX(-25deg);
+  }
+  40%, 100% {
+    transform: translateX(280%) skewX(-25deg);
+  }
+}
+
+.animate-bounce-subtle {
+  animation: bounceSubtle 1.8s ease-in-out infinite;
+}
+
+.animate-glass-border {
+  animation: glassBorderPulse 3.2s ease-in-out infinite;
+}
+
+.animate-glass-sheen {
+  animation: glassSheen 4.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 /* Custom glowing effects */
 .glow-accent {
   box-shadow: 0 0 35px -5px rgba(16, 244, 142, 0.25);

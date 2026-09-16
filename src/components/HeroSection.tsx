@@ -187,23 +187,34 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
           </span>
         </div>
 
-        {/* Kinetic Hero Title with 3D Letter Rotation */}
+        {/* Kinetic Hero Title with 3D Letter Wave & Animated Holographic Gradient */}
         <div
           id="hero-brand-container"
-          className="w-full max-w-full overflow-visible px-2 sm:px-6 md:px-8 py-1.5 sm:py-3 flex justify-center items-center box-border transform-none sm:[transform:translateZ(40px)]"
+          className="relative w-full max-w-full overflow-visible px-2 sm:px-6 md:px-8 py-2 sm:py-4 flex justify-center items-center box-border transform-none sm:[transform:translateZ(45px)] group"
         >
+          {/* Animated Cyber Holographic Aura Glow Behind Brand */}
+          <div
+            className="absolute inset-x-2 sm:inset-x-8 -inset-y-4 rounded-3xl bg-[radial-gradient(ellipse_at_center,rgba(16,244,142,0.28)_0%,rgba(56,189,248,0.18)_40%,transparent_75%)] blur-2xl pointer-events-none -z-10 animate-aura-pulse"
+          />
+
           <h1
             id="hero-brand-title"
-            className="font-black text-[clamp(1.95rem,9.2vw,3.4rem)] sm:text-[clamp(3.5rem,7.5vw,5rem)] md:text-[clamp(4.2rem,7.2vw,5.5rem)] lg:text-[clamp(5.2rem,6.8vw,5.8rem)] xl:text-[107px] tracking-tight text-white uppercase flex items-center justify-center select-none leading-none max-w-full text-center whitespace-nowrap overflow-visible"
+            className="font-black text-[clamp(2.1rem,9.6vw,3.6rem)] sm:text-[clamp(3.6rem,7.8vw,5.2rem)] md:text-[clamp(4.4rem,7.4vw,5.8rem)] lg:text-[clamp(5.4rem,7vw,6.2rem)] xl:text-[112px] tracking-tight uppercase flex items-center justify-center select-none leading-none max-w-full text-center whitespace-nowrap overflow-visible"
             style={{ fontFamily: 'Georgia, serif' }}
           >
             {brandLetters.map((char, index) => (
               <span
                 key={index}
-                className="inline-block transform sm:hover:scale-115 sm:hover:text-[#10f48e] transition-all duration-300 sm:hover:rotate-3 cursor-default sm:hover:drop-shadow-[0_0_30px_rgba(16,244,142,0.8)] px-[0.012em] sm:px-[0.015em]"
+                className="inline-block transform sm:hover:scale-120 sm:hover:-rotate-3 transition-all duration-300 cursor-default px-[0.015em] sm:px-[0.02em] select-none will-change-transform"
                 style={{
                   fontFamily: 'Georgia, serif',
-                  textShadow: '0 10px 30px rgba(0,0,0,0.85), 0 0 20px rgba(16,244,142,0.2)',
+                  background: 'linear-gradient(135deg, #ffffff 0%, #10f48e 30%, #45ffb0 60%, #38bdf8 100%)',
+                  backgroundSize: '240% 240%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  animation: `letterWave 3.4s ease-in-out infinite, brandGradientFlow 5s ease infinite`,
+                  animationDelay: `${index * 0.12}s`,
+                  filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.7)) drop-shadow(0 0 20px rgba(16,244,142,0.35))',
                 }}
               >
                 {char}
@@ -237,16 +248,28 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
           style={{ transform: 'translateZ(45px)' }}
           className="mt-6 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto px-4 max-w-md sm:max-w-none"
         >
+          {/* Primary CTA: Glowing Shimmer Consultation Button */}
           <MagneticButton
             id="hero-book-btn"
             onClick={onOpenBooking}
-            className="w-full sm:w-auto min-h-[48px] px-8 py-3.5 sm:py-4 rounded-full bg-linear-to-r from-[#10f48e] via-[#00e676] to-[#00c853] text-[#060709] font-bold text-xs sm:text-sm tracking-wider uppercase shadow-[0_0_35px_rgba(16,244,142,0.45)] hover:shadow-[0_0_55px_rgba(16,244,142,0.7)] transition-all flex items-center justify-center gap-2 transform hover:-translate-y-1"
+            className="relative overflow-hidden w-full sm:w-auto min-h-[48px] px-8 py-3.5 sm:py-4 rounded-full bg-linear-to-r from-[#10f48e] via-[#3bf39d] to-[#00d075] text-[#060709] font-bold text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 hover:scale-105 active:scale-95 animate-cta-glow flex items-center justify-center gap-2 group cursor-pointer"
           >
-            <Sparkles className="w-4 h-4" />
-            <span>Book Consultation</span>
-            <ChevronRight className="w-4 h-4" />
+            {/* Sweeping Laser Light Shimmer Glare */}
+            <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/65 to-transparent w-3/4 h-full pointer-events-none animate-cta-shimmer" />
+
+            {/* Live Ping Beacon Dot */}
+            <span className="relative z-10 flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black/70 opacity-80" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-black" />
+              </span>
+              <Sparkles className="w-4 h-4 animate-icon-twinkle shrink-0" />
+              <span className="font-mono-tech tracking-wider">Book Consultation</span>
+              <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5 shrink-0" />
+            </span>
           </MagneticButton>
 
+          {/* Secondary CTA: Glass Obsidian Button with Animated Border & Sheen */}
           <MagneticButton
             onClick={() => {
               const servicesEl = document.getElementById('services');
@@ -263,10 +286,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBooking, onExplo
               }
             }}
             glow={false}
-            className="w-full sm:w-auto min-h-[48px] px-7 py-3.5 sm:py-4 rounded-full bg-[#0d1017]/80 hover:bg-[#151b26] border border-white/15 text-white font-medium text-xs sm:text-sm tracking-wider hover:border-[#10f48e]/50 transition-all backdrop-blur-lg flex items-center justify-center gap-2 transform hover:-translate-y-1"
+            className="relative overflow-hidden w-full sm:w-auto min-h-[48px] px-7 py-3.5 sm:py-4 rounded-full bg-[#0d1017]/85 hover:bg-[#151b26] border text-white font-medium text-xs sm:text-sm tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 animate-glass-border backdrop-blur-lg flex items-center justify-center gap-2.5 group cursor-pointer"
           >
-            <span>Explore Services</span>
-            <span className="text-[#10f48e]">↓</span>
+            {/* Translucent Glass Reflection Sheen */}
+            <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent w-3/4 h-full pointer-events-none animate-glass-sheen" />
+
+            <span className="relative z-10 flex items-center gap-2 font-mono-tech">
+              <span className="group-hover:text-[#10f48e] transition-colors">Explore Services</span>
+              <span className="inline-block text-[#10f48e] font-bold text-sm animate-bounce-subtle group-hover:translate-y-1 transition-transform">
+                ↓
+              </span>
+            </span>
           </MagneticButton>
         </div>
 

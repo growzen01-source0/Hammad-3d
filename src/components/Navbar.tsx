@@ -134,12 +134,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
         <div className="flex items-center gap-2 sm:gap-3">
           <MagneticButton
             onClick={onOpenBooking}
-            className="hidden sm:inline-flex px-4 sm:px-5 py-2.5 rounded-full bg-linear-to-r from-[#10f48e] to-[#00d075] text-[#060709] text-xs font-bold uppercase tracking-wider transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(16,244,142,0.35)]"
+            className="hidden sm:inline-flex relative overflow-hidden px-4 sm:px-5 py-2.5 rounded-full bg-linear-to-r from-[#10f48e] via-[#45ffb0] to-[#00d075] text-[#060709] text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 animate-cta-glow group cursor-pointer"
           >
-            <span className="flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5" />
-              Book Now
-              <ArrowUpRight className="w-3.5 h-3.5" />
+            {/* Ambient Energy Glow Sweep / Shimmer Glare */}
+            <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/60 to-transparent w-3/4 h-full pointer-events-none animate-cta-shimmer" />
+
+            {/* Inner Content with Twinkling Sparkle and Live Status Indicator */}
+            <span className="relative z-10 flex items-center gap-1.5 font-mono-tech">
+              <span className="relative flex h-2 w-2 mr-0.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black/60 opacity-80" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-black" />
+              </span>
+              <Sparkles className="w-3.5 h-3.5 text-black animate-icon-twinkle" />
+              <span className="tracking-wider">Book Now</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-black transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
             </span>
           </MagneticButton>
 
@@ -183,10 +191,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
                   setMobileMenuOpen(false);
                   onOpenBooking();
                 }}
-                className="w-full min-h-[48px] py-3.5 rounded-xl bg-linear-to-r from-[#10f48e] to-[#00d075] text-[#060709] text-xs font-bold uppercase font-mono-tech tracking-wider flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(16,244,142,0.4)] cursor-pointer active:scale-[0.98] transition-transform"
+                className="relative overflow-hidden w-full min-h-[48px] py-3.5 rounded-xl bg-linear-to-r from-[#10f48e] via-[#45ffb0] to-[#00d075] text-[#060709] text-xs font-bold uppercase font-mono-tech tracking-wider flex items-center justify-center gap-2 animate-cta-glow cursor-pointer active:scale-[0.98] transition-transform group"
               >
-                <Sparkles className="w-4 h-4" />
-                Book a Consultation
+                <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/60 to-transparent w-3/4 h-full pointer-events-none animate-cta-shimmer" />
+                <span className="relative z-10 flex items-center gap-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black/60 opacity-80" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-black" />
+                  </span>
+                  <Sparkles className="w-4 h-4 animate-icon-twinkle" />
+                  <span>Book a Consultation</span>
+                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </span>
               </button>
               <p className="text-center text-[11px] font-mono-tech text-neutral-400">
                 {AGENCY_INFO.location}
