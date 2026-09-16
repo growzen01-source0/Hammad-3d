@@ -13,7 +13,6 @@ import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { PromoModal } from './components/PromoModal';
 import { FloatingActions } from './components/FloatingActions';
-import { VoiceCallingAgent } from './components/VoiceCallingAgent';
 
 export default function App() {
   const [selectedService, setSelectedService] = useState<string | undefined>(undefined);
@@ -93,9 +92,6 @@ export default function App() {
 
       {/* Floating WhatsApp and Back to Top Buttons */}
       <FloatingActions />
-
-      {/* Voice-Based AI Calling Agent Widget */}
-      <VoiceCallingAgent onOpenBooking={(serviceId) => scrollToBooking(serviceId)} />
 
       {/* Promotional Pop-up (Free 3-Day Trial) */}
       <PromoModal

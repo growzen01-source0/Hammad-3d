@@ -351,21 +351,6 @@
   animation: auraPulse 4s ease-in-out infinite;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.96) translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
 @keyframes bounceSubtle {
   0%, 100% {
     transform: translateY(0px);

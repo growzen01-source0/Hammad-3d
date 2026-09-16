@@ -1,9 +1,7 @@
 {
   "name": "Remix Growzen",
   "description": "Award-winning 3D immersive website for creative and digital growth agency Growzen, featuring interactive Three.js scenes, magnetic 3D cards, and kinetic storytelling.",
-  "requestFramePermissions": [
-    "microphone"
-  ],
+  "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
   ]
