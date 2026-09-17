@@ -3,9 +3,13 @@ import { createClient } from '@supabase/supabase-js';
 // Supabase configuration using provided Project ID & API Key
 export const SUPABASE_PROJECT_ID = 'xlanwfpwohvkfjepbdlt';
 export const SUPABASE_URL =
-  import.meta.env.VITE_SUPABASE_URL || `https://${SUPABASE_PROJECT_ID}.supabase.co`;
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) ||
+  (typeof process !== 'undefined' && process.env?.VITE_SUPABASE_URL) ||
+  `https://${SUPABASE_PROJECT_ID}.supabase.co`;
 export const SUPABASE_ANON_KEY =
-  import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_xwFcrSgcf9Tvp9o4RXcsZg_wxQPglEm';
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) ||
+  (typeof process !== 'undefined' && process.env?.VITE_SUPABASE_ANON_KEY) ||
+  'sb_publishable_xwFcrSgcf9Tvp9o4RXcsZg_wxQPglEm';
 
 // Initialize the Supabase Client
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -22,6 +26,9 @@ export interface BookingPayload {
   service: string;
   packageTier?: string;
   message?: string;
+  goals?: string;
+  project_overview?: string;
+  budget?: string;
   source?: string;
 }
 
@@ -78,8 +85,22 @@ async function attemptInsertAdaptive(tableName: string, recordObj: Record<string
       console.warn(
         `Supabase: Column '${missingCol}' not found in '${tableName}'. Stripping and retrying...`
       );
+      const val = currentRecord[missingCol];
       delete currentRecord[missingCol];
       strippedCols.push(missingCol);
+
+      // Smart column alias fallback: if 'goals' was missing, try 'project_overview' or 'message'
+      if (missingCol === 'goals' && val) {
+        if (!('project_overview' in currentRecord) && !strippedCols.includes('project_overview')) {
+          currentRecord.project_overview = val;
+        } else if (!('message' in currentRecord) && !strippedCols.includes('message')) {
+          currentRecord.message = val;
+        }
+      } else if (missingCol === 'project_overview' && val) {
+        if (!('message' in currentRecord) && !strippedCols.includes('message')) {
+          currentRecord.message = val;
+        }
+      }
       continue;
     }
 
@@ -114,7 +135,8 @@ async function attemptInsertAdaptive(tableName: string, recordObj: Record<string
 
 /**
  * Saves a new appointment / consultation booking directly into Supabase.
- * Features adaptive column matching (handles missing columns like 'message' or 'package_tier' automatically),
+ * Correctly maps Project Overview / Goals to the Supabase 'goals' column (type text),
+ * with automatic fallback to 'project_overview' and 'message' aliases,
  * automatic table fallback ('bookings' -> 'appointments'),
  * and local storage backup guarantee.
  */
@@ -122,28 +144,50 @@ export async function saveBookingToSupabase(
   payload: BookingPayload
 ): Promise<SaveBookingResult> {
   const timestamp = new Date().toISOString();
+
+  // Extract user's project overview / goals text input from any supplied alias
+  const overviewText = (
+    payload.goals ||
+    payload.project_overview ||
+    payload.message ||
+    ''
+  ).trim();
+
+  // Primary database record mapped directly to Supabase table schema
+  // Note: The Supabase 'bookings' table contains 'goals' (PostgreSQL text) for Project Overview / Goals
   const record: Record<string, any> = {
     name: payload.name.trim(),
     phone: payload.phone.trim(),
     email: payload.email.trim(),
     service: payload.service,
-    package_tier: payload.packageTier || null,
-    message: payload.message?.trim() || null,
+    goals: overviewText || null,
     status: 'pending',
-    source: payload.source || 'Growzen Web Booking Form',
     created_at: timestamp,
   };
 
+  if (payload.budget) {
+    record.budget = payload.budget;
+  }
+
   // Always keep an immediate local backup
   try {
-    const existingBackup = JSON.parse(
-      localStorage.getItem('growzen_bookings_backup') || '[]'
-    );
-    existingBackup.unshift({ ...record, id: `local-${Date.now()}` });
-    localStorage.setItem(
-      'growzen_bookings_backup',
-      JSON.stringify(existingBackup.slice(0, 50))
-    );
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      const existingBackup = JSON.parse(
+        localStorage.getItem('growzen_bookings_backup') || '[]'
+      );
+      existingBackup.unshift({
+        ...record,
+        message: overviewText,
+        project_overview: overviewText,
+        package_tier: payload.packageTier,
+        source: payload.source || 'Growzen Web Booking Form',
+        id: `local-${Date.now()}`
+      });
+      localStorage.setItem(
+        'growzen_bookings_backup',
+        JSON.stringify(existingBackup.slice(0, 50))
+      );
+    }
   } catch (storageErr) {
     console.warn('LocalStorage backup error:', storageErr);
   }
@@ -246,7 +290,10 @@ export async function fetchRecentBookings(): Promise<any[]> {
   }
 
   try {
-    return JSON.parse(localStorage.getItem('growzen_bookings_backup') || '[]');
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      return JSON.parse(localStorage.getItem('growzen_bookings_backup') || '[]');
+    }
+    return [];
   } catch {
     return [];
   }
@@ -266,16 +313,22 @@ create table if not exists public.bookings (
   phone text not null,
   email text,
   service text,
-  package_tier text,
+  goals text,
+  project_overview text,
   message text,
+  budget text,
+  package_tier text,
   status text default 'pending',
   source text default 'Growzen Web Booking Form'
 );
 
--- If your bookings table was already created without the 'message' or other columns, run these:
+-- If your bookings table was already created without the 'goals' or other columns, run these:
+alter table public.bookings add column if not exists goals text;
+alter table public.bookings add column if not exists project_overview text;
 alter table public.bookings add column if not exists message text;
 alter table public.bookings add column if not exists service text;
 alter table public.bookings add column if not exists email text;
+alter table public.bookings add column if not exists budget text;
 alter table public.bookings add column if not exists package_tier text;
 alter table public.bookings add column if not exists status text default 'pending';
 alter table public.bookings add column if not exists source text default 'Growzen Web Booking Form';

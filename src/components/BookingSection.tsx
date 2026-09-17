@@ -186,7 +186,10 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
         email: formData.email,
         service: formData.service,
         packageTier: formData.packageTier,
+        budget: formData.budget,
         message: formData.message,
+        goals: formData.message,
+        project_overview: formData.message,
         source: 'Growzen Web Booking Form',
       });
       setDbResult(result);
@@ -884,9 +887,10 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                           <div>🎯 Service: <span className="text-neutral-200">{b.service}</span></div>
                           {b.package_tier && <div>📦 Tier: <span className="text-neutral-200">{b.package_tier}</span></div>}
                         </div>
-                        {b.message && (
+                        {(b.goals || b.project_overview || b.message) && (
                           <div className="text-[11px] text-neutral-400 bg-black/40 p-2 rounded-lg mt-1 italic">
-                            "{b.message}"
+                            <span className="text-[#8B5CF6] font-semibold not-italic">Project Overview / Goals: </span>
+                            "{b.goals || b.project_overview || b.message}"
                           </div>
                         )}
                         <div className="text-[9px] text-neutral-500 mt-0.5">

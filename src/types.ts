@@ -59,4 +59,6 @@ export interface ConsultationFormData {
   packageTier?: string;
   budget?: string;
   message: string;
+  goals?: string;
+  project_overview?: string;
 }
