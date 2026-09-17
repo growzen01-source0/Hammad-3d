@@ -24,7 +24,9 @@ export interface BookingPayload {
   phone: string;
   email: string;
   service: string;
-  packageTier?: string;
+  packageTier?: string | null;
+  package_tier?: string | null;
+  plan_preference?: string | null;
   message?: string;
   goals?: string;
   project_overview?: string;
@@ -100,6 +102,14 @@ async function attemptInsertAdaptive(tableName: string, recordObj: Record<string
         if (!('message' in currentRecord) && !strippedCols.includes('message')) {
           currentRecord.message = val;
         }
+      } else if (missingCol === 'package_tier' && val) {
+        if (!('plan_preference' in currentRecord) && !strippedCols.includes('plan_preference')) {
+          currentRecord.plan_preference = val;
+        }
+      } else if (missingCol === 'plan_preference' && val) {
+        if (!('package_tier' in currentRecord) && !strippedCols.includes('package_tier')) {
+          currentRecord.package_tier = val;
+        }
       }
       continue;
     }
@@ -136,7 +146,8 @@ async function attemptInsertAdaptive(tableName: string, recordObj: Record<string
 /**
  * Saves a new appointment / consultation booking directly into Supabase.
  * Correctly maps Project Overview / Goals to the Supabase 'goals' column (type text),
- * with automatic fallback to 'project_overview' and 'message' aliases,
+ * and maps Package Tier Preference to 'package_tier' (with fallback to 'plan_preference'),
+ * with automatic column stripping if not yet created in Supabase schema cache,
  * automatic table fallback ('bookings' -> 'appointments'),
  * and local storage backup guarantee.
  */
@@ -153,15 +164,28 @@ export async function saveBookingToSupabase(
     ''
   ).trim();
 
+  // Extract user's selected package tier (Basic Plan / Standard Plan / Premium Plan)
+  // If not selected or empty string, normalize to null so it stores as null/empty
+  const rawTier = (
+    payload.package_tier !== undefined ? payload.package_tier :
+    payload.packageTier !== undefined ? payload.packageTier :
+    payload.plan_preference !== undefined ? payload.plan_preference :
+    null
+  );
+  const selectedTier = (typeof rawTier === 'string' && rawTier.trim() !== '')
+    ? rawTier.trim()
+    : null;
+
   // Primary database record mapped directly to Supabase table schema
-  // Note: The Supabase 'bookings' table contains 'goals' (PostgreSQL text) for Project Overview / Goals
+  // Note: The Supabase 'bookings' table contains 'goals' (PostgreSQL text) for Project Overview / Goals,
+  // and 'package_tier' (PostgreSQL text, nullable) for Package Tier Preference.
   const record: Record<string, any> = {
     name: payload.name.trim(),
     phone: payload.phone.trim(),
     email: payload.email.trim(),
     service: payload.service,
     goals: overviewText || null,
-    status: 'pending',
+    package_tier: selectedTier,
     created_at: timestamp,
   };
 
@@ -179,7 +203,9 @@ export async function saveBookingToSupabase(
         ...record,
         message: overviewText,
         project_overview: overviewText,
-        package_tier: payload.packageTier,
+        packageTier: selectedTier,
+        package_tier: selectedTier,
+        plan_preference: selectedTier,
         source: payload.source || 'Growzen Web Booking Form',
         id: `local-${Date.now()}`
       });
@@ -330,6 +356,7 @@ alter table public.bookings add column if not exists service text;
 alter table public.bookings add column if not exists email text;
 alter table public.bookings add column if not exists budget text;
 alter table public.bookings add column if not exists package_tier text;
+alter table public.bookings add column if not exists plan_preference text;
 alter table public.bookings add column if not exists status text default 'pending';
 alter table public.bookings add column if not exists source text default 'Growzen Web Booking Form';
 

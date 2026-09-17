@@ -180,12 +180,19 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
 
     // 3. Direct Cloud Storage into Supabase Account
     try {
+      // Capture package tier selection (Basic Plan, Standard Plan, or Premium Plan; or null if unselected)
+      const selectedPackageTier = formData.packageTier && formData.packageTier.trim() !== ''
+        ? formData.packageTier.trim()
+        : null;
+
       const result = await saveBookingToSupabase({
         name: formData.name,
         phone: formattedPhone,
         email: formData.email,
         service: formData.service,
-        packageTier: formData.packageTier,
+        packageTier: selectedPackageTier,
+        package_tier: selectedPackageTier,
+        plan_preference: selectedPackageTier,
         budget: formData.budget,
         message: formData.message,
         goals: formData.message,
@@ -885,7 +892,9 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                           <div>📞 {b.phone}</div>
                           <div>✉️ {b.email || 'N/A'}</div>
                           <div>🎯 Service: <span className="text-neutral-200">{b.service}</span></div>
-                          {b.package_tier && <div>📦 Tier: <span className="text-neutral-200">{b.package_tier}</span></div>}
+                          {(b.package_tier || b.plan_preference || b.packageTier) && (
+                            <div>📦 Tier: <span className="text-[#8B5CF6] font-semibold">{b.package_tier || b.plan_preference || b.packageTier}</span></div>
+                          )}
                         </div>
                         {(b.goals || b.project_overview || b.message) && (
                           <div className="text-[11px] text-neutral-400 bg-black/40 p-2 rounded-lg mt-1 italic">

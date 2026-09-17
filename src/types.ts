@@ -57,6 +57,8 @@ export interface ConsultationFormData {
   email: string;
   service: string;
   packageTier?: string;
+  package_tier?: string;
+  plan_preference?: string;
   budget?: string;
   message: string;
   goals?: string;

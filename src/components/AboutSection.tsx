@@ -120,7 +120,7 @@ export const AboutSection: React.FC = () => {
                 className="flex items-center gap-1.5 text-neutral-300"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] shrink-0 animate-pulse" />
-                Interactive Terminal — Toggle Spline, Bars & Mix
+                Interactive Terminal — Spline, Bars, Radar & Orbit
               </span>
               <span className="text-[#22D3EE] font-medium hidden sm:inline-block">60 FPS Live</span>
             </div>
