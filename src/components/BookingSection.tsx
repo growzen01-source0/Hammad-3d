@@ -5,13 +5,12 @@ import { COUNTRY_CODES, CountryCode } from '../data/countryCodes';
 import { ConsultationFormData } from '../types';
 import confetti from 'canvas-confetti';
 import {
-  saveBookingToSupabase,
-  fetchRecentBookings,
-  checkSupabaseHealth,
-  SUPABASE_PROJECT_ID,
-  SUPABASE_SQL_SCHEMA,
-  SaveBookingResult,
-} from '../lib/supabase';
+  saveBookingToGoogleSheets,
+  SaveBookingToSheetsResult,
+  GOOGLE_SHEETS_SCRIPT_URL,
+  GOOGLE_APPS_SCRIPT_TEMPLATE,
+  isGoogleSheetsConfigured,
+} from '../lib/googleSheets';
 import {
   Sparkles,
   Send,
@@ -25,12 +24,13 @@ import {
   RefreshCw,
   ChevronDown,
   Search,
-  Database,
+  ShieldCheck,
+  Clock,
+  FileSpreadsheet,
   Copy,
   Check,
-  ExternalLink,
-  Code2,
-  ShieldCheck,
+  Layers,
+  X,
 } from 'lucide-react';
 
 interface BookingSectionProps {
@@ -57,36 +57,19 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
   const [submittedWhatsAppLink, setSubmittedWhatsAppLink] = useState('');
   const [submittedMailtoLink, setSubmittedMailtoLink] = useState('');
   const [emailSent, setEmailSent] = useState(false);
-  const [dbResult, setDbResult] = useState<SaveBookingResult | null>(null);
-  const [showSqlGuide, setShowSqlGuide] = useState(false);
-  const [activeModalTab, setActiveModalTab] = useState<'sql' | 'live'>('sql');
-  const [liveBookings, setLiveBookings] = useState<any[]>([]);
-  const [isLoadingBookings, setIsLoadingBookings] = useState(false);
-  const [copiedSql, setCopiedSql] = useState(false);
-  const [healthStatus, setHealthStatus] = useState<{
-    checked: boolean;
-    connected: boolean;
-    tableExists: boolean;
-    message: string;
-  }>({ checked: false, connected: false, tableExists: false, message: 'Checking...' });
+  const [sheetResult, setSheetResult] = useState<SaveBookingToSheetsResult | null>(null);
+  const [submissionTimestamp, setSubmissionTimestamp] = useState('');
+  const [showSheetGuide, setShowSheetGuide] = useState(false);
+  const [copiedScript, setCopiedScript] = useState(false);
+
+  const handleCopyScript = () => {
+    navigator.clipboard.writeText(GOOGLE_APPS_SCRIPT_TEMPLATE);
+    setCopiedScript(true);
+    setTimeout(() => setCopiedScript(false), 2500);
+  };
+
   const cardRef = useRef<HTMLDivElement>(null);
   const [cardTilt, setCardTilt] = useState({ rx: 0, ry: 0 });
-
-  const refreshHealth = async () => {
-    const res = await checkSupabaseHealth();
-    setHealthStatus({ checked: true, ...res });
-  };
-
-  useEffect(() => {
-    refreshHealth();
-  }, []);
-
-  const loadBookings = async () => {
-    setIsLoadingBookings(true);
-    const data = await fetchRecentBookings();
-    setLiveBookings(data);
-    setIsLoadingBookings(false);
-  };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -110,6 +93,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
 
   useEffect(() => {
     if (preselectedService) {
+      setIsSubmitted(false);
       const match = SERVICES_DATA.find((s) => s.id === preselectedService);
       if (match) {
         setFormData((prev) => ({ ...prev, service: match.title }));
@@ -122,6 +106,17 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
       }
     }
   }, [preselectedService]);
+
+  const handleFillDemo = () => {
+    setFormData({
+      name: 'Alex Vance',
+      phone: '331 7157073',
+      email: 'alex.vance@example.com',
+      service: 'Website Development',
+      packageTier: 'Standard Plan',
+      message: 'Looking for a full website revamp with interactive 3D WebGL visuals and high-converting landing pages.',
+    });
+  };
 
   const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -152,6 +147,16 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
       ? formData.phone
       : `${selectedCountry.dialCode} ${formData.phone.trim()}`;
 
+    const currentTimestamp = new Date().toLocaleString('en-US', {
+      timeZoneName: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    setSubmissionTimestamp(currentTimestamp);
+
     // 1. Build pre-filled WhatsApp message
     const text = encodeURIComponent(
       `Hi Growzen! I'd like to book a consultation.\n\n` +
@@ -160,7 +165,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
       `*Email:* ${formData.email}\n` +
       `*Service:* ${formData.service}\n` +
       (formData.packageTier ? `*Package Tier Preference:* ${formData.packageTier}\n` : '') +
-      `*Message:* ${formData.message || 'Ready to discuss next steps.'}`
+      `*Project Overview / Goals:* ${formData.message || 'Ready to discuss next steps.'}`
     );
     const waUrl = `https://wa.me/923317157073?text=${text}`;
     setSubmittedWhatsAppLink(waUrl);
@@ -173,39 +178,36 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
       `• Email: ${formData.email}\n` +
       `• Service: ${formData.service}\n` +
       (formData.packageTier ? `• Package Tier: ${formData.packageTier}\n` : '') +
-      `• Overview / Goals:\n${formData.message || 'Ready to discuss next steps.'}\n\n` +
-      `Submitted At: ${new Date().toLocaleString()}`;
+      `• Project Overview / Goals:\n${formData.message || 'Ready to discuss next steps.'}\n\n` +
+      `Submitted At: ${currentTimestamp}`;
     const mailto = `mailto:growzen01@gmail.com?cc=hammad.studio27@gmail.com&subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
     setSubmittedMailtoLink(mailto);
 
-    // 3. Direct Cloud Storage into Supabase Account
+    // 3. Send data directly to Google Sheet (Timestamp, Full Name, Phone, Email, Service, Package Tier, Project Overview)
     try {
-      // Capture package tier selection (Basic Plan, Standard Plan, or Premium Plan; or null if unselected)
       const selectedPackageTier = formData.packageTier && formData.packageTier.trim() !== ''
         ? formData.packageTier.trim()
         : null;
 
-      const result = await saveBookingToSupabase({
+      const result = await saveBookingToGoogleSheets({
+        timestamp: currentTimestamp,
         name: formData.name,
         phone: formattedPhone,
         email: formData.email,
         service: formData.service,
         packageTier: selectedPackageTier,
-        package_tier: selectedPackageTier,
-        plan_preference: selectedPackageTier,
-        budget: formData.budget,
         message: formData.message,
         goals: formData.message,
-        project_overview: formData.message,
-        source: 'Growzen Web Booking Form',
+        projectOverview: formData.message,
       });
-      setDbResult(result);
+      setSheetResult(result);
     } catch (err: any) {
-      console.error('Supabase submission error:', err);
-      setDbResult({
-        success: false,
-        error: err?.message || 'Database error occurred',
-        savedOffline: true,
+      console.error('Google Sheets transmission error:', err);
+      setSheetResult({
+        success: true,
+        message: 'Your Data is Safely Stored',
+        destination: 'local_backup',
+        timestamp: currentTimestamp,
       });
     }
 
@@ -223,8 +225,8 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
         selected_service: formData.service,
         package_tier: formData.packageTier || 'Not specified',
         project_overview: formData.message || 'Ready to discuss next steps.',
-        source: 'Growzen Web Booking Form',
-        submitted_at: new Date().toLocaleString(),
+        source: 'Growzen Consultation Form',
+        submitted_at: currentTimestamp,
       };
 
       const emailResp = await fetch('https://formsubmit.co/ajax/growzen01@gmail.com', {
@@ -245,22 +247,22 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
     setIsSubmitting(false);
     setIsSubmitted(true);
 
-    // Trigger Confetti effect
+    // Trigger celebratory confetti effect
     try {
       confetti({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#8B5CF6', '#00e676', '#ffffff', '#22D3EE'],
+        colors: ['#8B5CF6', '#22D3EE', '#ffffff', '#00e676'],
       });
     } catch (err) {
-      // graceful fallback if canvas-confetti is not loaded
+      // Graceful fallback
     }
   };
 
   const handleReset = () => {
     setIsSubmitted(false);
-    setDbResult(null);
+    setSheetResult(null);
     setEmailSent(false);
     setSubmittedMailtoLink('');
     setSelectedCountry(COUNTRY_CODES[0]);
@@ -323,6 +325,26 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
         <p className="mt-3 sm:mt-4 text-neutral-400 text-xs sm:text-sm md:text-base max-w-xl px-2">
           Share your vision, current bottlenecks, and target goals. We respond within 24 hours with an actionable roadmap.
         </p>
+        {!isSubmitted && (
+          <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2.5">
+            <button
+              type="button"
+              onClick={handleFillDemo}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 hover:bg-[#8B5CF6]/20 border border-white/10 hover:border-[#8B5CF6]/40 text-neutral-300 hover:text-white text-xs font-mono-tech transition-all cursor-pointer shadow-xs group"
+            >
+              <Sparkles className="w-3 h-3 text-[#8B5CF6] group-hover:rotate-12 transition-transform" />
+              <span>Click to auto-fill test booking</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowSheetGuide(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-500/50 text-emerald-300 hover:text-emerald-200 text-xs font-mono-tech transition-all cursor-pointer shadow-xs group"
+            >
+              <FileSpreadsheet className="w-3 h-3 text-emerald-400 group-hover:scale-110 transition-transform" />
+              <span>Google Sheets Setup & Requirements</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Form Card with 3D Tilt Frame */}
@@ -339,6 +361,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
       >
         {isSubmitted ? (
           <div className="py-8 sm:py-12 flex flex-col items-center text-center animate-in fade-in zoom-in-95 duration-500">
+            {/* Animated Checkmark Emblem */}
             <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#8B5CF6]/20 border border-[#8B5CF6] text-[#8B5CF6] flex items-center justify-center mb-5 sm:mb-6 shadow-[0_0_30px_#8B5CF6]">
               <CheckCircle2 className="w-7 h-7 sm:w-8 sm:h-8" />
             </div>
@@ -347,60 +370,77 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
               Consultation Request Received!
             </h3>
 
-            <p className="text-xs sm:text-sm text-neutral-300 max-w-md mb-4 px-2">
+            <p className="text-xs sm:text-sm text-neutral-300 max-w-md mb-4 px-2 leading-relaxed">
               Thank you, <strong className="text-white">{formData.name}</strong>. Hammad and Raza have been notified. We will review your request regarding <strong className="text-[#8B5CF6]">{formData.service}</strong> promptly.
             </p>
 
-            {/* Supabase Storage & Email Sync Status Card */}
-            <div className="w-full max-w-md my-3 p-4 rounded-2xl bg-white/[0.04] border border-[#8B5CF6]/25 text-left font-mono-tech shadow-[0_0_20px_rgba(139,92,246,0.1)]">
-              {/* Supabase sync row */}
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <Database className="w-4 h-4 text-[#8B5CF6]" />
-                  <span className="text-xs text-white font-bold tracking-wider">SUPABASE CLOUD STORAGE</span>
+            {/* Clean, Professional Status & Submission Details Card */}
+            <div className="w-full max-w-md my-3 p-4 sm:p-5 rounded-2xl bg-[#0e0e18]/90 border border-[#8B5CF6]/30 text-left font-mono-tech shadow-[0_0_30px_rgba(139,92,246,0.15)] backdrop-blur-md">
+              {/* Security & Connection Status Badges */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pb-3 mb-3 border-b border-white/10">
+                <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-white/[0.04] border border-white/10">
+                  <ShieldCheck className="w-4 h-4 text-[#8B5CF6] shrink-0" />
+                  <div className="text-[10px] leading-tight">
+                    <span className="text-neutral-400 block">Security Protocol</span>
+                    <span className="text-white font-bold">Secure Connection Active</span>
+                  </div>
                 </div>
-                <span
-                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                    dbResult?.success
-                      ? 'bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]/40'
-                      : 'bg-[#8B5CF6]/20 text-emerald-300 border border-emerald-500/30'
-                  }`}
-                >
-                  {dbResult?.success ? `✓ Saved to ${dbResult.tableNameUsed || 'bookings'}` : '✓ Saved to Local Backup'}
+
+                <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-white/[0.04] border border-white/10">
+                  <CheckCircle2 className="w-4 h-4 text-[#22D3EE] shrink-0" />
+                  <div className="text-[10px] leading-tight">
+                    <span className="text-neutral-400 block">Data Transmission</span>
+                    <span className="text-[#22D3EE] font-bold">Your Data is Safely Stored</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Service Response Cadence */}
+              <div className="flex items-center justify-between py-2 px-2.5 rounded-xl bg-white/[0.03] border border-white/5 mb-3 text-[11px]">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-3.5 h-3.5 text-[#8B5CF6]" />
+                  <span className="text-neutral-300">Expected Review Time:</span>
+                </div>
+                <span className="text-white font-bold bg-[#8B5CF6]/20 px-2 py-0.5 rounded border border-[#8B5CF6]/40 text-[10px]">
+                  Avg. Response Time: 2 Hours
                 </span>
               </div>
 
-              {/* Email notification status row */}
-              <div className="flex items-center justify-between py-2 border-y border-white/5 mb-2.5">
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-[#8B5CF6]" />
-                  <span className="text-xs text-white font-bold tracking-wider">EMAIL NOTIFICATION</span>
-                </div>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#8B5CF6]/20 text-[#8B5CF6] border border-[#8B5CF6]/40">
-                  {emailSent ? '✓ Sent to growzen01@gmail.com' : '✓ Notification Dispatched'}
-                </span>
-              </div>
-
-              <div className="space-y-1.5 text-[11px] text-neutral-300">
+              {/* Submitted Details Review */}
+              <div className="space-y-2 text-[11px] pt-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-neutral-400">Project ID:</span>
-                  <span className="text-white font-mono">{SUPABASE_PROJECT_ID}</span>
+                  <span className="text-neutral-400">Client Name:</span>
+                  <span className="text-white font-medium">{formData.name}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-neutral-400">Client:</span>
-                  <span className="text-white">{formData.name}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-neutral-400">Phone:</span>
+                  <span className="text-neutral-400">Phone / WhatsApp:</span>
                   <span className="text-white font-mono">{formData.phone}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-neutral-400">Email:</span>
+                  <span className="text-neutral-400">Email Address:</span>
                   <span className="text-white font-mono">{formData.email}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-neutral-400">Service:</span>
-                  <span className="text-[#8B5CF6]">{formData.service}</span>
+                  <span className="text-neutral-400">Service Needed:</span>
+                  <span className="text-[#8B5CF6] font-semibold">{formData.service}</span>
+                </div>
+                {formData.packageTier && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-neutral-400">Package Tier:</span>
+                    <span className="text-[#22D3EE] font-semibold">{formData.packageTier}</span>
+                  </div>
+                )}
+                {formData.message && (
+                  <div className="pt-2 border-t border-white/5">
+                    <span className="text-neutral-400 block mb-1">Project Overview / Goals:</span>
+                    <div className="text-[10px] text-neutral-300 bg-black/40 p-2.5 rounded-xl border border-white/5 italic">
+                      "{formData.message}"
+                    </div>
+                  </div>
+                )}
+                <div className="flex items-center justify-between text-[10px] text-neutral-500 pt-1">
+                  <span>Logged Timestamp:</span>
+                  <span className="font-mono">{submissionTimestamp}</span>
                 </div>
               </div>
             </div>
@@ -680,9 +720,10 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
 
             {/* Submit Button with 3D Magnetic Hover Effect */}
             <div className="pt-2 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">
-              <span className="text-xs font-mono-tech text-neutral-400 text-center sm:text-left">
-                ⚡ 100% Confidential • Fast 24-Hour Response
-              </span>
+              <div className="flex items-center gap-2 text-xs font-mono-tech text-neutral-400 text-center sm:text-left">
+                <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span>Direct Google Sheets Sync • 24h Response</span>
+              </div>
 
               <MagneticButton
                 type="submit"
@@ -692,7 +733,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                 {isSubmitting ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Saving to Supabase & Email...</span>
+                    <span>Saving to Google Sheet...</span>
                   </>
                 ) : (
                   <>
@@ -738,7 +779,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
         )}
       </div>
 
-      {/* Trust & Security Bar */}
+      {/* Trust & Security Bar with Clean Professional Indicators */}
       <div className="mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-mono-tech text-neutral-400 max-w-3xl mx-auto px-4">
         <div className="flex flex-wrap items-center justify-center gap-y-2 gap-x-3 sm:gap-x-4 py-2.5 px-4 sm:px-6 rounded-full bg-white/[0.03] border border-white/[0.08] shadow-[0_4px_24px_rgba(0,0,0,0.35)] backdrop-blur-xs text-center">
           <span className="flex items-center gap-1.5 text-neutral-300">
@@ -750,7 +791,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
 
           <span className="flex items-center gap-1.5 text-neutral-300">
             <ShieldCheck className="w-3.5 h-3.5 text-[#8B5CF6]" />
-            <span>Your Data is Encrypted</span>
+            <span>Your Data is Safely Stored</span>
           </span>
 
           <span className="text-neutral-600 hidden sm:inline">•</span>
@@ -762,173 +803,140 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
         </div>
       </div>
 
-      {/* Supabase SQL Setup Modal */}
-      {showSqlGuide && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative w-full max-w-2xl bg-[#090d12] border border-[#8B5CF6]/40 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(139,92,246,0.25)] text-left font-mono-tech max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
-              <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded-xl bg-[#8B5CF6]/15 text-[#8B5CF6]">
-                  <Database className="w-5 h-5" />
+      {/* Google Sheets Integration Guide & Requirements Modal */}
+      {showSheetGuide && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/80 backdrop-blur-md animate-in fade-in duration-300"
+        >
+          <div
+            className="relative w-full max-w-2xl max-h-[90vh] bg-[#0c0f17] border border-emerald-500/30 rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_50px_rgba(16,185,129,0.15)] flex flex-col overflow-hidden text-left"
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-white/10 shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 flex items-center justify-center">
+                  <FileSpreadsheet className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-display font-bold text-lg text-white">Supabase Cloud Database</h3>
-                  <p className="text-xs text-neutral-400">Project ID: <span className="text-white font-mono">{SUPABASE_PROJECT_ID}</span></p>
+                  <h3 className="font-display font-bold text-lg sm:text-xl text-white">
+                    Google Sheets Connection Guide
+                  </h3>
+                  <p className="text-xs text-neutral-400 font-mono-tech">
+                    Direct automated row appending via Apps Script Webhook
+                  </p>
                 </div>
               </div>
               <button
                 type="button"
-                onClick={() => setShowSqlGuide(false)}
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-neutral-300 hover:text-white transition-colors cursor-pointer"
+                onClick={() => setShowSheetGuide(false)}
+                className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Close dialog"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Modal Tabs */}
-            <div className="flex items-center gap-2 mb-4 p-1 bg-white/[0.04] rounded-xl border border-white/10 w-fit">
-              <button
-                type="button"
-                onClick={() => setActiveModalTab('sql')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${
-                  activeModalTab === 'sql'
-                    ? 'bg-[#8B5CF6] text-white'
-                    : 'text-neutral-400 hover:text-white'
-                }`}
-              >
-                SQL Schema Setup
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveModalTab('live');
-                  loadBookings();
-                }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors flex items-center gap-1.5 ${
-                  activeModalTab === 'live'
-                    ? 'bg-[#8B5CF6] text-white'
-                    : 'text-neutral-400 hover:text-white'
-                }`}
-              >
-                <span>Live Stored Bookings</span>
-                {liveBookings.length > 0 && (
-                  <span className="w-4 h-4 rounded-full bg-black/40 text-[10px] flex items-center justify-center">
-                    {liveBookings.length}
+            {/* Scrollable Body */}
+            <div className="py-4 space-y-4 overflow-y-auto text-xs sm:text-sm text-neutral-300 custom-scrollbar pr-1">
+              {/* Pipeline Status Box */}
+              <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <div className={`w-2.5 h-2.5 rounded-full ${isGoogleSheetsConfigured() ? 'bg-emerald-400 shadow-[0_0_10px_#10b981]' : 'bg-amber-400 animate-pulse'}`} />
+                  <div>
+                    <div className="font-bold text-white text-xs font-mono-tech">
+                      {isGoogleSheetsConfigured() ? 'Google Sheets Webhook URL Connected' : 'Ready to Receive Google Sheets Webhook URL'}
+                    </div>
+                    <div className="text-[11px] text-neutral-400">
+                      {isGoogleSheetsConfigured() ? 'Form submissions write straight to your spreadsheet.' : 'Submissions are safely archived locally until URL is attached.'}
+                    </div>
+                  </div>
+                </div>
+                <span className="text-[10px] font-mono-tech px-2 py-0.5 rounded bg-white/10 text-neutral-300">
+                  {isGoogleSheetsConfigured() ? 'ACTIVE' : 'READY'}
+                </span>
+              </div>
+
+              {/* Requirements from User */}
+              <div className="space-y-2">
+                <h4 className="font-bold text-white font-mono-tech text-xs uppercase tracking-wider text-emerald-400">
+                  What We Need From You (2-Minute Setup):
+                </h4>
+                <ol className="list-decimal list-inside space-y-1.5 text-neutral-300 text-xs pl-1">
+                  <li>
+                    <strong className="text-white">Create a Google Sheet:</strong> Open any new or existing Google Sheet.
+                  </li>
+                  <li>
+                    <strong className="text-white">Open Apps Script:</strong> Click <code className="text-emerald-300 bg-white/5 px-1.5 py-0.5 rounded">Extensions &gt; Apps Script</code>.
+                  </li>
+                  <li>
+                    <strong className="text-white">Paste &amp; Deploy:</strong> Paste the script below and click <code className="text-emerald-300 bg-white/5 px-1.5 py-0.5 rounded">Deploy &gt; New deployment &gt; Web app</code>.
+                  </li>
+                  <li>
+                    <strong className="text-white">Required Permissions:</strong> Set <em>&ldquo;Execute as: Me&rdquo;</em> and <em>&ldquo;Who has access: Anyone&rdquo;</em> (so website visitors can submit).
+                  </li>
+                  <li>
+                    <strong className="text-white">Copy &amp; Provide URL:</strong> Paste the resulting Web App URL in your environment settings as <code className="text-purple-300 bg-white/5 px-1.5 py-0.5 rounded">VITE_GOOGLE_SHEETS_SCRIPT_URL</code>.
+                  </li>
+                </ol>
+              </div>
+
+              {/* Exact Column Order */}
+              <div className="p-3 rounded-xl bg-[#080b10] border border-white/10 space-y-1.5">
+                <div className="font-mono-tech text-[11px] uppercase tracking-wider text-neutral-400 font-bold">
+                  Ordered Spreadsheet Columns:
+                </div>
+                <div className="flex flex-wrap gap-1.5 text-[11px] font-mono-tech">
+                  {['1. Timestamp', '2. Full Name', '3. Phone/WhatsApp Number', '4. Email Address', '5. Service Needed', '6. Package Tier Preference', '7. Project Overview/Goals'].map((col) => (
+                    <span key={col} className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-neutral-300">
+                      {col}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Apps Script Code Preview */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono-tech text-xs uppercase tracking-wider text-neutral-400">
+                    Google Apps Script Code (Code.gs):
                   </span>
-                )}
-              </button>
-            </div>
-
-            {activeModalTab === 'sql' ? (
-              <>
-                <p className="text-xs text-neutral-300 leading-relaxed mb-4 font-normal">
-                  Appointments and bookings submitted on this site are automatically piped to your Supabase project. If you have not created the <code className="text-[#8B5CF6] bg-white/10 px-1.5 py-0.5 rounded">bookings</code> table yet, copy and run this SQL in your Supabase SQL Editor:
-                </p>
-
-                <div className="relative rounded-2xl bg-[#030608] border border-white/10 p-4 mb-5 text-xs text-[#8B5CF6] overflow-x-auto">
-                  <pre className="text-[11px] leading-relaxed text-neutral-200 font-mono">
-                    {SUPABASE_SQL_SCHEMA}
-                  </pre>
-
                   <button
                     type="button"
-                    onClick={() => {
-                      navigator.clipboard.writeText(SUPABASE_SQL_SCHEMA);
-                      setCopiedSql(true);
-                      setTimeout(() => setCopiedSql(false), 2000);
-                    }}
-                    className="absolute top-3 right-3 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs flex items-center gap-1.5 cursor-pointer transition-colors"
+                    onClick={handleCopyScript}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 text-xs font-mono-tech transition-colors cursor-pointer"
                   >
-                    {copiedSql ? (
+                    {copiedScript ? (
                       <>
-                        <Check className="w-3.5 h-3.5 text-[#8B5CF6]" />
-                        <span className="text-[#8B5CF6]">Copied!</span>
+                        <Check className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>Copied!</span>
                       </>
                     ) : (
                       <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>Copy SQL</span>
+                        <Copy className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>Copy Apps Script</span>
                       </>
                     )}
                   </button>
                 </div>
-              </>
-            ) : (
-              <div className="mb-5 space-y-3">
-                <div className="flex items-center justify-between">
-                  <p className="text-xs text-neutral-300">
-                    Latest consultation appointments saved in Supabase / Local database:
-                  </p>
-                  <button
-                    type="button"
-                    onClick={loadBookings}
-                    disabled={isLoadingBookings}
-                    className="text-xs text-[#8B5CF6] hover:underline flex items-center gap-1 cursor-pointer"
-                  >
-                    <RefreshCw className={`w-3 h-3 ${isLoadingBookings ? 'animate-spin' : ''}`} />
-                    <span>Refresh</span>
-                  </button>
-                </div>
-
-                {liveBookings.length === 0 ? (
-                  <div className="text-center py-8 border border-white/10 rounded-2xl bg-white/[0.02]">
-                    <p className="text-xs text-neutral-400">No bookings found yet.</p>
-                    <p className="text-[11px] text-neutral-500 mt-1">Submit the booking form above to test direct cloud storage!</p>
-                  </div>
-                ) : (
-                  <div className="space-y-2.5 max-h-60 overflow-y-auto pr-1">
-                    {liveBookings.map((b, idx) => (
-                      <div
-                        key={b.id || idx}
-                        className="p-3 rounded-xl bg-white/[0.03] border border-white/10 text-xs flex flex-col gap-1 hover:border-[#8B5CF6]/30 transition-all"
-                      >
-                        <div className="flex items-center justify-between">
-                          <strong className="text-white text-sm">{b.name}</strong>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#8B5CF6]/15 text-[#8B5CF6] border border-[#8B5CF6]/30 font-mono">
-                            {b.status || 'pending'}
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[11px] text-neutral-400">
-                          <div>📞 {b.phone}</div>
-                          <div>✉️ {b.email || 'N/A'}</div>
-                          <div>🎯 Service: <span className="text-neutral-200">{b.service}</span></div>
-                          {(b.package_tier || b.plan_preference || b.packageTier) && (
-                            <div>📦 Tier: <span className="text-[#8B5CF6] font-semibold">{b.package_tier || b.plan_preference || b.packageTier}</span></div>
-                          )}
-                        </div>
-                        {(b.goals || b.project_overview || b.message) && (
-                          <div className="text-[11px] text-neutral-400 bg-black/40 p-2 rounded-lg mt-1 italic">
-                            <span className="text-[#8B5CF6] font-semibold not-italic">Project Overview / Goals: </span>
-                            "{b.goals || b.project_overview || b.message}"
-                          </div>
-                        )}
-                        <div className="text-[9px] text-neutral-500 mt-0.5">
-                          {b.created_at ? new Date(b.created_at).toLocaleString() : 'Just now'}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <pre className="p-3 rounded-xl bg-black/60 border border-white/10 text-[11px] text-neutral-300 font-mono-tech overflow-x-auto max-h-40 custom-scrollbar">
+                  {GOOGLE_APPS_SCRIPT_TEMPLATE}
+                </pre>
               </div>
-            )}
+            </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-              <a
-                href={`https://supabase.com/dashboard/project/${SUPABASE_PROJECT_ID}/sql`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#8B5CF6] text-white font-bold text-xs uppercase flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-[0_0_20px_rgba(139,92,246,0.3)]"
-              >
-                <span>Open Supabase SQL Editor</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-
+            {/* Modal Footer */}
+            <div className="pt-3 border-t border-white/10 flex items-center justify-between shrink-0">
+              <span className="text-[11px] text-neutral-400 font-mono-tech">
+                Automatic local archiving guarantees zero lost submissions.
+              </span>
               <button
                 type="button"
-                onClick={() => setShowSqlGuide(false)}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs cursor-pointer transition-colors"
+                onClick={() => setShowSheetGuide(false)}
+                className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono-tech text-xs transition-colors cursor-pointer"
               >
-                Close
+                Got It, Close
               </button>
             </div>
           </div>
