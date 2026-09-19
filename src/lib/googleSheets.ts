@@ -3,16 +3,19 @@
  *
  * Sends form submission rows directly to Google Sheets via Google Apps Script Web App
  * with columns in order:
- * 1. Timestamp
- * 2. Full Name
- * 3. Phone/WhatsApp Number
- * 4. Email Address
- * 5. Service Needed
- * 6. Package Tier Preference
- * 7. Project Overview/Goals
+ * 1. Date (e.g. 'Sep 19, 2026' - plain text)
+ * 2. Time (e.g. '10:57:52 AM' - plain text)
+ * 3. Full Name
+ * 4. Phone/WhatsApp Number (plain text)
+ * 5. Email Address
+ * 6. Service Needed
+ * 7. Package Tier Preference
+ * 8. Project Overview/Goals
  */
 
 export interface GoogleSheetsBookingPayload {
+  date?: string;
+  time?: string;
   timestamp?: string;
   name: string;
   phone: string;
@@ -28,6 +31,8 @@ export interface SaveBookingToSheetsResult {
   success: boolean;
   message: string;
   destination: 'google_sheets' | 'local_backup';
+  date: string;
+  time: string;
   timestamp: string;
   error?: string;
 }
@@ -65,20 +70,42 @@ const LOCAL_STORAGE_KEY = 'growzen_sheet_bookings_archive';
 export async function saveBookingToGoogleSheets(
   booking: GoogleSheetsBookingPayload
 ): Promise<SaveBookingToSheetsResult> {
-  const formattedTimestamp = new Date().toLocaleString('en-US', {
-    timeZoneName: 'short',
-    year: 'numeric',
+  const now = new Date();
+  
+  // Date format: e.g. "Sep 19, 2026"
+  const rawDate = booking.date?.trim() || now.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
+    year: 'numeric',
+  });
+
+  // Time format: e.g. "10:57:52 AM"
+  const rawTime = booking.time?.trim() || now.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
+    hour12: true,
   });
 
+  // Force Date and Time to plain text by prepending an apostrophe if not already present
+  // Google Sheets hides the leading apostrophe and treats the value strictly as plain text
+  const textFormattedDate = rawDate.startsWith("'") ? rawDate : `'${rawDate}`;
+  const textFormattedTime = rawTime.startsWith("'") ? rawTime : `'${rawTime}`;
+
+  const combinedTimestamp = `${rawDate} at ${rawTime}`;
+
+  // Format phone number to force plain text in Google Sheets and prevent formula evaluation (#ERROR!)
+  const rawPhone = (booking.phone || '').trim();
+  const textFormattedPhone = rawPhone.startsWith('+') && !rawPhone.startsWith("'")
+    ? `'${rawPhone}`
+    : rawPhone;
+
   const rowData = {
-    timestamp: formattedTimestamp,
+    date: textFormattedDate,
+    time: textFormattedTime,
+    timestamp: combinedTimestamp,
     fullName: booking.name?.trim() || 'N/A',
-    phone: booking.phone?.trim() || 'N/A',
+    phone: textFormattedPhone || 'N/A',
     email: booking.email?.trim() || 'N/A',
     serviceNeeded: booking.service?.trim() || 'Website Development',
     packageTierPreference: booking.packageTier?.trim() || 'Not specified',
@@ -91,7 +118,7 @@ export async function saveBookingToGoogleSheets(
     existing.unshift({
       id: `lead_${Date.now()}`,
       ...rowData,
-      createdAt: new Date().toISOString(),
+      createdAt: now.toISOString(),
     });
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(existing.slice(0, 50)));
   } catch (err) {
@@ -118,7 +145,9 @@ export async function saveBookingToGoogleSheets(
         success: true,
         message: 'Row successfully appended to Google Sheet',
         destination: 'google_sheets',
-        timestamp: formattedTimestamp,
+        date: rawDate,
+        time: rawTime,
+        timestamp: combinedTimestamp,
       };
     } catch (err: any) {
       console.error('Google Sheets transmission error:', err);
@@ -126,7 +155,9 @@ export async function saveBookingToGoogleSheets(
         success: true,
         message: 'Submission securely saved and archived',
         destination: 'local_backup',
-        timestamp: formattedTimestamp,
+        date: rawDate,
+        time: rawTime,
+        timestamp: combinedTimestamp,
         error: err?.message,
       };
     }
@@ -137,7 +168,9 @@ export async function saveBookingToGoogleSheets(
     success: true,
     message: 'Your Data is Safely Stored & Secured',
     destination: 'local_backup',
-    timestamp: formattedTimestamp,
+    date: rawDate,
+    time: rawTime,
+    timestamp: combinedTimestamp,
   };
 }
 
@@ -154,46 +187,54 @@ export function getRecentLocalSubmissions() {
 
 /**
  * Complete, ready-to-deploy Google Apps Script code for the user's Google Sheet
+ * Columns: Date, Time, Full Name, Phone/WhatsApp Number, Email Address, Service Needed, Package Tier Preference, Project Overview/Goals
  */
 export const GOOGLE_APPS_SCRIPT_TEMPLATE = `/**
  * Growzen Agency - Google Sheets Booking Web App Integration
  * 
- * INSTRUCTIONS TO DEPLOY:
+ * INSTRUCTIONS TO DEPLOY IN GOOGLE SHEETS:
  * 1. Open your Google Sheet
  * 2. Click Extensions > Apps Script
- * 3. Delete any code in Code.gs and PASTE THIS ENTIRE SCRIPT
- * 4. Click "Deploy" > "New deployment"
- * 5. Click the gear icon next to "Select type" and choose "Web app"
- * 6. Set Description: "Growzen Booking Webhook"
- * 7. Set "Execute as": "Me (your email address)"
- * 8. Set "Who has access": "Anyone"  <-- CRITICAL for public web submissions
- * 9. Click "Deploy", authorize permissions, and copy the Web App URL!
- * 10. Add VITE_GOOGLE_SHEETS_SCRIPT_URL=<your-url> to your .env file
+ * 3. Replace all code in Code.gs with this script
+ * 4. Click "Deploy" > "Manage deployments" > Edit (pencil icon) > Version: "New version" > Click "Deploy"
+ *    (Or if first time: "Deploy" > "New deployment" > Select type: "Web app")
+ * 5. Web App Configuration:
+ *    - Execute as: "Me" (your Google account)
+ *    - Who has access: "Anyone"  <-- CRITICAL for public form submissions
+ * 6. Click "Deploy" and grant permissions if prompted.
  */
 
 function doPost(e) {
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     
-    // Auto-create standard header row if sheet is brand new or empty
+    var headers = [
+      "Date",
+      "Time",
+      "Full Name",
+      "Phone/WhatsApp Number",
+      "Email Address",
+      "Service Needed",
+      "Package Tier Preference",
+      "Project Overview/Goals"
+    ];
+
+    // If sheet is empty, create styled header row
     if (sheet.getLastRow() === 0) {
-      var headers = [
-        "Timestamp",
-        "Full Name",
-        "Phone/WhatsApp Number",
-        "Email Address",
-        "Service Needed",
-        "Package Tier Preference",
-        "Project Overview/Goals"
-      ];
       sheet.appendRow(headers);
-      
-      // Style header row with purple branding and bold text
       var headerRange = sheet.getRange(1, 1, 1, headers.length);
       headerRange.setBackground("#8B5CF6");
       headerRange.setFontColor("#FFFFFF");
       headerRange.setFontWeight("bold");
       sheet.setFrozenRows(1);
+    } else {
+      // If previous header had single "Timestamp" column, auto-split into "Date" & "Time"
+      var firstCell = sheet.getRange(1, 1).getValue().toString().trim();
+      if (firstCell === "Timestamp") {
+        sheet.insertColumnAfter(1);
+        sheet.getRange(1, 1).setValue("Date");
+        sheet.getRange(1, 2).setValue("Time");
+      }
     }
     
     // Parse incoming data payload
@@ -208,17 +249,58 @@ function doPost(e) {
       data = e.parameter;
     }
     
-    var timestamp = data.timestamp || new Date().toLocaleString();
+    var now = new Date();
+    var scriptTimeZone = Session.getScriptTimeZone() || "GMT";
+
+    // Date value: formatted as "Sep 19, 2026"
+    var dateVal = data.date;
+    if (!dateVal) {
+      dateVal = Utilities.formatDate(now, scriptTimeZone, "MMM d, yyyy");
+    }
+
+    // Time value: formatted as "10:57:52 AM"
+    var timeVal = data.time;
+    if (!timeVal) {
+      timeVal = Utilities.formatDate(now, scriptTimeZone, "hh:mm:ss a");
+    }
+
+    // Ensure Date is treated strictly as plain text (leading apostrophe)
+    if (typeof dateVal === 'string') {
+      dateVal = dateVal.trim();
+      if (!dateVal.startsWith("'")) {
+        dateVal = "'" + dateVal;
+      }
+    }
+
+    // Ensure Time is treated strictly as plain text (leading apostrophe)
+    if (typeof timeVal === 'string') {
+      timeVal = timeVal.trim();
+      if (!timeVal.startsWith("'")) {
+        timeVal = "'" + timeVal;
+      }
+    }
+    
     var fullName = data.fullName || data.name || "N/A";
     var phone = data.phone || data.phoneNumber || "N/A";
+    
+    // Force phone number to be treated as plain text (prevent formula evaluation for values starting with '+')
+    if (phone && typeof phone === 'string') {
+      phone = phone.trim();
+      if (phone.startsWith('+') && !phone.startsWith("'")) {
+        phone = "'" + phone;
+      }
+    }
+
     var email = data.email || data.emailAddress || "N/A";
     var serviceNeeded = data.serviceNeeded || data.service || "Website Development";
     var packageTier = data.packageTierPreference || data.packageTier || "Not specified";
     var projectOverview = data.projectOverviewGoals || data.projectOverview || data.goals || data.message || "Ready to discuss next steps.";
     
-    // Append the row in exact requested order
+    // Append the row in exact requested 8-column order:
+    // [Date, Time, Full Name, Phone/WhatsApp Number, Email Address, Service Needed, Package Tier Preference, Project Overview/Goals]
     sheet.appendRow([
-      timestamp,
+      dateVal,
+      timeVal,
       fullName,
       phone,
       email,
@@ -226,6 +308,12 @@ function doPost(e) {
       packageTier,
       projectOverview
     ]);
+
+    // Force Date (col 1), Time (col 2), and Phone (col 4) to plain text format '@'
+    var lastRow = sheet.getLastRow();
+    sheet.getRange(lastRow, 1).setNumberFormat('@');
+    sheet.getRange(lastRow, 2).setNumberFormat('@');
+    sheet.getRange(lastRow, 4).setNumberFormat('@');
     
     return ContentService
       .createTextOutput(JSON.stringify({ status: "success", message: "Row added successfully" }))

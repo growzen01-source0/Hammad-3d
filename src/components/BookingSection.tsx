@@ -51,6 +51,8 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
   const [submittedMailtoLink, setSubmittedMailtoLink] = useState('');
   const [emailSent, setEmailSent] = useState(false);
   const [sheetResult, setSheetResult] = useState<SaveBookingToSheetsResult | null>(null);
+  const [submissionDate, setSubmissionDate] = useState('');
+  const [submissionTime, setSubmissionTime] = useState('');
   const [submissionTimestamp, setSubmissionTimestamp] = useState('');
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -121,14 +123,21 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
       ? formData.phone
       : `${selectedCountry.dialCode} ${formData.phone.trim()}`;
 
-    const currentTimestamp = new Date().toLocaleString('en-US', {
-      timeZoneName: 'short',
-      year: 'numeric',
+    const now = new Date();
+    const currentDate = now.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
+      year: 'numeric',
+    });
+    const currentTime = now.toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
     });
+    const currentTimestamp = `${currentDate} at ${currentTime}`;
+    setSubmissionDate(currentDate);
+    setSubmissionTime(currentTime);
     setSubmissionTimestamp(currentTimestamp);
 
     // 1. Build pre-filled WhatsApp message
@@ -139,7 +148,8 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
       `*Email:* ${formData.email}\n` +
       `*Service:* ${formData.service}\n` +
       (formData.packageTier ? `*Package Tier Preference:* ${formData.packageTier}\n` : '') +
-      `*Project Overview / Goals:* ${formData.message || 'Ready to discuss next steps.'}`
+      `*Project Overview / Goals:* ${formData.message || 'Ready to discuss next steps.'}\n` +
+      `*Date:* ${currentDate} | *Time:* ${currentTime}`
     );
     const waUrl = `https://wa.me/923317157073?text=${text}`;
     setSubmittedWhatsAppLink(waUrl);
@@ -153,17 +163,20 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
       `• Service: ${formData.service}\n` +
       (formData.packageTier ? `• Package Tier: ${formData.packageTier}\n` : '') +
       `• Project Overview / Goals:\n${formData.message || 'Ready to discuss next steps.'}\n\n` +
-      `Submitted At: ${currentTimestamp}`;
+      `• Submission Date: ${currentDate}\n` +
+      `• Submission Time: ${currentTime}`;
     const mailto = `mailto:growzen01@gmail.com?cc=hammad.studio27@gmail.com&subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
     setSubmittedMailtoLink(mailto);
 
-    // 3. Send data directly to Google Sheet (Timestamp, Full Name, Phone, Email, Service, Package Tier, Project Overview)
+    // 3. Send data directly to Google Sheet (Date, Time, Full Name, Phone, Email, Service, Package Tier, Project Overview)
     try {
       const selectedPackageTier = formData.packageTier && formData.packageTier.trim() !== ''
         ? formData.packageTier.trim()
         : null;
 
       const result = await saveBookingToGoogleSheets({
+        date: currentDate,
+        time: currentTime,
         timestamp: currentTimestamp,
         name: formData.name,
         phone: formattedPhone,
@@ -181,6 +194,8 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
         success: true,
         message: 'Your Data is Safely Stored',
         destination: 'local_backup',
+        date: currentDate,
+        time: currentTime,
         timestamp: currentTimestamp,
       });
     }
@@ -239,6 +254,9 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
     setSheetResult(null);
     setEmailSent(false);
     setSubmittedMailtoLink('');
+    setSubmissionDate('');
+    setSubmissionTime('');
+    setSubmissionTimestamp('');
     setSelectedCountry(COUNTRY_CODES[0]);
     setFormData({
       name: '',
@@ -392,9 +410,13 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                     </div>
                   </div>
                 )}
-                <div className="flex items-center justify-between text-[10px] text-neutral-500 pt-1">
-                  <span>Logged Timestamp:</span>
-                  <span className="font-mono">{submissionTimestamp}</span>
+                <div className="flex items-center justify-between text-[10px] text-neutral-400 pt-2 border-t border-white/5">
+                  <span>Submission Date:</span>
+                  <span className="font-mono text-white">{submissionDate || 'Today'}</span>
+                </div>
+                <div className="flex items-center justify-between text-[10px] text-neutral-400">
+                  <span>Submission Time:</span>
+                  <span className="font-mono text-white">{submissionTime || 'Just now'}</span>
                 </div>
               </div>
             </div>
