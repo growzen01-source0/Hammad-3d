@@ -7,9 +7,6 @@ import confetti from 'canvas-confetti';
 import {
   saveBookingToGoogleSheets,
   SaveBookingToSheetsResult,
-  GOOGLE_SHEETS_SCRIPT_URL,
-  GOOGLE_APPS_SCRIPT_TEMPLATE,
-  isGoogleSheetsConfigured,
 } from '../lib/googleSheets';
 import {
   Sparkles,
@@ -26,11 +23,7 @@ import {
   Search,
   ShieldCheck,
   Clock,
-  FileSpreadsheet,
-  Copy,
-  Check,
   Layers,
-  X,
 } from 'lucide-react';
 
 interface BookingSectionProps {
@@ -59,14 +52,6 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
   const [emailSent, setEmailSent] = useState(false);
   const [sheetResult, setSheetResult] = useState<SaveBookingToSheetsResult | null>(null);
   const [submissionTimestamp, setSubmissionTimestamp] = useState('');
-  const [showSheetGuide, setShowSheetGuide] = useState(false);
-  const [copiedScript, setCopiedScript] = useState(false);
-
-  const handleCopyScript = () => {
-    navigator.clipboard.writeText(GOOGLE_APPS_SCRIPT_TEMPLATE);
-    setCopiedScript(true);
-    setTimeout(() => setCopiedScript(false), 2500);
-  };
 
   const cardRef = useRef<HTMLDivElement>(null);
   const [cardTilt, setCardTilt] = useState({ rx: 0, ry: 0 });
@@ -106,17 +91,6 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
       }
     }
   }, [preselectedService]);
-
-  const handleFillDemo = () => {
-    setFormData({
-      name: 'Alex Vance',
-      phone: '331 7157073',
-      email: 'alex.vance@example.com',
-      service: 'Website Development',
-      packageTier: 'Standard Plan',
-      message: 'Looking for a full website revamp with interactive 3D WebGL visuals and high-converting landing pages.',
-    });
-  };
 
   const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -325,26 +299,6 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
         <p className="mt-3 sm:mt-4 text-neutral-400 text-xs sm:text-sm md:text-base max-w-xl px-2">
           Share your vision, current bottlenecks, and target goals. We respond within 24 hours with an actionable roadmap.
         </p>
-        {!isSubmitted && (
-          <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2.5">
-            <button
-              type="button"
-              onClick={handleFillDemo}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 hover:bg-[#8B5CF6]/20 border border-white/10 hover:border-[#8B5CF6]/40 text-neutral-300 hover:text-white text-xs font-mono-tech transition-all cursor-pointer shadow-xs group"
-            >
-              <Sparkles className="w-3 h-3 text-[#8B5CF6] group-hover:rotate-12 transition-transform" />
-              <span>Click to auto-fill test booking</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowSheetGuide(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-500/50 text-emerald-300 hover:text-emerald-200 text-xs font-mono-tech transition-all cursor-pointer shadow-xs group"
-            >
-              <FileSpreadsheet className="w-3 h-3 text-emerald-400 group-hover:scale-110 transition-transform" />
-              <span>Google Sheets Setup & Requirements</span>
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Form Card with 3D Tilt Frame */}
@@ -720,10 +674,9 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
 
             {/* Submit Button with 3D Magnetic Hover Effect */}
             <div className="pt-2 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-xs font-mono-tech text-neutral-400 text-center sm:text-left">
-                <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span>Direct Google Sheets Sync • 24h Response</span>
-              </div>
+              <span className="text-xs font-mono-tech text-neutral-400 text-center sm:text-left">
+                ⚡ 100% Confidential • Fast 24-Hour Response
+              </span>
 
               <MagneticButton
                 type="submit"
@@ -733,7 +686,7 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
                 {isSubmitting ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Saving to Google Sheet...</span>
+                    <span>Confirming Consultation...</span>
                   </>
                 ) : (
                   <>
@@ -802,146 +755,6 @@ export const BookingSection: React.FC<BookingSectionProps> = ({ preselectedServi
           </span>
         </div>
       </div>
-
-      {/* Google Sheets Integration Guide & Requirements Modal */}
-      {showSheetGuide && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/80 backdrop-blur-md animate-in fade-in duration-300"
-        >
-          <div
-            className="relative w-full max-w-2xl max-h-[90vh] bg-[#0c0f17] border border-emerald-500/30 rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_50px_rgba(16,185,129,0.15)] flex flex-col overflow-hidden text-left"
-          >
-            {/* Modal Header */}
-            <div className="flex items-center justify-between pb-4 border-b border-white/10 shrink-0">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 flex items-center justify-center">
-                  <FileSpreadsheet className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-display font-bold text-lg sm:text-xl text-white">
-                    Google Sheets Connection Guide
-                  </h3>
-                  <p className="text-xs text-neutral-400 font-mono-tech">
-                    Direct automated row appending via Apps Script Webhook
-                  </p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowSheetGuide(false)}
-                className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
-                aria-label="Close dialog"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Scrollable Body */}
-            <div className="py-4 space-y-4 overflow-y-auto text-xs sm:text-sm text-neutral-300 custom-scrollbar pr-1">
-              {/* Pipeline Status Box */}
-              <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5">
-                  <div className={`w-2.5 h-2.5 rounded-full ${isGoogleSheetsConfigured() ? 'bg-emerald-400 shadow-[0_0_10px_#10b981]' : 'bg-amber-400 animate-pulse'}`} />
-                  <div>
-                    <div className="font-bold text-white text-xs font-mono-tech">
-                      {isGoogleSheetsConfigured() ? 'Google Sheets Webhook URL Connected' : 'Ready to Receive Google Sheets Webhook URL'}
-                    </div>
-                    <div className="text-[11px] text-neutral-400">
-                      {isGoogleSheetsConfigured() ? 'Form submissions write straight to your spreadsheet.' : 'Submissions are safely archived locally until URL is attached.'}
-                    </div>
-                  </div>
-                </div>
-                <span className="text-[10px] font-mono-tech px-2 py-0.5 rounded bg-white/10 text-neutral-300">
-                  {isGoogleSheetsConfigured() ? 'ACTIVE' : 'READY'}
-                </span>
-              </div>
-
-              {/* Requirements from User */}
-              <div className="space-y-2">
-                <h4 className="font-bold text-white font-mono-tech text-xs uppercase tracking-wider text-emerald-400">
-                  What We Need From You (2-Minute Setup):
-                </h4>
-                <ol className="list-decimal list-inside space-y-1.5 text-neutral-300 text-xs pl-1">
-                  <li>
-                    <strong className="text-white">Create a Google Sheet:</strong> Open any new or existing Google Sheet.
-                  </li>
-                  <li>
-                    <strong className="text-white">Open Apps Script:</strong> Click <code className="text-emerald-300 bg-white/5 px-1.5 py-0.5 rounded">Extensions &gt; Apps Script</code>.
-                  </li>
-                  <li>
-                    <strong className="text-white">Paste &amp; Deploy:</strong> Paste the script below and click <code className="text-emerald-300 bg-white/5 px-1.5 py-0.5 rounded">Deploy &gt; New deployment &gt; Web app</code>.
-                  </li>
-                  <li>
-                    <strong className="text-white">Required Permissions:</strong> Set <em>&ldquo;Execute as: Me&rdquo;</em> and <em>&ldquo;Who has access: Anyone&rdquo;</em> (so website visitors can submit).
-                  </li>
-                  <li>
-                    <strong className="text-white">Copy &amp; Provide URL:</strong> Paste the resulting Web App URL in your environment settings as <code className="text-purple-300 bg-white/5 px-1.5 py-0.5 rounded">VITE_GOOGLE_SHEETS_SCRIPT_URL</code>.
-                  </li>
-                </ol>
-              </div>
-
-              {/* Exact Column Order */}
-              <div className="p-3 rounded-xl bg-[#080b10] border border-white/10 space-y-1.5">
-                <div className="font-mono-tech text-[11px] uppercase tracking-wider text-neutral-400 font-bold">
-                  Ordered Spreadsheet Columns:
-                </div>
-                <div className="flex flex-wrap gap-1.5 text-[11px] font-mono-tech">
-                  {['1. Timestamp', '2. Full Name', '3. Phone/WhatsApp Number', '4. Email Address', '5. Service Needed', '6. Package Tier Preference', '7. Project Overview/Goals'].map((col) => (
-                    <span key={col} className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-neutral-300">
-                      {col}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Apps Script Code Preview */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono-tech text-xs uppercase tracking-wider text-neutral-400">
-                    Google Apps Script Code (Code.gs):
-                  </span>
-                  <button
-                    type="button"
-                    onClick={handleCopyScript}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 text-xs font-mono-tech transition-colors cursor-pointer"
-                  >
-                    {copiedScript ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Copied!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>Copy Apps Script</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-                <pre className="p-3 rounded-xl bg-black/60 border border-white/10 text-[11px] text-neutral-300 font-mono-tech overflow-x-auto max-h-40 custom-scrollbar">
-                  {GOOGLE_APPS_SCRIPT_TEMPLATE}
-                </pre>
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="pt-3 border-t border-white/10 flex items-center justify-between shrink-0">
-              <span className="text-[11px] text-neutral-400 font-mono-tech">
-                Automatic local archiving guarantees zero lost submissions.
-              </span>
-              <button
-                type="button"
-                onClick={() => setShowSheetGuide(false)}
-                className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono-tech text-xs transition-colors cursor-pointer"
-              >
-                Got It, Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 };
